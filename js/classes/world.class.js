@@ -1,9 +1,9 @@
 class World {
     character = new Character();
     enemies = [
-        new Chicken(),
-        new Chicken(),
-        new Chicken(),
+        new normalChicken(),
+        new normalChicken(),
+        new normalChicken(),
     ];
     clouds = [
         new Clouds(),
@@ -30,9 +30,9 @@ class World {
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.addObjectsToCanvas(this.backgrounds);
-        this.addToCanvas(this.character);
-        this.addObjectsToCanvas(this.enemies);
         this.addObjectsToCanvas(this.clouds);
+        this.addObjectsToCanvas(this.enemies);
+        this.addToCanvas(this.character);
          
         
         //draw() wird immer wieder aufgerufen
