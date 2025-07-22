@@ -41,7 +41,6 @@ class World {
         this.addObjectsToCanvas(this.enemies);
         this.addToCanvas(this.character);
          
-        
         //draw() wird immer wieder aufgerufen
         let self = this;
         requestAnimationFrame( function () {
@@ -56,6 +55,32 @@ class World {
     }
 
     addToCanvas(model) {
+        if (model.otherDirection) {
+            this.mirrorImage(model)
+        }
         this.ctx.drawImage(model.img, model.x, model.y, model.width, model.height);
+        if (model.otherDirection) {
+            this.mirrorImageBack(model)
+        }
+    }
+
+    /**
+     * Reflects the image.
+     * @param {*} model 
+     */
+    mirrorImage(model) {
+        this.ctx.save();
+        this.ctx.translate(model.width, 0);
+        this.ctx.scale(-1 ,1);
+        model.x = model.x * -1; 
+    }
+
+    /**
+     * Reflects the image back. 
+     * @param {*} model 
+     */
+    mirrorImageBack(model) {
+        this.ctx.restore();
+        model.x = model.x * -1; 
     }
 }

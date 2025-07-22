@@ -4,6 +4,8 @@ class Character extends MovableObject{
     height = 1200 * 0.25;
     width = 610 * 0.25;
     world;
+    speed = 15;
+
     IMAGES_IDLE = [
         'img/2_character_pepe/1_idle/idle/I-1.png',
         'img/2_character_pepe/1_idle/idle/I-2.png',
@@ -42,20 +44,42 @@ class Character extends MovableObject{
     constructor () {
         super().loadImage('img/2_character_pepe/2_walk/W-21.png');
         this.loadImages(this.IMAGES_WALKING);
+        this.loadImages(this.IMAGES_IDLE);
         this.animate();
     }
 
     animate() {
-        setInterval(() =>{
+        setInterval(() => {
             if (this.world.keyboard.RIGHT) {
-                let i = this.currentImage % this.IMAGES_WALKING.length;
-                let path = this.IMAGES_WALKING[i];
-                this.img = this.imageCache[path];
-                this.currentImage++;
+                this.otherDirection = false;
+                this.walking();
+                this.x += this.speed;
             }
-        },  150);
+            else if (this.world.keyboard.LEFT) {
+                this.otherDirection = true;
+                this.walking();
+                this.x -= this.speed;
+            }
+            else {
+                this.idle();
+            }
+        }, 140);
     }
     
+    idle() {
+        let i = this.currentImage % this.IMAGES_IDLE.length;
+        let path = this.IMAGES_IDLE[i];
+        this.img = this.imageCache[path];
+        this.currentImage++;
+    }
+   
+    walking() {
+        let i = this.currentImage % this.IMAGES_WALKING.length;
+        let path = this.IMAGES_WALKING[i];
+        this.img = this.imageCache[path];
+        this.currentImage++;
+    }
+
     jump () {
 
     }

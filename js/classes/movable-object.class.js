@@ -7,6 +7,7 @@ class MovableObject {
     imageCache = {};
     currentImage = 0;
     speed;
+    otherDirection = false;
 
     loadImage(path){
         this.img = new Image();
@@ -22,7 +23,7 @@ class MovableObject {
     }
 
     moveRight() {
-        
+
     }
 
     moveLeft() {
