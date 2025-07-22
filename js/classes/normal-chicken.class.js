@@ -2,6 +2,7 @@ class normalChicken extends MovableObject{
     y = 335;
     height = 243 * 0.4;
     width = 248 * 0.4;
+
     IMAGES_WALKING = [
         'img/3_enemies_chicken/chicken_normal/1_walk/1_w.png',
         'img/3_enemies_chicken/chicken_normal/1_walk/2_w.png',
@@ -18,8 +19,12 @@ class normalChicken extends MovableObject{
 
     animate() {
         setInterval(() =>{
-            this.walkingAnimation(this.IMAGES_WALKING);
+            this.playAnimation(this.IMAGES_WALKING);
         },  250);
-        this.moveLeft(this.speed);
+        
+        setInterval(() => {
+            this.moveLeft();
+            this.otherDirection = false;
+        }, 1000 / 60);
     }
 }
