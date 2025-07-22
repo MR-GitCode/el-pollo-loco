@@ -4,7 +4,7 @@ class Character extends MovableObject{
     height = 1200 * 0.25;
     width = 610 * 0.25;
     world;
-    speed = 15;
+    speed = 30;
 
     IMAGES_IDLE = [
         'img/2_character_pepe/1_idle/idle/I-1.png',
@@ -50,33 +50,26 @@ class Character extends MovableObject{
 
     animate() {
         setInterval(() => {
-            if (this.world.keyboard.RIGHT) {
+            if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
                 this.otherDirection = false;
-                this.walking();
+                this.walkingAnimation(this.IMAGES_WALKING);
                 this.x += this.speed;
             }
-            else if (this.world.keyboard.LEFT) {
+            else if (this.world.keyboard.LEFT && this.x > 0) {
                 this.otherDirection = true;
-                this.walking();
+                this.walkingAnimation(this.IMAGES_WALKING);
                 this.x -= this.speed;
             }
             else {
                 this.idle();
             }
-            this.world.camera_x = -this.x;
+            this.world.camera_x = -this.x + 100;
         }, 140);
     }
     
     idle() {
         let i = this.currentImage % this.IMAGES_IDLE.length;
         let path = this.IMAGES_IDLE[i];
-        this.img = this.imageCache[path];
-        this.currentImage++;
-    }
-   
-    walking() {
-        let i = this.currentImage % this.IMAGES_WALKING.length;
-        let path = this.IMAGES_WALKING[i];
         this.img = this.imageCache[path];
         this.currentImage++;
     }

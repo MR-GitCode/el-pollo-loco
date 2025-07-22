@@ -18,10 +18,7 @@ class normalChicken extends MovableObject{
 
     animate() {
         setInterval(() =>{
-            let i = this.currentImage % this.IMAGES_WALKING.length;
-            let path = this.IMAGES_WALKING[i];
-            this.img = this.imageCache[path];
-            this.currentImage++;
+            this.walkingAnimation(this.IMAGES_WALKING);
         },  250);
         this.moveLeft(this.speed);
     }
