@@ -2,6 +2,12 @@ class normalChicken extends MovableObject{
     y = 335;
     height = 243 * 0.4;
     width = 248 * 0.4;
+    offset = {
+        top: 5,
+        left: 0,
+        right: 0,
+        bottom: 10
+    };
 
     IMAGES_WALKING = [
         'img/3_enemies_chicken/chicken_normal/1_walk/1_w.png',

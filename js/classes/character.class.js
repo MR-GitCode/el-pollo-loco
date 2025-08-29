@@ -1,12 +1,17 @@
 class Character extends MovableObject{
     x = 120;
     y = 140;
-    // y = 40;
     height = 1200 * 0.25;
     width = 610 * 0.25;
     world;
     speed = 30;
     isIdleLong = false;
+    offset = {
+        top: 120,
+        left: 30,
+        right: 75,
+        bottom: 130
+    };
 
     IMAGES_IDLE = [
         'img/2_character_pepe/1_idle/idle/I-1.png',
@@ -73,13 +78,16 @@ class Character extends MovableObject{
                 if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
                     this.moveRight();
                     this.playAnimation(this.IMAGES_WALKING);
+                    this.isIdleLong = false;
                 }
                 else if (this.world.keyboard.LEFT && this.x > 0) {
                     this.moveLeft();
-                     this.playAnimation(this.IMAGES_WALKING);
+                    this.playAnimation(this.IMAGES_WALKING);
+                    this.isIdleLong = false;
                 }
-                else if (this.world.keyboard.UP && !this.isAboveGround()) {
+                else if ((this.world.keyboard.SPACE || this.world.keyboard.UP) && !this.isAboveGround()) {
                     this.jump();
+                    this.isIdleLong = false;
                 }
                 else {
                     this.idle()
