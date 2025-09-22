@@ -1,5 +1,5 @@
 class normalChicken extends MovableObject{
-    y = 335;
+    y = 330;
     height = 243 * 0.4;
     width = 248 * 0.4;
     offset = {

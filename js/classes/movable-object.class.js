@@ -17,6 +17,7 @@ class MovableObject {
         bottom: 0
     };
     energy = 100;
+    lastHit = 0;
 
     applyGravity() {
         setInterval(() =>{
@@ -69,10 +70,32 @@ class MovableObject {
     }
 
     isColliding(model) {
-        return this.x + this.width - this.offset.right > model.x + model.offset.left &&
-            this.y + this.height - this.offset.bottom > model.y + model.offset.top &&
+        return (
+            this.x + this.width - this.offset.right > model.x + model.offset.left &&
             this.x + this.offset.left < model.x + model.width - model.offset.right &&
-            this.y + this.offset.top < model.y + model.height - model.offset.bottom;
+            this.y + this.height - this.offset.bottom > model.y + model.offset.top &&
+            this.y + this.offset.top < model.y + model.height - model.offset.bottom
+        )
+    }
+
+    hit() {
+        this.energy -= 1;
+        console.log('Collision width Character, energy', this.energy);
+        if(this.energy < 0) {
+            this.energy = 0;
+        } else {
+            this.lastHit = new Date().getTime();
+        }
+    }
+
+    isHurt() {
+        let timepassed = new Date().getTime() - this.lastHit;
+        timepassed = timepassed / 1000;
+        return timepassed < 1;
+    }
+
+    isDead() {
+        return this.energy == 0;
     }
 
     playAnimation(images) {
