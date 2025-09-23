@@ -6,6 +6,7 @@ class World {
     keyboard;
     camera_x = 0;
     statusBar = new StatusBar();
+    throwableObjects = [];
 
 
     constructor (canvas, keyboard) {
@@ -14,6 +15,7 @@ class World {
         this.keyboard = keyboard;
         this.draw();
         this.setWorld();
+        this.run();
         this.checkCollisions();
     }
 
@@ -21,14 +23,29 @@ class World {
         this.character.world = this;
     }
 
-    checkCollisions() {
+    run() {
         setInterval(() => {
-            this.level.enemies.forEach((enemy) => {
-              if(this.character.isColliding(enemy)) {
+            this.checkCollisions();
+            this.checkThrowObjects();
+        }, 500)
+
+    }
+
+    checkThrowObjects() {
+        if(this.keyboard.E) {
+            let bottle = new ThrowableObject(this.character.x, this.character.y);
+            this.throwableObjects.push(bottle);
+        }
+
+    }
+
+    checkCollisions() {
+        this.level.enemies.forEach((enemy) => {
+            if(this.character.isColliding(enemy)) {
                 this.character.hit();
-              }  
-            });
-        }, 20)
+                this.statusBar.setPercentage(this.character.energy)
+            }  
+        });
     }
 
     draw() {
@@ -38,10 +55,10 @@ class World {
         this.addObjectsToCanvas(this.level.backgrounds);
         this.addObjectsToCanvas(this.level.clouds);
         this.addObjectsToCanvas(this.level.enemies);
-        this.addToCanvas(this.statusBar);
+        this.addObjectsToCanvas(this.throwableObjects);
         this.addToCanvas(this.character);
         this.ctx.translate(-this.camera_x, 0);
-
+        this.addToCanvas(this.statusBar);
 
         //draw() wird immer wieder aufgerufen
         let self = this;
