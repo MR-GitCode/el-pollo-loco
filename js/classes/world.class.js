@@ -5,6 +5,7 @@ class World {
     crx;
     keyboard;
     camera_x = 0;
+    statusBar = new StatusBar();
 
 
     constructor (canvas, keyboard) {
@@ -32,15 +33,16 @@ class World {
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        
         this.ctx.translate(this.camera_x, 0);
 
         this.addObjectsToCanvas(this.level.backgrounds);
         this.addObjectsToCanvas(this.level.clouds);
         this.addObjectsToCanvas(this.level.enemies);
+        this.addToCanvas(this.statusBar);
         this.addToCanvas(this.character);
-
         this.ctx.translate(-this.camera_x, 0);
+
+
         //draw() wird immer wieder aufgerufen
         let self = this;
         requestAnimationFrame( function () {
