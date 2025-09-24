@@ -2,8 +2,15 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-image: url('img/5_background/body_background_desert.png');
+    justify-content: center;
+    height: 100vh;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 canvas{
+    border-radius: 15px;
     background-color: black;
 }

@@ -3,7 +3,7 @@ const level1 = new Level (
         new normalChicken(),
         // new normalChicken(),
         // new normalChicken(),
-        // new EndBoss(),
+        new EndBoss(),
     ],
 
     [

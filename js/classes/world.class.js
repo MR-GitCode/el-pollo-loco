@@ -5,7 +5,9 @@ class World {
     crx;
     keyboard;
     camera_x = 0;
-    statusBar = new StatusBar();
+    statusBarBottle = new StatusBar(IMAGES_BOTTLE, 10, 0, bottleCount);
+    statusBarHealth = new StatusBar(IMAGES_HEALTH, 10, 45, percentage);
+    statusBarCoin = new StatusBar(IMAGES_COIN, 10, 90, coinCount);
     throwableObjects = [];
 
 
@@ -36,14 +38,13 @@ class World {
             let bottle = new ThrowableObject(this.character.x, this.character.y);
             this.throwableObjects.push(bottle);
         }
-
     }
 
     checkCollisions() {
         this.level.enemies.forEach((enemy) => {
             if(this.character.isColliding(enemy)) {
                 this.character.hit();
-                this.statusBar.setPercentage(this.character.energy)
+                this.statusBarHealth.setPercentage(this.character.energy)
             }  
         });
     }
@@ -58,7 +59,9 @@ class World {
         this.addObjectsToCanvas(this.throwableObjects);
         this.addToCanvas(this.character);
         this.ctx.translate(-this.camera_x, 0);
-        this.addToCanvas(this.statusBar);
+        this.addToCanvas(this.statusBarBottle);
+        this.addToCanvas(this.statusBarHealth);
+        this.addToCanvas(this.statusBarCoin);
 
         //draw() wird immer wieder aufgerufen
         let self = this;
