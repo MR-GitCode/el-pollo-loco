@@ -1,8 +1,11 @@
 const level1 = new Level (
     [
         new normalChicken(),
-        // new normalChicken(),
-        // new normalChicken(),
+        new normalChicken(),
+        new normalChicken(),
+        new normalChicken(),
+        new normalChicken(),
+        new normalChicken(),
         new EndBoss(),
     ],
 
@@ -40,13 +43,17 @@ const level1 = new Level (
     ],
 
     [
-        new SpawnBottle(300, 325),
-        new SpawnBottle(600, 325),
+        new SpawnBottle(),
+        new SpawnBottle(),
+        new SpawnBottle(),
+        new SpawnBottle(),
+        new SpawnBottle(),
+        new SpawnBottle(),
     ],
     
     [
-        new SpawnCoin(200, 325),
-        new SpawnCoin(500, 325),
-        new SpawnCoin(800, 325),
+        new SpawnCoin(),
+        new SpawnCoin(),
+        new SpawnCoin(),
     ]
 )
