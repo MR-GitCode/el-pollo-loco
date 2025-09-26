@@ -9,6 +9,7 @@ class World {
     statusBarHealth = new StatusBar(IMAGES_HEALTH, 10, 45, percentage);
     statusBarCoin = new StatusBar(IMAGES_COIN, 10, 90, coinCount);
     throwableObjects = [];
+    // spawnableObjects = [new SpawnableObjects()];
 
 
     constructor (canvas, keyboard) {
@@ -56,6 +57,8 @@ class World {
         this.addObjectsToCanvas(this.level.backgrounds);
         this.addObjectsToCanvas(this.level.clouds);
         this.addObjectsToCanvas(this.level.enemies);
+        this.addObjectsToCanvas(this.level.bottles);
+        this.addObjectsToCanvas(this.level.coins);
         this.addObjectsToCanvas(this.throwableObjects);
         this.addToCanvas(this.character);
         this.ctx.translate(-this.camera_x, 0);

@@ -29,7 +29,7 @@ const IMAGES_COIN = [
     'img/7_statusbars/1_statusbar/1_statusbar_coin/blue/100.png'
 ];
 
-class StatusBar extends DrawableObjeect {
+class StatusBar extends DrawableObject {
 
     constructor(images, x, y, amount) {
         super();

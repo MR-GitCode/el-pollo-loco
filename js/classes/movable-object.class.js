@@ -1,4 +1,4 @@
-class MovableObject extends DrawableObjeect{
+class MovableObject extends DrawableObject{
     speed;
     otherDirection = false;
     speedY = 0;
@@ -54,7 +54,7 @@ class MovableObject extends DrawableObjeect{
         return timepassed < 1;
     }
 
-    isDead() {
+    isDead() { 
         return this.energy == 0;
     }
 
