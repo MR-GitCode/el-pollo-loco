@@ -41,13 +41,47 @@ class World {
         }
     }
 
+    /**
+     * Checked the collision of objects with character.
+     */
     checkCollisions() {
+        this.collisionEnemy()
+        this.collisionCoin()
+        this.collisionBottle()
+    }
+
+    /**
+     * Checked the collision of enemies with character.
+     */
+    collisionEnemy() {
         this.level.enemies.forEach((enemy) => {
             if(this.character.isColliding(enemy)) {
                 this.character.hit();
                 this.statusBarHealth.setPercentage(this.character.energy)
             }  
         });
+    }
+
+    /**
+     * Checked the collision of coin with character.
+     */
+    collisionCoin() {
+        this.level.coins.forEach((coin) => {
+            if(this.character.isColliding(coin)) {
+                console.log('Collision with COIN'); 
+            }  
+        });
+    }
+
+    /**
+     * Checked the collision of bottles with character.
+     */
+    collisionBottle() {
+        this.level.bottles.forEach((bottle) => {
+            if(this.character.isColliding(bottle)) {
+                console.log('Collision with BOTTLE');  
+            }  
+        });  
     }
 
     draw() {
@@ -84,8 +118,8 @@ class World {
             this.mirrorImage(model)
         }
         model.draw(this.ctx);
-        model.drawFrame(this.ctx);
-        model.drawOffsetFrame(this.ctx)
+        // model.drawFrame(this.ctx);
+        // model.drawOffsetFrame(this.ctx)
         if (model.otherDirection) {
             this.mirrorImageBack(model)
         }

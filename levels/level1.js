@@ -54,6 +54,6 @@ const level1 = new Level (
     [
         new SpawnCoin(),
         new SpawnCoin(),
-        new SpawnCoin(),
+        // new SpawnCoin(),
     ]
 )

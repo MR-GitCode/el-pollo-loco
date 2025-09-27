@@ -25,7 +25,7 @@ class DrawableObject {
     }
 
     drawFrame(ctx) {
-        if(this instanceof Character || this instanceof normalChicken || this instanceof EndBoss) {
+        if(this instanceof Character || this instanceof normalChicken || this instanceof EndBoss || this instanceof SpawnCoin || this instanceof SpawnBottle) {
             ctx.beginPath();
             ctx.lineWidth = '3';
             ctx.strokeStyle = 'blue';
@@ -35,7 +35,7 @@ class DrawableObject {
     }
 
     drawOffsetFrame(ctx) {
-        if(this instanceof Character || this instanceof normalChicken || this instanceof EndBoss) {
+        if(this instanceof Character || this instanceof normalChicken || this instanceof EndBoss || this instanceof SpawnCoin || this instanceof SpawnBottle) {
             ctx.beginPath();
             ctx.lineWidth = '3';
             ctx.strokeStyle = 'red';

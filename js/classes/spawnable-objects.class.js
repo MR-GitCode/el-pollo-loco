@@ -1,4 +1,6 @@
 class SpawnableObjects extends DrawableObject {
+    otherDirection = false;
+    
     constructor(x, y, width, height) {
         super();
         this.x = x
