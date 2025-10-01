@@ -34,10 +34,16 @@ class World {
         }, 200)
     }
 
+    /**
+      * Throws a bottle if the throw key (E) is pressed 
+      * and bottles are available. Updates status bar.
+     */
     checkThrowObjects() {
-        if(this.keyboard.E) {
+        if(this.keyboard.E & (this.bottleCount > 0)) {
             let bottle = new ThrowableObject(this.character.x, this.character.y);
             this.throwableObjects.push(bottle);
+            this.bottleCount --
+            this.changeStatusBar(this.bottleCount , this.level.maxBottles , "statusBarBottle")
         }
     }
 
@@ -73,10 +79,8 @@ class World {
         this.level.coins.forEach((coin, index) => {
             if(this.character.isColliding(coin)) {
                 this.coinCount++;
-                let percentage = (this.coinCount / this.level.maxCoins) * 100;
-                this.statusBarCoin.setPercentage(percentage);
+                this.changeStatusBar(this.coinCount , this.level.maxCoins , "statusBarCoin")
                 this.level.coins.splice(index, 1)
-                // console.log('coin:' , this.coinCount);
             }  
         });
     }
@@ -88,11 +92,15 @@ class World {
         this.level.bottles.forEach((bottle, index) => {
             if(this.character.isColliding(bottle)) {
                 this.bottleCount++;
-                let percentage = (this.bottleCount / this.level.maxBottles) * 100;
-                this.statusBarBottle.setPercentage(percentage);
+                this.changeStatusBar(this.bottleCount , this.level.maxBottles , "statusBarBottle")
                 this.level.bottles.splice(index, 1);
             }  
         });  
+    }
+
+    changeStatusBar (objectCount, maxObject, statusBarName) {
+        let percentage = (objectCount / maxObject) * 100;
+        this[statusBarName].setPercentage(percentage);
     }
 
     draw() {
