@@ -12,5 +12,8 @@ class Level {
         this.backgrounds = backgrounds;
         this.bottles = bottles;
         this.coins = coins;
+
+        this.maxBottles = bottles.length;
+        this.maxCoins = coins.length;
     }
 }

@@ -1,12 +1,12 @@
 const level1 = new Level (
     [
-        new normalChicken(),
-        new normalChicken(),
-        new normalChicken(),
-        new normalChicken(),
-        new normalChicken(),
-        new normalChicken(),
-        new EndBoss(),
+        // new normalChicken(),
+        // new normalChicken(),
+        // new normalChicken(),
+        // new normalChicken(),
+        // new normalChicken(),
+        // new normalChicken(),
+        // new EndBoss(),
     ],
 
     [
@@ -54,6 +54,6 @@ const level1 = new Level (
     [
         new SpawnCoin(),
         new SpawnCoin(),
-        // new SpawnCoin(),
+        new SpawnCoin(),
     ]
 )

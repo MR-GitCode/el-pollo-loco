@@ -5,12 +5,13 @@ class World {
     crx;
     keyboard;
     camera_x = 0;
-    statusBarBottle = new StatusBar(IMAGES_BOTTLE, 10, 0, bottleCount);
-    statusBarHealth = new StatusBar(IMAGES_HEALTH, 10, 45, percentage);
-    statusBarCoin = new StatusBar(IMAGES_COIN, 10, 90, coinCount);
     throwableObjects = [];
-    // spawnableObjects = [new SpawnableObjects()];
-
+    coinCount = 0;
+    bottleCount = 0;
+    statusBarBottle = new StatusBar(IMAGES_BOTTLE, 10, 0, this.bottleCount);
+    statusBarHealth = new StatusBar(IMAGES_HEALTH, 10, 45, percentage);
+    statusBarCoin = new StatusBar(IMAGES_COIN, 10, 90, this.coinCount);
+    
 
     constructor (canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -27,11 +28,10 @@ class World {
     }
 
     run() {
+        this.checkCollisions();
         setInterval(() => {
-            this.checkCollisions();
             this.checkThrowObjects();
-        }, 500)
-
+        }, 200)
     }
 
     checkThrowObjects() {
@@ -45,9 +45,13 @@ class World {
      * Checked the collision of objects with character.
      */
     checkCollisions() {
-        this.collisionEnemy()
-        this.collisionCoin()
-        this.collisionBottle()
+        setInterval(() => {
+            this.collisionEnemy()
+        }, 800)
+        setInterval(() => {
+            this.collisionCoin()
+            this.collisionBottle()
+        }, 100)
     }
 
     /**
@@ -66,9 +70,13 @@ class World {
      * Checked the collision of coin with character.
      */
     collisionCoin() {
-        this.level.coins.forEach((coin) => {
+        this.level.coins.forEach((coin, index) => {
             if(this.character.isColliding(coin)) {
-                console.log('Collision with COIN'); 
+                this.coinCount++;
+                let percentage = (this.coinCount / this.level.maxCoins) * 100;
+                this.statusBarCoin.setPercentage(percentage);
+                this.level.coins.splice(index, 1)
+                // console.log('coin:' , this.coinCount);
             }  
         });
     }
@@ -77,9 +85,12 @@ class World {
      * Checked the collision of bottles with character.
      */
     collisionBottle() {
-        this.level.bottles.forEach((bottle) => {
+        this.level.bottles.forEach((bottle, index) => {
             if(this.character.isColliding(bottle)) {
-                console.log('Collision with BOTTLE');  
+                this.bottleCount++;
+                let percentage = (this.bottleCount / this.level.maxBottles) * 100;
+                this.statusBarBottle.setPercentage(percentage);
+                this.level.bottles.splice(index, 1);
             }  
         });  
     }
@@ -92,7 +103,7 @@ class World {
         this.addObjectsToCanvas(this.level.clouds);
         this.addObjectsToCanvas(this.level.bottles);
         this.addObjectsToCanvas(this.level.coins);
-        this.addObjectsToCanvas(this.level.enemies);
+        // this.addObjectsToCanvas(this.level.enemies);
         this.addObjectsToCanvas(this.throwableObjects);
         this.addToCanvas(this.character);
         this.ctx.translate(-this.camera_x, 0);
