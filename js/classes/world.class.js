@@ -11,16 +11,17 @@ class World {
     statusBarBottle = new StatusBar(IMAGES_BOTTLE, 10, 0, this.bottleCount);
     statusBarHealth = new StatusBar(IMAGES_HEALTH, 10, 45, percentage);
     statusBarCoin = new StatusBar(IMAGES_COIN, 10, 90, this.coinCount);
-    
 
-    constructor (canvas, keyboard) {
+    constructor (canvas, keyboard, gameStarted) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
-        this.draw();
-        this.setWorld();
-        this.run();
-        this.checkCollisions();
+        if (gameStarted) {
+            this.draw();
+            this.setWorld();
+            this.run();
+            this.checkCollisions();
+        }
     }
 
     setWorld() {
@@ -35,8 +36,8 @@ class World {
     }
 
     /**
-      * Throws a bottle if the throw key (E) is pressed 
-      * and bottles are available. Updates status bar.
+     * Throws a bottle if the throw key (E) is pressed
+     * and bottles are available. Updates status bar.
      */
     checkThrowObjects() {
         if(this.keyboard.E & (this.bottleCount > 0)) {
@@ -111,7 +112,7 @@ class World {
         this.addObjectsToCanvas(this.level.clouds);
         this.addObjectsToCanvas(this.level.bottles);
         this.addObjectsToCanvas(this.level.coins);
-        // this.addObjectsToCanvas(this.level.enemies);
+        this.addObjectsToCanvas(this.level.enemies);
         this.addObjectsToCanvas(this.throwableObjects);
         this.addToCanvas(this.character);
         this.ctx.translate(-this.camera_x, 0);

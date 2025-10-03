@@ -1,10 +1,52 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
+let startScreenImage = new Image();
+let gameStarted = false;
+
+function showStartScreen() {
+    canvas = document.getElementById('canvas');
+    startScreenImage.src = 'img/9_intro_outro_screens/start/startscreen_2.png';
+    startScreenImage.onload = function() {
+        drawStartScreen();
+    };
+    addEventListenerToButtons();
+
+}
+
+function drawStartScreen() {
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(startScreenImage, 0, 0, canvas.width, canvas.height);
+}
+
+function addEventListenerToButtons() {
+    const btStartGame = document.getElementById('bt-start-game');
+    const btControls = document.getElementById('bt-controls');
+    const changeScreenSize = document.getElementById('min-max-screens');
+    btStartGame.addEventListener('click', () => {
+        console.log(gameStarted); 
+        const btGame = document.getElementById('buttons');
+        btGame.style.display = 'none';
+
+        init();   
+    })
+    btControls.addEventListener('click', () => {
+        console.log("open controls");
+    })
+    changeScreenSize.addEventListener('click', () => {
+        console.log('change screen size');
+        canvas.requestFullscreen();
+        document.getElementById('screen').requestFullscreen();
+        
+    })
+}
 
 function init() {
-    canvas = document.getElementById('canvas');
-    world = new World(canvas, keyboard);
+    console.log(gameStarted);
+    gameStarted = true;
+    console.log(gameStarted);
+    world = new World(canvas, keyboard, gameStarted);
 }
 
 window.addEventListener('keydown', (event) => {   

@@ -128,7 +128,10 @@ class Character extends MovableObject{
     }
 
     dead() {
-        this.playAnimation(this.IMAGES_DEAD);
+        set
+        setTimeout (() => {
+           this.playAnimation(this.IMAGES_DEAD); 
+        }, 2000)
     }
 
     idle() {
