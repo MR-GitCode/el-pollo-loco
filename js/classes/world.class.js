@@ -11,12 +11,13 @@ class World {
     statusBarBottle = new StatusBar(IMAGES_BOTTLE, 10, 0, this.bottleCount);
     statusBarHealth = new StatusBar(IMAGES_HEALTH, 10, 45, percentage);
     statusBarCoin = new StatusBar(IMAGES_COIN, 10, 90, this.coinCount);
+    gameOver = false
 
-    constructor (canvas, keyboard, gameStarted) {
+    constructor (canvas, keyboard, gameStarted = false) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
-        if (gameStarted) {
+        if (gameStarted & !this.gameOver) {
             this.draw();
             this.setWorld();
             this.run();
@@ -105,26 +106,27 @@ class World {
     }
 
     draw() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.ctx.translate(this.camera_x, 0);
+        if (!this.gameOver) {
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            this.ctx.translate(this.camera_x, 0);
+            this.addObjectsToCanvas(this.level.backgrounds);
+            this.addObjectsToCanvas(this.level.clouds);
+            this.addObjectsToCanvas(this.level.bottles);
+            this.addObjectsToCanvas(this.level.coins);
+            this.addObjectsToCanvas(this.level.enemies);
+            this.addObjectsToCanvas(this.throwableObjects);
+            this.addToCanvas(this.character);
+            this.ctx.translate(-this.camera_x, 0);
+            this.addToCanvas(this.statusBarBottle);
+            this.addToCanvas(this.statusBarHealth);
+            this.addToCanvas(this.statusBarCoin);
 
-        this.addObjectsToCanvas(this.level.backgrounds);
-        this.addObjectsToCanvas(this.level.clouds);
-        this.addObjectsToCanvas(this.level.bottles);
-        this.addObjectsToCanvas(this.level.coins);
-        this.addObjectsToCanvas(this.level.enemies);
-        this.addObjectsToCanvas(this.throwableObjects);
-        this.addToCanvas(this.character);
-        this.ctx.translate(-this.camera_x, 0);
-        this.addToCanvas(this.statusBarBottle);
-        this.addToCanvas(this.statusBarHealth);
-        this.addToCanvas(this.statusBarCoin);
-
-        //draw() wird immer wieder aufgerufen
-        let self = this;
-        requestAnimationFrame( function () {
-           self.draw(); 
-        });
+            //draw() wird immer wieder aufgerufen
+            let self = this;
+            requestAnimationFrame( function () {
+                self.draw(); 
+            }); 
+        }
     }
 
     addObjectsToCanvas(objects) {

@@ -14,6 +14,7 @@ class Character extends MovableObject{
     };
     coinAmount = 0;
     bottleAmount = 0;
+    endscreen = new Endscreen();
 
     IMAGES_IDLE = [
         'img/2_character_pepe/1_idle/idle/I-1.png',
@@ -78,6 +79,7 @@ class Character extends MovableObject{
         'img/2_character_pepe/5_dead/D-57.png',
     ];
 
+
     constructor () {
         super().loadImage('img/2_character_pepe/2_walk/W-21.png');
         this.loadImages(this.IMAGES_WALKING);
@@ -128,10 +130,10 @@ class Character extends MovableObject{
     }
 
     dead() {
-        set
         setTimeout (() => {
            this.playAnimation(this.IMAGES_DEAD); 
         }, 2000)
+        this.endscreen.lostGame();
     }
 
     idle() {

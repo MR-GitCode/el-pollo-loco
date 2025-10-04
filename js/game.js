@@ -11,7 +11,6 @@ function showStartScreen() {
         drawStartScreen();
     };
     addEventListenerToButtons();
-
 }
 
 function drawStartScreen() {
@@ -25,10 +24,8 @@ function addEventListenerToButtons() {
     const btControls = document.getElementById('bt-controls');
     const changeScreenSize = document.getElementById('min-max-screens');
     btStartGame.addEventListener('click', () => {
-        console.log(gameStarted); 
         const btGame = document.getElementById('buttons');
         btGame.style.display = 'none';
-
         init();   
     })
     btControls.addEventListener('click', () => {
@@ -38,15 +35,19 @@ function addEventListenerToButtons() {
         console.log('change screen size');
         canvas.requestFullscreen();
         document.getElementById('screen').requestFullscreen();
-        
     })
 }
 
 function init() {
-    console.log(gameStarted);
     gameStarted = true;
-    console.log(gameStarted);
     world = new World(canvas, keyboard, gameStarted);
+}
+
+/**
+ * 
+ */
+function stopGame() {
+    for (let i = 1; i < 9999; i++) window.clearInterval(i); //clearInterval = Methode to stop intervals
 }
 
 window.addEventListener('keydown', (event) => {   
