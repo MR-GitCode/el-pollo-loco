@@ -4,6 +4,9 @@ let keyboard = new Keyboard();
 let startScreenImage = new Image();
 let gameStarted = false;
 
+/**
+ * Initializes and displays the start screen.
+ */
 function showStartScreen() {
     canvas = document.getElementById('canvas');
     startScreenImage.src = 'img/9_intro_outro_screens/start/startscreen_2.png';
@@ -13,12 +16,18 @@ function showStartScreen() {
     addEventListenerToButtons();
 }
 
+/**
+ * Draws the start screen image on the canvas.
+ */
 function drawStartScreen() {
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(startScreenImage, 0, 0, canvas.width, canvas.height);
 }
 
+/**
+ * Adds event listeners to start, control, and screen size buttons.
+ */
 function addEventListenerToButtons() {
     const btStartGame = document.getElementById('bt-start-game');
     const btControls = document.getElementById('bt-controls');
@@ -38,18 +47,24 @@ function addEventListenerToButtons() {
     })
 }
 
+/**
+ * Starts the game by creating a new World instance.
+ */
 function init() {
     gameStarted = true;
     world = new World(canvas, keyboard, gameStarted);
 }
 
 /**
- * 
+ * Stops all running intervals and effectively ends the game loop.
  */
 function stopGame() {
     for (let i = 1; i < 9999; i++) window.clearInterval(i); //clearInterval = Methode to stop intervals
 }
 
+/**
+ * Handles keyboard keydown events for movement and actions.
+ */
 window.addEventListener('keydown', (event) => {   
     if (event.code == "KeyA" || event.code == "ArrowLeft") {
         keyboard.LEFT = true;    
@@ -71,6 +86,9 @@ window.addEventListener('keydown', (event) => {
     }
 })
 
+/**
+ * Handles keyboard keyup events to stop movement or actions.
+ */
 window.addEventListener('keyup', (event) => {
     if (event.code == "KeyA" || event.code == "ArrowLeft") {
         keyboard.LEFT = false;        

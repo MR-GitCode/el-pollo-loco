@@ -22,7 +22,6 @@ class Endscreen extends DrawableObject {
     lostGame() {
         let randomIndex = Math.floor(Math.random() * 4);        
         let img = this.IMAGES_GAMEOVER[randomIndex];
-        console.log('game over',img);
         this.drawImage(img);
     }
 
@@ -35,11 +34,9 @@ class Endscreen extends DrawableObject {
         const img = new Image();
         img.src = imagePath;
         img.onload = () => {
-            console.log(img);
             stopGame();
             world.gameOver = true;
             ctx.drawImage(img, 0, 0, this.canvas.width, this.canvas.height);
-            console.log('drawImage done');
         }
     }
 }

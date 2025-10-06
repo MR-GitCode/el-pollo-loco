@@ -21,6 +21,9 @@ class ThrowableObject extends MovableObject {
         this.y = y;
         this.width = 400 * 0.3;
         this.height = 400 * 0.3;
+        this.loadImages(this.IMAGES_BOTTLE_ROTATION);
+        this.loadImages(this.IMAGES_BOTTLE_SPLASH);
+        this.world = world;
         this.throw();
     }
 
@@ -28,7 +31,35 @@ class ThrowableObject extends MovableObject {
         this.speedY = 10;
         this.applyGravity();
         setInterval( () => {
-            this.x += 10;
-        }, 50)
+            if (this.y > 300) {
+                this.splash();  
+            } else {
+                this.rotate();
+                this.x += 10;
+            }
+        }, 80)
     }
+
+    rotate() {
+       this.playAnimation(this.IMAGES_BOTTLE_ROTATION) 
+    }
+
+    splash() {
+        if (this.splashPlayed) return; // verhindert mehrfaches Abspielen
+        this.splashPlayed = true;
+        let i = 0;
+        const splashInterval = setInterval(() => {
+            let path = this.IMAGES_BOTTLE_SPLASH[i];
+            this.img = this.imageCache[path];
+            i++;
+            if (i >= this.IMAGES_BOTTLE_SPLASH.length) {
+                clearInterval(splashInterval);
+                this.removeObject();
+            }
+        }, 100);
+    }
+
+    removeObject(){
+        this.world.throwableObjects = [];       
+    };
 }

@@ -59,8 +59,9 @@ class World {
             this.collisionEnemy()
         }, 800)
         setInterval(() => {
-            this.collisionCoin()
-            this.collisionBottle()
+            this.collisionCoin();
+            this.collisionBottle();
+            this.collisionThrowableObjectWithEnemies();
         }, 100)
     }
 
@@ -101,6 +102,20 @@ class World {
             }  
         });  
     }
+
+    collisionThrowableObjectWithEnemies() {
+        this.throwableObjects.forEach((throwableObject) => {
+            this.level.enemies.forEach((enemy) => {
+                if(enemy.isColliding(throwableObject)) {
+                    console.log('Enemy hit');
+                } else {
+                    console.log('Enemy missed');
+                    
+                }
+            }
+        );
+    });
+};
 
     changeStatusBar (objectCount, maxObject, statusBarName) {
         let percentage = (objectCount / maxObject) * 100;
