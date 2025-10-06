@@ -70,7 +70,7 @@ class World {
      */
     collisionEnemy() {
         this.level.enemies.forEach((enemy) => {
-            if(this.character.isColliding(enemy)) {
+            if(this.character.isColliding(enemy) && enemy.energy > 0) {
                 this.character.hit();
                 this.statusBarHealth.setPercentage(this.character.energy)
             }  
@@ -107,10 +107,7 @@ class World {
         this.throwableObjects.forEach((throwableObject) => {
             this.level.enemies.forEach((enemy) => {
                 if(enemy.isColliding(throwableObject)) {
-                    console.log('Enemy hit');
-                } else {
-                    console.log('Enemy missed');
-                    
+                    enemy.energy = 0;
                 }
             }
         );
