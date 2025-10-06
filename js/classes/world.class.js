@@ -1,6 +1,5 @@
 class World {
-    character = new Character();
-    level = level1;
+
     canvas;
     crx;
     keyboard;
@@ -11,13 +10,16 @@ class World {
     statusBarBottle = new StatusBar(IMAGES_BOTTLE, 10, 0, this.bottleCount);
     statusBarHealth = new StatusBar(IMAGES_HEALTH, 10, 45, percentage);
     statusBarCoin = new StatusBar(IMAGES_COIN, 10, 90, this.coinCount);
-    gameOver = false
+    gameOver = false;
 
     constructor (canvas, keyboard, gameStarted = false) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
         if (gameStarted & !this.gameOver) {
+            initLevel();
+            this.level = level1;
+            this.character = new Character();
             this.draw();
             this.setWorld();
             this.run();
@@ -106,7 +108,7 @@ class World {
     }
 
     draw() {
-        if (!this.gameOver) {
+        if (gameStarted & !this.gameOver) {           
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
             this.ctx.translate(this.camera_x, 0);
             this.addObjectsToCanvas(this.level.backgrounds);

@@ -20,7 +20,7 @@ class normalChicken extends MovableObject{
         this.x = 400 + Math.random() * 1900;
         this.speed = 0.2 + Math.random() * 0.4;
         this.loadImages(this.IMAGES_WALKING);
-        this.animate();
+        this.animate(); 
     }
 
     animate() {
