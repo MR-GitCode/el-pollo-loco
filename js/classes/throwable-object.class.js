@@ -24,6 +24,7 @@ class ThrowableObject extends MovableObject {
         this.loadImages(this.IMAGES_BOTTLE_ROTATION);
         this.loadImages(this.IMAGES_BOTTLE_SPLASH);
         this.world = world;
+        this.otherDirection = world.character.otherDirection;
         this.throw();
     }
 
@@ -35,7 +36,11 @@ class ThrowableObject extends MovableObject {
                 this.splash();  
             } else {
                 this.rotate();
-                this.x += 10;
+                if (this.otherDirection) {
+                    this.x -= 20;
+                } else {
+                    this.x += 20;
+                }
             }
         }, 80)
     }

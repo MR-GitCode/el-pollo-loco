@@ -103,6 +103,9 @@ class World {
         });  
     }
 
+    /**
+    * Checked the collision of throwable Object with the enemie.
+    */
     collisionThrowableObjectWithEnemies() {
         this.throwableObjects.forEach((throwableObject) => {
             this.level.enemies.forEach((enemy) => {
@@ -127,7 +130,7 @@ class World {
             this.addObjectsToCanvas(this.level.clouds);
             this.addObjectsToCanvas(this.level.bottles);
             this.addObjectsToCanvas(this.level.coins);
-            this.addObjectsToCanvas(this.level.enemies);
+            // this.addObjectsToCanvas(this.level.enemies);
             this.addObjectsToCanvas(this.throwableObjects);
             this.addToCanvas(this.character);
             this.ctx.translate(-this.camera_x, 0);

@@ -79,7 +79,6 @@ class Character extends MovableObject{
         'img/2_character_pepe/5_dead/D-57.png',
     ];
 
-
     constructor () {
         super().loadImage('img/2_character_pepe/2_walk/W-21.png');
         this.loadImages(this.IMAGES_WALKING);
@@ -92,24 +91,29 @@ class Character extends MovableObject{
         this.animate();
     }
 
+    /**
+     * Handles animation and movement based on keyboard input.
+     *
+     */
     animate() {
         setInterval(() => {
             if (this.isAboveGround()) {
                 this.playAnimation(this.IMAGES_JUMPING);  
             } else {
-                if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
-                    this.moveRight();
-                    this.playAnimation(this.IMAGES_WALKING);
-                    this.isIdleLong = false;
+                if ((this.world.keyboard.RIGHT && this.world.keyboard.SPACE) && this.x < this.world.level.level_end_x) {
+                    this.jumpingRight ()
+                }
+                else if ((this.world.keyboard.LEFT && this.world.keyboard.SPACE) && this.x > 0) {
+                    this.jumpingLeft ()
+                }
+                else if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
+                    this.movingRight()
                 }
                 else if (this.world.keyboard.LEFT && this.x > 0) {
-                    this.moveLeft();
-                    this.playAnimation(this.IMAGES_WALKING);
-                    this.isIdleLong = false;
+                    this.movingLeft ()
                 }
                 else if ((this.world.keyboard.SPACE || this.world.keyboard.UP) && !this.isAboveGround()) {
-                    this.jump();
-                    this.isIdleLong = false;
+                    this.jumping ()
                 }
                 else if (this.isHurt()) {
                     this.hurt()
@@ -125,10 +129,60 @@ class Character extends MovableObject{
         }, 140);
     }
 
+    /**
+    * Jumps and moves right.
+    */
+    jumpingRight () {
+        this.jumpRight()
+        this.playAnimation(this.IMAGES_JUMPING);
+        this.isIdleLong = false;
+    }
+
+    /**
+    * Jumps and moves left.
+    */
+    jumpingLeft () {
+        this.jumpLeft()
+        this.playAnimation(this.IMAGES_JUMPING);
+        this.isIdleLong = false;
+    }
+
+    /**
+    * Moves right and plays walking animation.
+    */
+    movingRight() {
+        this.moveRight();
+        this.playAnimation(this.IMAGES_WALKING);
+        this.isIdleLong = false;
+    }
+
+    /**
+    * Moves left and plays walking animation.
+    */
+    movingLeft () {
+        this.moveLeft();
+        this.playAnimation(this.IMAGES_WALKING);
+        this.isIdleLong = false;
+    }
+
+    /**
+    * Performs a vertical jump.
+    */
+    jumping () {
+        this.jump();
+        this.isIdleLong = false;
+    }
+
+    /**
+    * Plays hurt animation when damaged.
+    */
     hurt () {
         this.playAnimation(this.IMAGES_HURT)
     }
 
+    /**
+    * Plays death animation and triggers end screen.
+    */
     dead() {
         setTimeout (() => {
            this.playAnimation(this.IMAGES_DEAD); 
@@ -136,6 +190,9 @@ class Character extends MovableObject{
         this.endscreen.lostGame();
     }
 
+    /**
+    * Plays idle or long idle animation based on inactivity duration.
+    */
     idle() {
         if (!this.isIdleLong) {
             this.playAnimation(this.IMAGES_IDLE);

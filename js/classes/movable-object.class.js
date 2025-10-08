@@ -12,6 +12,9 @@ class MovableObject extends DrawableObject{
     energy = 100;
     lastHit = 0;
 
+    /**
+    * Applies gravity to the object over time.
+    */
     applyGravity() {
         setInterval(() =>{
             if (this.isAboveGround() || this.speedY > 0) {
@@ -21,6 +24,10 @@ class MovableObject extends DrawableObject{
         }, 1000 / 75)
     }
 
+    /**
+    * Checks if the object is above ground level.
+    * @returns {boolean} True if object is above ground.
+    */
     isAboveGround() {
         if(this instanceof ThrowableObject) {
             return this.y < 350;
@@ -29,6 +36,11 @@ class MovableObject extends DrawableObject{
         }
     }
 
+    /**
+    * Checks collision with another object.
+    * @param {MovableObject} model - The other object to check against.
+    * @returns {boolean} True if colliding.
+    */
     isColliding(model) {
         return (
             this.x + this.width - this.offset.right > model.x + model.offset.left &&
@@ -38,6 +50,9 @@ class MovableObject extends DrawableObject{
         )
     }
 
+    /**
+    * Reduces energy on hit and updates last hit time.
+    */
     hit() {
         this.energy -= 5;
         console.log('Collision width Character, energy', this.energy);
@@ -48,16 +63,28 @@ class MovableObject extends DrawableObject{
         }
     }
 
+    /**
+    * Checks if the object was recently hurt.
+    * @returns {boolean} True if hurt in the last second.
+    */
     isHurt() {
         let timepassed = new Date().getTime() - this.lastHit;
         timepassed = timepassed / 1000;
         return timepassed < 1;
     }
 
+    /**
+    * Checks if the object has no remaining energy.
+    * @returns {boolean} True if dead.
+    */
     isDead() { 
         return this.energy == 0;
     }
 
+    /**
+    * Plays the next animation frame from a given image list.
+    * @param {string[]} images - Array of image paths.
+    */
     playAnimation(images) {
         let i = this.currentImage % images.length;
         let path = images[i];
@@ -65,17 +92,67 @@ class MovableObject extends DrawableObject{
         this.currentImage++;
     }
 
+    /**
+    * Moves object to the right.
+    */
     moveRight() {
         this.otherDirection = false;
         this.x += this.speed;
     }
 
+    /**
+    * Moves object to the left.
+    */
     moveLeft() {
         this.otherDirection = true;
         this.x -= this.speed;
     }
 
+    /**
+    * Makes the object jump vertically.
+    */
     jump() {
        this.speedY = 10; 
+    }
+
+    /**
+    * Performs a jump while moving right.
+    */
+    jumpRight() {
+        if (!this.isAboveGround()) {  
+            this.speedY = 12;         
+            this.x += 10;            
+            this.horizontalSpeed = 5;
+            const moveRightWhileJumping = setInterval(() => {
+                this.x += this.horizontalSpeed;
+                this.stopMovingAfterJump (moveRightWhileJumping);
+            }, 40);
+        }
+    }
+
+    /**
+    * Performs a jump while moving left.
+    */
+    jumpLeft() {
+        if (!this.isAboveGround()) {  
+            this.speedY = 12;         
+            this.x -= 10;            
+            this.horizontalSpeed = 5;
+            const moveLeftWhileJumping = setInterval(() => {
+                this.x -= this.horizontalSpeed;
+                this.stopMovingAfterJump (moveLeftWhileJumping);
+            }, 40);
+        }
+    }
+
+    /**
+    * Stops horizontal movement after landing.
+    * @param {number} moveWhileJumping - Interval reference.
+    */
+    stopMovingAfterJump (moveWhileJumping) {
+        if (!this.isAboveGround()) {
+            clearInterval(moveWhileJumping);
+            this.horizontalSpeed = 0;
+        }  
     }
 }
