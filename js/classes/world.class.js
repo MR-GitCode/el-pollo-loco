@@ -10,7 +10,9 @@ class World {
     statusBarBottle = new StatusBar(IMAGES_BOTTLE, 10, 0, this.bottleCount);
     statusBarHealth = new StatusBar(IMAGES_HEALTH, 10, 45, percentage);
     statusBarCoin = new StatusBar(IMAGES_COIN, 10, 90, this.coinCount);
+    statusBarHealthBoss = new StatusBar(IMAGES_HEALTH_BOSS, 470, 8, 100);
     gameOver = false;
+    bottleHitsEnemy = false;
 
     constructor (canvas, keyboard, gameStarted = false) {
         this.ctx = canvas.getContext('2d');
@@ -29,6 +31,7 @@ class World {
 
     setWorld() {
         this.character.world = this;
+        this.level.enemies.forEach(enemy => enemy.world = this);
     }
 
     run() {
@@ -44,7 +47,7 @@ class World {
      */
     checkThrowObjects() {
         if(this.keyboard.E & (this.bottleCount > 0)) {
-            let bottle = new ThrowableObject(this.character.x, this.character.y);
+            let bottle = new ThrowableObject(this.character.x, this.character.y, this.bottleHitsEnemy);
             this.throwableObjects.push(bottle);
             this.bottleCount --
             this.changeStatusBar(this.bottleCount , this.level.maxBottles , "statusBarBottle")
@@ -71,7 +74,7 @@ class World {
     collisionEnemy() {
         this.level.enemies.forEach((enemy) => {
             if(this.character.isColliding(enemy) && enemy.energy > 0) {
-                this.character.hit();
+                this.character.hit(enemy.attackStrength);
                 this.statusBarHealth.setPercentage(this.character.energy)
             }  
         });
@@ -108,14 +111,26 @@ class World {
     */
     collisionThrowableObjectWithEnemies() {
         this.throwableObjects.forEach((throwableObject) => {
+            if (throwableObject.objectHasHit) return;
             this.level.enemies.forEach((enemy) => {
                 if(enemy.isColliding(throwableObject)) {
-                    enemy.energy = 0;
+                    throwableObject.objectHasHit = true;
+                    this.bottleHitsEnemy = true;
+                    enemy.hit(SpawnBottle.attackStrength);
+                    // let damage = SpawnBottle.attackStrength;                   
+                    // enemy.energy -= damage;
+                    this.collisionObjectWithBoss (enemy)
                 }
-            }
-        );
-    });
-};
+            });
+        });
+    };
+
+    collisionObjectWithBoss (enemy) {
+        if (enemy.isBoss) {
+                let percentage = (enemy.energy / EndBoss.bossEnergy) * 100;
+                this.statusBarHealthBoss.setPercentage(percentage);
+        } 
+    }
 
     changeStatusBar (objectCount, maxObject, statusBarName) {
         let percentage = (objectCount / maxObject) * 100;
@@ -130,13 +145,14 @@ class World {
             this.addObjectsToCanvas(this.level.clouds);
             this.addObjectsToCanvas(this.level.bottles);
             this.addObjectsToCanvas(this.level.coins);
-            // this.addObjectsToCanvas(this.level.enemies);
+            this.addObjectsToCanvas(this.level.enemies);
             this.addObjectsToCanvas(this.throwableObjects);
             this.addToCanvas(this.character);
             this.ctx.translate(-this.camera_x, 0);
             this.addToCanvas(this.statusBarBottle);
             this.addToCanvas(this.statusBarHealth);
             this.addToCanvas(this.statusBarCoin);
+            this.addToCanvas(this.statusBarHealthBoss);
 
             //draw() wird immer wieder aufgerufen
             let self = this;

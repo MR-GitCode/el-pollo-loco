@@ -5,6 +5,7 @@ class SpawnBottle extends SpawnableObjects {
         right: 75,
         bottom: 35
     };
+    static attackStrength = 100;
     
     IMAGE_BOTTLE = [
         'img/6_salsa_bottle/1_salsa_bottle_on_ground.png',
@@ -19,7 +20,7 @@ class SpawnBottle extends SpawnableObjects {
         super(x, y, width, height);
         this.loadImages(this.IMAGE_BOTTLE);
         this.spawnObject(this.IMAGE_BOTTLE);
-        this.randomMirrorImage()
+        this.randomMirrorImage();
     }
 
     /**

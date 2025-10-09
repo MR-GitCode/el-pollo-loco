@@ -1,4 +1,4 @@
-class Endscreen extends DrawableObject {
+class Endscreen extends DrawableObject {   
     IMAGES_GAMEOVER = [
         'img/9_intro_outro_screens/game_over/game_over1.png',
         'img/9_intro_outro_screens/game_over/game_over2.png',

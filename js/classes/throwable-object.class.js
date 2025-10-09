@@ -26,14 +26,17 @@ class ThrowableObject extends MovableObject {
         this.world = world;
         this.otherDirection = world.character.otherDirection;
         this.throw();
+        this.objectHasHit = false;
     }
 
-    throw() {
+    throw() {        
         this.speedY = 10;
         this.applyGravity();
-        setInterval( () => {
-            if (this.y > 300) {
-                this.splash();  
+        const thorwInterval = setInterval( () => {          
+            if (this.y > 300 || this.world.bottleHitsEnemy) {
+                this.splash();
+                clearInterval(this.gravityInterval)
+                clearInterval(thorwInterval)
             } else {
                 this.rotate();
                 if (this.otherDirection) {
@@ -43,6 +46,7 @@ class ThrowableObject extends MovableObject {
                 }
             }
         }, 80)
+        this.world.bottleHitsEnemy = false;
     }
 
     rotate() {

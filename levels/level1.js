@@ -9,7 +9,7 @@ function initLevel() {
             // new normalChicken(),
             // new normalChicken(),
             // new normalChicken(),
-            // new EndBoss(),
+            new EndBoss(),
         ],
 
         [

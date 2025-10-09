@@ -16,7 +16,7 @@ class MovableObject extends DrawableObject{
     * Applies gravity to the object over time.
     */
     applyGravity() {
-        setInterval(() =>{
+        this.gravityInterval = setInterval(() =>{
             if (this.isAboveGround() || this.speedY > 0) {
                 this.y -= this.speedY;
                 this.speedY -= this.acceleration;  
@@ -51,10 +51,11 @@ class MovableObject extends DrawableObject{
     }
 
     /**
-    * Reduces energy on hit and updates last hit time.
-    */
-    hit() {
-        this.energy -= 5;
+     * Reduces energy on hit and updates last hit time.
+     * @param {number} attack 
+     */
+    hit(attackStrength) {
+        this.energy -= attackStrength;
         console.log('Collision width Character, energy', this.energy);
         if(this.energy < 0) {
             this.energy = 0;
