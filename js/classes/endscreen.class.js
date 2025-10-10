@@ -7,8 +7,8 @@ class Endscreen extends DrawableObject {
     ]
 
     IMAGES_WINNING = [
-        'img/You won, you lost/You_win_B.png',
-        'img/You won, you lost/You_Won_B.png',
+        'img/You won, you lost/You_win_C.png',
+        'img/You won, you lost/You_won_C.png',
     ]
 
     constructor () {
@@ -26,7 +26,9 @@ class Endscreen extends DrawableObject {
     }
 
     winGame() {
-        console.log('you win');
+        let randomIndex = Math.floor(Math.random() * 2);        
+        let img = this.IMAGES_WINNING[randomIndex];
+        this.drawImage(img);
     }
 
     drawImage(imagePath) {

@@ -1,6 +1,6 @@
 class EndBoss extends MovableObject {  
     static bossEnergy = 300
-    y = 80;
+    y = 90;
     width = 1045 * 0.3;
     height = 1217 * 0.3;
     offset = {
@@ -13,6 +13,7 @@ class EndBoss extends MovableObject {
     attackStrength = 15;
     speed = 40;
     attackCharacter = false;
+    endscreen = new Endscreen();
    
     IMAGES_WALKING = [
         'img/4_enemie_boss_chicken/1_walk/G1.png',
@@ -56,7 +57,7 @@ class EndBoss extends MovableObject {
     ]
 
     constructor () {
-        super().loadImage(this.IMAGES_WALKING[0]);
+        super().loadImage(this.IMAGES_ALERT[0]);
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_ALERT);
         this.loadImages(this.IMAGES_ATTACK);
@@ -70,27 +71,29 @@ class EndBoss extends MovableObject {
 
     animate() {
         setInterval(() =>{
-            if (this.energy <= 0) {
+            if (this.isHurt()) {
+                this.playAnimation(this.IMAGES_HURT);
+                this.speed += 2; 
+                return; //alle andere animation überspringen 
+            }
+            if (this.isDead()) {
                 this.playAnimation(this.IMAGES_DEAD);
+                this.endscreen.winGame();
             }
             else if (this.x - this.world.character.x < 100) {
                 this.playAnimation(this.IMAGES_ATTACK);
             }
-            else if (this.world.character.x >= 2100 || this.attackCharacter) {
-                this.attackCharacter = true;
+            else if (this.world.character.x >= 2100 && !this.attackCharacter) {
+                this.playAnimation(this.IMAGES_ALERT);
+                setTimeout (() => {
+                    this.attackCharacter = true;
+                }, 900)
+            }
+            else if (this.attackCharacter) {
                 this.playAnimation(this.IMAGES_WALKING);
                 this.moveLeft();
                 this.otherDirection = false;
-                console.log(this.attackCharacter); 
-            } 
-            else if (this.isHurt()) {
-               this.attackCharacter = false;
-               setInterval (() => {
-                this.playAnimation(this.IMAGES_HURT);
-               }, 100)
-                 
-            //    this.attackCharacter = true;
             }
-        }, 600);
+        }, 400);
     }
 }

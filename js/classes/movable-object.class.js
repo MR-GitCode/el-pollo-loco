@@ -56,7 +56,6 @@ class MovableObject extends DrawableObject{
      */
     hit(attackStrength) {
         this.energy -= attackStrength;
-        console.log('Collision width Character, energy', this.energy);
         if(this.energy < 0) {
             this.energy = 0;
         } else {
