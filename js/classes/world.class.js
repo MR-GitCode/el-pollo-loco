@@ -117,8 +117,6 @@ class World {
                     throwableObject.objectHasHit = true;
                     this.bottleHitsEnemy = true;
                     enemy.hit(SpawnBottle.attackStrength);
-                    // let damage = SpawnBottle.attackStrength;                   
-                    // enemy.energy -= damage;
                     this.collisionObjectWithBoss (enemy)
                 }
             });

@@ -92,47 +92,79 @@ class Character extends MovableObject{
     }
 
     /**
-     * Handles animation and movement based on keyboard input.
+     * Handles character animation and camera movement.
      *
      */
     animate() {
         setInterval(() => {
-            if (this.isAboveGround()) {
-                this.playAnimation(this.IMAGES_JUMPING);  
-            } else {
-                if ((this.world.keyboard.RIGHT && this.world.keyboard.SPACE) && this.x < this.world.level.level_end_x) {
-                    this.jumpingRight ()
-                }
-                else if ((this.world.keyboard.LEFT && this.world.keyboard.SPACE) && this.x > 0) {
-                    this.jumpingLeft ()
-                }
-                else if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
-                    this.movingRight()
-                }
-                else if (this.world.keyboard.LEFT && this.x > 0) {
-                    this.movingLeft ()
-                }
-                else if ((this.world.keyboard.SPACE || this.world.keyboard.UP) && !this.isAboveGround()) {
-                    this.jumping ()
-                }
-                else if (this.isHurt()) {
-                    this.hurt()
-                }
-                else if (this.isDead()) {
-                    this.dead()
-                }
-                else {
-                    this.idle()
-                }
+            if (this.isAboveGround()) this.playAnimation(this.IMAGES_JUMPING);
+
+            else {
+                this.updateCharacterActions();
             }
             this.world.camera_x = -this.x + 100;
         }, 140);
     }
 
     /**
+     * Determines and executes the appropriate character action
+     * based on movement and state conditions.
+     */
+    updateCharacterActions() {
+        if (this.canJumpRight()) this.performJumpRight();
+        else if (this.canJumpLeft()) this.performJumpLeft();
+        else if (this.canMoveRight()) this.performMoveRight();
+        else if (this.canMoveLeft()) this.performMoveLeft();
+        else if (this.canJump()) this.performJump();
+        else if (this.isHurt()) this.performHurtAnimation();
+        else if (this.isDead()) this.performDeathAnimation();
+        else this.performIdle();
+    }
+
+    /**
+     * Checks if the character can jump straight up.
+     * @returns {boolean} True if jump key pressed and character is on ground.
+     */
+    canJump() {
+        return (this.world.keyboard.SPACE || this.world.keyboard.UP) && !this.isAboveGround();
+    }
+
+    /**
+     * Checks if the character can move left.
+     * @returns {boolean} True if LEFT key pressed and within world bounds.
+     */
+    canMoveLeft() {
+        return this.world.keyboard.LEFT && this.x > 0;
+    }
+
+    /**
+     * Checks if the character can move right.
+     * @returns {boolean} True if RIGHT key pressed.
+     */
+    canMoveRight() {
+        return this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x;
+    }
+
+    /**
+     * Checks if the character can jump to the left.
+     * @returns {boolean} True if LEFT + SPACE pressed.
+     */
+    canJumpLeft() {
+        return (this.world.keyboard.LEFT && this.world.keyboard.SPACE) && this.x > 0;
+    }
+
+    /**
+     * Checks if the character can jump to the right.
+     * @returns {boolean} True if RIGHT + SPACE pressed.
+     */
+    canJumpRight() {
+        return (this.world.keyboard.RIGHT && this.world.keyboard.SPACE) && this.x < this.world.level.level_end_x;
+    }
+
+    /**
     * Jumps and moves right.
     */
-    jumpingRight () {
+    performJumpRight() {
         this.jumpRight()
         this.playAnimation(this.IMAGES_JUMPING);
         this.isIdleLong = false;
@@ -141,7 +173,7 @@ class Character extends MovableObject{
     /**
     * Jumps and moves left.
     */
-    jumpingLeft () {
+    performJumpLeft() {
         this.jumpLeft()
         this.playAnimation(this.IMAGES_JUMPING);
         this.isIdleLong = false;
@@ -150,7 +182,7 @@ class Character extends MovableObject{
     /**
     * Moves right and plays walking animation.
     */
-    movingRight() {
+    performMoveRight() {
         this.moveRight();
         this.playAnimation(this.IMAGES_WALKING);
         this.isIdleLong = false;
@@ -159,7 +191,7 @@ class Character extends MovableObject{
     /**
     * Moves left and plays walking animation.
     */
-    movingLeft () {
+    performMoveLeft() {
         this.moveLeft();
         this.playAnimation(this.IMAGES_WALKING);
         this.isIdleLong = false;
@@ -168,7 +200,7 @@ class Character extends MovableObject{
     /**
     * Performs a vertical jump.
     */
-    jumping () {
+    performJump() {
         this.jump();
         this.isIdleLong = false;
     }
@@ -176,14 +208,14 @@ class Character extends MovableObject{
     /**
     * Plays hurt animation when damaged.
     */
-    hurt () {
+    performHurtAnimation() {
         this.playAnimation(this.IMAGES_HURT)
     }
 
     /**
     * Plays death animation and triggers end screen.
     */
-    dead() {
+    performDeathAnimation() {
         setTimeout (() => {
            this.playAnimation(this.IMAGES_DEAD); 
         }, 2000)
@@ -193,7 +225,7 @@ class Character extends MovableObject{
     /**
     * Plays idle or long idle animation based on inactivity duration.
     */
-    idle() {
+    performIdle() {
         if (!this.isIdleLong) {
             this.playAnimation(this.IMAGES_IDLE);
             setTimeout (() => {

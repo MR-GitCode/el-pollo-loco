@@ -11,7 +11,7 @@ class EndBoss extends MovableObject {
     };
     energy = 300;
     attackStrength = 15;
-    speed = 40;
+    speed = 25;
     attackCharacter = false;
     endscreen = new Endscreen();
    
@@ -64,36 +64,81 @@ class EndBoss extends MovableObject {
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);
         this.x = 2400;
-        // this.x = 600;
         this.isBoss = true;
         this.animate();
     }
 
+    /**
+     * Controls boss animation states and transitions.
+     */
     animate() {
         setInterval(() =>{
-            if (this.isHurt()) {
-                this.playAnimation(this.IMAGES_HURT);
-                this.speed += 2; 
-                return; //alle andere animation überspringen 
-            }
-            if (this.isDead()) {
-                this.playAnimation(this.IMAGES_DEAD);
-                this.endscreen.winGame();
-            }
-            else if (this.x - this.world.character.x < 100) {
-                this.playAnimation(this.IMAGES_ATTACK);
-            }
-            else if (this.world.character.x >= 2100 && !this.attackCharacter) {
-                this.playAnimation(this.IMAGES_ALERT);
-                setTimeout (() => {
-                    this.attackCharacter = true;
-                }, 900)
-            }
-            else if (this.attackCharacter) {
-                this.playAnimation(this.IMAGES_WALKING);
-                this.moveLeft();
-                this.otherDirection = false;
-            }
-        }, 400);
+            if (this.isHurt()) return this.performHurtAnimation(); //alle andere Animationen überspringen 
+            if (this.isDead()) this.performDeadAnimation();
+            else if (this.canAttack()) this.performAttackAnimation();
+            else if (this.canAlert()) this.performAlertAnimation();
+            else if (this.attackCharacter) this.performWalkAnimation();
+        }, 200);
+    }
+
+    /**
+     * Checks if the boss should enter alert mode.
+     * @returns {boolean} True if player is near the alert zone and attack not active.
+     */
+    canAlert() {
+        return this.world.character.x >= 2100 && !this.attackCharacter;
+    }
+
+    /**
+     * Checks if the boss is close enough to attack the player.
+     * @returns {boolean} True if player is within attack range.
+     */
+    canAttack() {
+        return this.x - this.world.character.x < 100;
+    }
+
+    /**
+     * Plays hurt animation and temporarily increases speed.
+     */
+    performHurtAnimation() {
+        this.playAnimation(this.IMAGES_HURT);
+        this.speed += 0.5;
+        return;
+    }
+
+    /**
+     * Plays death animation and triggers win screen after a delay.
+     */
+    performDeadAnimation() {
+        this.playAnimation(this.IMAGES_DEAD);
+        setTimeout(() => {
+            this.endscreen.winGame();
+        }, 800);
+    }
+
+    /**
+     * Plays attack animation.
+     */
+    performAttackAnimation() {
+        this.playAnimation(this.IMAGES_ATTACK);
+    }
+
+    /**
+     * Plays alert animation and activates attack behavior after delay.
+     */
+    performAlertAnimation() {
+        this.playAnimation(this.IMAGES_ALERT);
+        setTimeout(() => {
+            this.attackCharacter = true;
+        }, 700);
+    }
+
+    /**
+     * Plays walking animation and moves the boss toward the player.
+     */
+    performWalkAnimation() {
+        this.playAnimation(this.IMAGES_WALKING);
+        this.moveLeft();
+        this.otherDirection = false;
     }
 }

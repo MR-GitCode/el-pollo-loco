@@ -26,24 +26,69 @@ function drawStartScreen() {
 }
 
 /**
- * Adds event listeners to start, control, and screen size buttons.
+ * Adds event listeners to start, control, home and screen size buttons.
  */
 function addEventListenerToButtons() {
     const btStartGame = document.getElementById('bt-start-game');
     const btControls = document.getElementById('bt-controls');
-    const changeScreenSize = document.getElementById('min-max-screens');
+    addStartGameListener(btStartGame);
+    addControlsListener(btControls);
+    addHomeListener(btStartGame, btControls);
+    addScreenSizeListener();
+}
+
+/**
+ * Adds an event listener to start the game when the Start button is clicked.
+ * Hides menu buttons and initializes the game.
+ * @param {HTMLElement} btStartGame - The Start Game button element.
+ */
+function addStartGameListener(btStartGame) {
     btStartGame.addEventListener('click', () => {
         const btGame = document.getElementById('buttons');
+        btGame.classList.remove('buttons-endscreen');
         btGame.style.display = 'none';
         init();   
     })
+}
+
+/**
+ * Adds an event listener to open the controls menu.
+ * @param {HTMLElement} btControls - The Controls button element.
+ */
+function addControlsListener(btControls) {
     btControls.addEventListener('click', () => {
         console.log("open controls");
     })
+}
+
+/**
+ * Adds a listener to return to the home/start screen.
+ * Resets button visibility and screen layout.
+ * @param {HTMLElement} btStartGame - The Start Game button.
+ * @param {HTMLElement} btControls - The Controls button.
+ */
+function addHomeListener(btStartGame, btControls) {
+    const btHome = document.getElementById('bt-home');
+    btHome.addEventListener('click' , () => {
+        const btGame = document.getElementById('buttons');
+        btGame.classList.remove('buttons-endscreen');
+        btGame.style.display = 'flex';
+        btStartGame.innerHTML = 'Start';
+        btControls.style.display = 'flex';
+        btHome.style.display = 'none';
+        showStartScreen();
+    })
+}
+
+/**
+ * Adds a listener to toggle fullscreen mode for the canvas.
+ */
+function addScreenSizeListener() {
+    const changeScreenSize = document.getElementById('min-max-screens');
     changeScreenSize.addEventListener('click', () => {
         console.log('change screen size');
         canvas.requestFullscreen();
-        document.getElementById('screen').requestFullscreen();
+        // document.getElementById('screen').requestFullscreen(); //Canvas muss dann angepasst werden
     })
 }
 

@@ -19,18 +19,44 @@ class Endscreen extends DrawableObject {
         this.ctx = this.canvas.getContext('2d');
     }
 
+    /**
+     * Displays a random "game over" image and shows end screen buttons.
+     */
     lostGame() {
         let randomIndex = Math.floor(Math.random() * 4);        
         let img = this.IMAGES_GAMEOVER[randomIndex];
         this.drawImage(img);
+        this.showButtons();
     }
 
+    /**
+     * Displays a random "win" image and shows end screen buttons.
+     */
     winGame() {
         let randomIndex = Math.floor(Math.random() * 2);        
         let img = this.IMAGES_WINNING[randomIndex];
         this.drawImage(img);
+        this.showButtons();
     }
 
+    /**
+     * Updates button visibility and layout for the end screen.
+     */
+    showButtons() {
+        const btGame = document.getElementById('buttons');
+        const btStartGame= document.getElementById('bt-start-game');
+        const btHome = document.getElementById('bt-home');
+        const btControl = document.getElementById('bt-controls');
+        btGame.classList.add('buttons-endscreen');
+        btStartGame.innerHTML = 'Replay';     
+        btHome.style.display = 'flex'
+        btControl.style.display = 'none';
+    }
+
+    /**
+     * Draws the given end screen image and stops the game loop.
+     * @param {string} imagePath - The image path to display.
+     */
     drawImage(imagePath) {
         const ctx = this.ctx;
         const img = new Image();

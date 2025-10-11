@@ -45,6 +45,13 @@ canvas{
     transform: translate(-50%, -50%);
 }
 
+#buttons.buttons-endscreen {
+    display: flex !important;
+    position: absolute;
+    top: unset;
+    bottom: 20px;
+}
+
 .button{
     display: flex;
     justify-content: center;
