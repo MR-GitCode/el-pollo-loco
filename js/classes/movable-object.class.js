@@ -11,6 +11,7 @@ class MovableObject extends DrawableObject{
     };
     energy = 100;
     lastHit = 0;
+    isFalling = false;
 
     /**
     * Applies gravity to the object over time.
@@ -19,7 +20,12 @@ class MovableObject extends DrawableObject{
         this.gravityInterval = setInterval(() =>{
             if (this.isAboveGround() || this.speedY > 0) {
                 this.y -= this.speedY;
-                this.speedY -= this.acceleration;  
+                this.speedY -= this.acceleration;
+                this.isFalling = true
+            } else {
+                setTimeout (() =>{
+                    this.isFalling = false;
+                }, 600)
             }
         }, 1000 / 75)
     }

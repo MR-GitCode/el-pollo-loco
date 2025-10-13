@@ -15,6 +15,7 @@ class Character extends MovableObject{
     coinAmount = 0;
     bottleAmount = 0;
     endscreen = new Endscreen();
+    attackJumpStrength = 100;
 
     IMAGES_IDLE = [
         'img/2_character_pepe/1_idle/idle/I-1.png',

@@ -94,7 +94,7 @@ class EndBoss extends MovableObject {
      * @returns {boolean} True if player is within attack range.
      */
     canAttack() {
-        return this.x - this.world.character.x < 100;
+        return this.x - this.world.character.x < 90;
     }
 
     /**

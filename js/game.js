@@ -101,16 +101,35 @@ function addScreenSizeListener() {
  */
 function changeScreenWithClick(changeScreenSize, maxScreen, minScreen) {
     changeScreenSize.addEventListener('click', () => {
+        const screen = document.getElementById('screen')
         if (!document.fullscreenElement) {
-            document.getElementById('screen').requestFullscreen();
+            enterFullscreen(screen);
             maxScreen.style.display = 'none';
             minScreen.style.display = 'block';
         } else {
-            document.exitFullscreen();
+            exitFullscreen();
             maxScreen.style.display = 'block';
             minScreen.style.display = 'none';
         }
     });
+}
+
+function enterFullscreen(element) {
+  if(element.requestFullscreen) {
+    element.requestFullscreen();
+  } else if(element.msRequestFullscreen) {      // for IE11 (remove June 15, 2022)
+    element.msRequestFullscreen();
+  } else if(element.webkitRequestFullscreen) {  // iOS Safari
+    element.webkitRequestFullscreen();
+  }
+}
+
+function exitFullscreen() {
+  if(document.exitFullscreen) {
+    document.exitFullscreen();
+  } else if(document.webkitExitFullscreen) {
+    document.webkitExitFullscreen();
+  }
 }
 
 /**
@@ -193,7 +212,7 @@ function styleButtonsScreenMax(canvasWidth, screenSizeButton) {
     }
 }
 
-function newFunction(screenSizeButton, buttons) {
+function styleBtnMin(screenSizeButton, buttons) {
     screenSizeButton.classList.remove('fullscreen-min-max-screens');
     buttons.forEach((btn) => {
         btn.classList.remove('fullscreen-button');
