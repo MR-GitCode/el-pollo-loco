@@ -85,11 +85,126 @@ function addHomeListener(btStartGame, btControls) {
  */
 function addScreenSizeListener() {
     const changeScreenSize = document.getElementById('min-max-screens');
+    const maxScreen = document.getElementById('maximize-screen');
+    const minScreen = document.getElementById('minimize-screen');
+    changeScreenWithClick(changeScreenSize, maxScreen, minScreen);
+    changeScreenWithEscape(maxScreen, minScreen);
+}
+
+/**
+ * Adds a click listener to toggle fullscreen mode.
+ * Updates the display of the maximize/minimize buttons.
+ * 
+ * @param {HTMLElement} changeScreenSize - The button element that toggles fullscreen.
+ * @param {HTMLElement} maxScreen - The button element to maximize the screen.
+ * @param {HTMLElement} minScreen - The button element to minimize the screen.
+ */
+function changeScreenWithClick(changeScreenSize, maxScreen, minScreen) {
     changeScreenSize.addEventListener('click', () => {
-        console.log('change screen size');
-        canvas.requestFullscreen();
-        // document.getElementById('screen').requestFullscreen(); //Canvas muss dann angepasst werden
-    })
+        if (!document.fullscreenElement) {
+            document.getElementById('screen').requestFullscreen();
+            maxScreen.style.display = 'none';
+            minScreen.style.display = 'block';
+        } else {
+            document.exitFullscreen();
+            maxScreen.style.display = 'block';
+            minScreen.style.display = 'none';
+        }
+    });
+}
+
+/**
+ * Adds an event listener to handle fullscreen changes triggered by ESC or other methods.
+ * Adjusts the display of maximize/minimize buttons according to the fullscreen state.
+ * 
+ * @param {HTMLElement} maxScreen - The button element to maximize the screen.
+ * @param {HTMLElement} minScreen - The button element to minimize the screen.
+ */
+function changeScreenWithEscape(maxScreen, minScreen) {
+    function updateButtons() {
+        if (document.fullscreenElement) {
+            maxScreen.style.display = 'none';
+            minScreen.style.display = 'block';
+            setButtonsDependentScreenSize('maxScreen');
+            
+        } else {
+            maxScreen.style.display = 'block';
+            minScreen.style.display = 'none';
+            setButtonsDependentScreenSize('minScreen');
+        }
+    };
+    //Fullscreen-Change
+    document.addEventListener('fullscreenchange', updateButtons);
+    //Wen Fenstergröße dynamisch geändert wird
+    window.addEventListener('resize', updateButtons);
+}
+
+function setButtonsDependentScreenSize(screenSize) {
+    const canvas = document.getElementById('canvas');
+    const screenSizeButton = document.getElementById('min-max-screens');
+    const menuButtons = document.getElementById('buttons');
+
+    const canvasWidth = canvas.scrollWidth;
+    const isFullscreen = !!document.fullscreenElement;
+    canvas.style.width = '100%'
+    canvas.style.height = '100%'
+    // dynamisch Fenster --> Problem mit fullscreen -->andere Lösung?
+    // if (isFullscreen && (canvasWidth !== window.innerWidth)) {
+    //     console.log(canvasWidth, window.innerWidth );
+        
+    //     canvas.style.height = '100%'
+    // } else {
+    //     canvas.style.height = ''
+    // }
+    const canvasHeight = canvas.scrollHeight;    
+    
+    stylePositionButtons(screenSize, canvasHeight, screenSizeButton, menuButtons);
+    styleButtonsScreenMax(canvasWidth, screenSizeButton);
+}
+
+function stylePositionButtons(screenSize, canvasHeight, screenSizeButton, menuButtons) {
+    if (screenSize == 'maxScreen') {
+        calcPositionBtnMaxScreen(canvasHeight, screenSizeButton, menuButtons);
+    }
+    if (screenSize == 'minScreen') {
+        calcPositionBtnMinScreen(menuButtons, screenSizeButton);
+    }
+}
+
+function calcPositionBtnMinScreen(menuButtons, screenSizeButton) {
+    menuButtons.style.top = '10%';
+    screenSizeButton.style.bottom = '10px';
+}
+
+function calcPositionBtnMaxScreen(canvasHeight, screenSizeButton, menuButtons) {
+    let heightOutsideCanvas = (screen.height - canvasHeight) / 2;
+    let factorScreenSizeBtn = canvasHeight * 0.01;
+    let factorMenuBtn = canvasHeight * 0.1;
+    screenSizeButton.style.bottom = `${heightOutsideCanvas + factorScreenSizeBtn}px`;
+    menuButtons.style.top = `${heightOutsideCanvas + factorMenuBtn}px`;
+}
+
+function styleButtonsScreenMax(canvasWidth, screenSizeButton) {
+    const buttons = document.querySelectorAll('#buttons .button');
+    if (canvasWidth >= 1000) {
+        styleBtnMax(screenSizeButton, buttons);
+    } else {
+        styleBtnMin(screenSizeButton, buttons);
+    }
+}
+
+function newFunction(screenSizeButton, buttons) {
+    screenSizeButton.classList.remove('fullscreen-min-max-screens');
+    buttons.forEach((btn) => {
+        btn.classList.remove('fullscreen-button');
+    });
+}
+
+function styleBtnMax(screenSizeButton, buttons) {
+    screenSizeButton.classList.add('fullscreen-min-max-screens');
+    buttons.forEach((btn) => {
+        btn.classList.add('fullscreen-button');
+    });
 }
 
 /**
