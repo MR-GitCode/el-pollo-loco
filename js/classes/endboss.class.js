@@ -10,7 +10,7 @@ class EndBoss extends MovableObject {
         bottom: 80
     };
     energy = 300;
-    attackStrength = 15;
+    attackStrength = 6;
     speed = 25;
     attackCharacter = false;
     endscreen = new Endscreen();

@@ -80,6 +80,22 @@ class Character extends MovableObject{
         'img/2_character_pepe/5_dead/D-57.png',
     ];
 
+    SOUND_WALKING = [
+        'audio/character/movements/walk/running-on-sand.mp3'
+    ]
+
+    SOUND_JUMPING = [
+        'audio/character/movements/jump/jumps-on-the-floor.mp3'
+    ]
+
+    SOUND_HURT = [
+        'audio/character/noises/hurt/male-grunt.mp3'
+    ]
+
+    SOUND_DEATH = [
+        'audio/character/noises/hurt/human-voice-saying-oh-no.mp3'
+    ]
+
     constructor () {
         super().loadImage('img/2_character_pepe/2_walk/W-21.png');
         this.loadImages(this.IMAGES_WALKING);
@@ -88,6 +104,10 @@ class Character extends MovableObject{
         this.loadImages(this.IMAGES_JUMPING);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);
+        this.audioManager.loadAudio(this.SOUND_WALKING);
+        this.audioManager.loadAudio(this.SOUND_JUMPING);
+        this.audioManager.loadAudio(this.SOUND_HURT);
+        this.audioManager.loadAudio(this.SOUND_DEATH);
         this.applyGravity();
         this.animate();
     }
@@ -186,6 +206,7 @@ class Character extends MovableObject{
     performMoveRight() {
         this.moveRight();
         this.playAnimation(this.IMAGES_WALKING);
+        this.playAudio(this.SOUND_WALKING);
         this.isIdleLong = false;
     }
 
@@ -194,7 +215,10 @@ class Character extends MovableObject{
     */
     performMoveLeft() {
         this.moveLeft();
-        this.playAnimation(this.IMAGES_WALKING);
+        this.playAnimation(this.IMAGES_WALKING)
+        audioVolume = 0.5;
+        audioDuration = 1;
+        this.playAudio(this.SOUND_WALKING, audioVolume, audioDuration);
         this.isIdleLong = false;
     }
 
@@ -203,6 +227,9 @@ class Character extends MovableObject{
     */
     performJump() {
         this.jump();
+        audioVolume = 0.5;
+        audioDuration = 1;
+        this.playAudio(this.SOUND_JUMPING, audioVolume, audioDuration);
         this.isIdleLong = false;
     }
 
@@ -211,6 +238,9 @@ class Character extends MovableObject{
     */
     performHurtAnimation() {
         this.playAnimation(this.IMAGES_HURT)
+        audioVolume = 0.5;
+        audioDuration = 1;
+        this.playAudio(this.SOUND_HURT, audioVolume, audioDuration)
     }
 
     /**
@@ -218,7 +248,10 @@ class Character extends MovableObject{
     */
     performDeathAnimation() {
         setTimeout (() => {
-           this.playAnimation(this.IMAGES_DEAD); 
+           this.playAnimation(this.IMAGES_DEAD);
+            audioVolume = 0.5;
+            audioDuration = 1;
+           this.playAudio(this.SOUND_DEATH, audioVolume, audioDuration) 
         }, 2000)
         this.endscreen.lostGame();
     }

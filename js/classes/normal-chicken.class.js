@@ -10,7 +10,7 @@ class normalChicken extends MovableObject{
     };
     energy = 100;
     enemyIntervals = [];
-    attackStrength = 5;
+    attackStrength = 2;
 
     IMAGES_WALKING = [
         'img/3_enemies_chicken/chicken_normal/1_walk/1_w.png',

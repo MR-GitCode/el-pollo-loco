@@ -1,5 +1,4 @@
 class World {
-
     canvas;
     crx;
     keyboard;
@@ -60,7 +59,7 @@ class World {
     checkCollisions() {
         setInterval(() => {
             this.collisionEnemy()
-        }, 800)
+        }, 300)
         setInterval(() => {
             this.collisionCoin();
             this.collisionBottle();
@@ -74,7 +73,7 @@ class World {
     collisionEnemy() {
         this.level.enemies.forEach((enemy) => {
             if(this.character.isColliding(enemy) && enemy.energy > 0) {
-                if (this.character.isFalling) {
+                if (this.character.isBottomCollision(enemy) && this.character.isFalling) {
                     enemy.energy -= this.character.attackJumpStrength;
                     enemy.enemyDeath();                    
                 } else {  

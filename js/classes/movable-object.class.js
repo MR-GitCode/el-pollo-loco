@@ -12,6 +12,7 @@ class MovableObject extends DrawableObject{
     energy = 100;
     lastHit = 0;
     isFalling = false;
+    audioManager = new AudioManager();
 
     /**
     * Applies gravity to the object over time.
@@ -25,7 +26,7 @@ class MovableObject extends DrawableObject{
             } else {
                 setTimeout (() =>{
                     this.isFalling = false;
-                }, 600)
+                }, 300)
             }
         }, 1000 / 75)
     }
@@ -49,11 +50,27 @@ class MovableObject extends DrawableObject{
     */
     isColliding(model) {
         return (
-            this.x + this.width - this.offset.right > model.x + model.offset.left &&
-            this.x + this.offset.left < model.x + model.width - model.offset.right &&
-            this.y + this.height - this.offset.bottom > model.y + model.offset.top &&
-            this.y + this.offset.top < model.y + model.height - model.offset.bottom
+            this.isRightCollision(model) &&
+            this.isLeftCollision(model) &&
+            this.isBottomCollision(model) &&
+            this.isTopCollision(model)
         )
+    }
+
+    isTopCollision(model) {
+        return this.y + this.offset.top < model.y + model.height - model.offset.bottom;
+    }
+
+    isBottomCollision(model) {
+        return this.y + this.height - this.offset.bottom > model.y + model.offset.top;
+    }
+
+    isLeftCollision(model) {
+        return this.x + this.offset.left < model.x + model.width - model.offset.right;
+    }
+
+    isRightCollision(model) {
+        return this.x + this.width - this.offset.right > model.x + model.offset.left;
     }
 
     /**
@@ -96,6 +113,10 @@ class MovableObject extends DrawableObject{
         let path = images[i];
         this.img = this.imageCache[path];
         this.currentImage++;
+    }
+
+    playAudio(path, volume, duration) {
+        this.audioManager.playAudio(path, volume, duration);
     }
 
     /**

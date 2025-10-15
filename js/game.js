@@ -2,6 +2,7 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 let startScreenImage = new Image();
+let audioManager = new AudioManager();
 let gameStarted = false;
 
 /**
@@ -9,11 +10,15 @@ let gameStarted = false;
  */
 function showStartScreen() {
     canvas = document.getElementById('canvas');
+    body = document.getElementsByTagName('body')
     startScreenImage.src = 'img/9_intro_outro_screens/start/startscreen_2.png';
     startScreenImage.onload = function() {
         drawStartScreen();
     };
     addEventListenerToButtons();
+    document.body.addEventListener('click', () => {
+        audioManager.playAudio('audio/intro_outro/intro/tex-mex-delight-mexican-mariachi.mp3');
+    }, { once: true });
 }
 
 /**
