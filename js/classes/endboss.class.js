@@ -56,6 +56,22 @@ class EndBoss extends MovableObject {
         'img/4_enemie_boss_chicken/5_dead/G26.png',
     ]
 
+    SOUND_WALKING = [
+        'audio/enemies/endboss/walk/chicken-cluking-type-2-293319.mp3'
+    ]
+
+    SOUND_ALERT = [
+        'audio/enemies/endboss/alert_attack/chicken-single-alarm-call.mp3'
+    ]
+
+    SOUND_HURT = [
+        'audio/character/noises/hurt/male-grunt.mp3'
+    ]
+
+    SOUND_DEATH = [
+        ''
+    ]
+
     constructor () {
         super().loadImage(this.IMAGES_ALERT[0]);
         this.loadImages(this.IMAGES_WALKING);
@@ -63,6 +79,10 @@ class EndBoss extends MovableObject {
         this.loadImages(this.IMAGES_ATTACK);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);
+        this.audioManager.loadAudio(this.SOUND_WALKING);
+        this.audioManager.loadAudio(this.SOUND_HURT);
+        this.audioManager.loadAudio(this.SOUND_DEATH);
+        this.audioManager.loadAudio(this.SOUND_ALERT);
         this.x = 2400;
         this.isBoss = true;
         this.animate();
@@ -74,7 +94,7 @@ class EndBoss extends MovableObject {
     animate() {
         setInterval(() =>{
             if (this.isHurt()) return this.performHurtAnimation(); //alle andere Animationen überspringen 
-            if (this.isDead()) this.performDeadAnimation();
+            if (this.isDead()) this.performDeathAnimation();
             else if (this.canAttack()) this.performAttackAnimation();
             else if (this.canAlert()) this.performAlertAnimation();
             else if (this.attackCharacter) this.performWalkAnimation();
@@ -112,8 +132,9 @@ class EndBoss extends MovableObject {
     /**
      * Plays death animation and triggers win screen after a delay.
      */
-    performDeadAnimation() {
+    performDeathAnimation() {
         this.playAnimation(this.IMAGES_DEAD);
+        this.playDieSound();
         setTimeout(() => {
             this.endscreen.winGame();
         }, 800);
@@ -131,6 +152,7 @@ class EndBoss extends MovableObject {
      */
     performAlertAnimation() {
         this.playAnimation(this.IMAGES_ALERT);
+        this.playAlertSound();
         setTimeout(() => {
             this.attackCharacter = true;
         }, 700);
@@ -142,6 +164,41 @@ class EndBoss extends MovableObject {
     performWalkAnimation() {
         this.playAnimation(this.IMAGES_WALKING);
         this.moveLeft();
+        this.playWalkingSound();
         this.otherDirection = false;
+    }
+  
+    /**
+     * Plays the death sound effect at a predefined volume.
+     */
+    playDieSound() {
+        let audioVolume = 0.5;
+        this.playAudio(this.SOUND_DEATH, audioVolume)
+    }
+
+    /**
+     * Plays the alert sound effect.
+     */
+    playAlertSound() {
+        let audioVolume = 0.5;
+        this.playAudio(this.SOUND_ALERT, audioVolume)
+    }
+
+    /**
+     * Plays the walking sound effect while the object is moving.
+     */
+    playWalkingSound() {
+        if (this.isWalkingSoundPlaying) {
+            let audioVolume = 0.3;
+            this.audioManager.playAudio(this.SOUND_WALKING, audioVolume);
+        }
+    }
+
+    /**
+     *  Plays the hurt sound effect when the object takes damage.
+     */
+    playHurtingSound() {
+        let audioVolume = 0.5;
+        this.playAudio(this.SOUND_HURT, audioVolume, stoppAtSeconds)
     }
 }

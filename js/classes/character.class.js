@@ -16,6 +16,7 @@ class Character extends MovableObject{
     bottleAmount = 0;
     endscreen = new Endscreen();
     attackJumpStrength = 100;
+    wasInAir = false;
 
     IMAGES_IDLE = [
         'img/2_character_pepe/1_idle/idle/I-1.png',
@@ -84,8 +85,8 @@ class Character extends MovableObject{
         'audio/character/movements/walk/running-on-sand.mp3'
     ]
 
-    SOUND_JUMPING = [
-        'audio/character/movements/jump/jumps-on-the-floor.mp3'
+    SOUND_LANDING = [
+        'audio/character/movements/jump/jumplanding2.mp3'
     ]
 
     SOUND_HURT = [
@@ -105,9 +106,10 @@ class Character extends MovableObject{
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);
         this.audioManager.loadAudio(this.SOUND_WALKING);
-        this.audioManager.loadAudio(this.SOUND_JUMPING);
+        this.audioManager.loadAudio(this.SOUND_LANDING);
         this.audioManager.loadAudio(this.SOUND_HURT);
         this.audioManager.loadAudio(this.SOUND_DEATH);
+        this.playingAudio();
         this.applyGravity();
         this.animate();
     }
@@ -125,6 +127,16 @@ class Character extends MovableObject{
             }
             this.world.camera_x = -this.x + 100;
         }, 140);
+    }
+
+    playingAudio() {
+        setInterval(() => {
+            if(this.isAboveGround()) {
+                this.playJumpSound() 
+            } else if (this.wasInAir) {
+                this.playLandSound()
+            }
+        }, 1000 / 60);
     }
 
     /**
@@ -206,7 +218,7 @@ class Character extends MovableObject{
     performMoveRight() {
         this.moveRight();
         this.playAnimation(this.IMAGES_WALKING);
-        this.playAudio(this.SOUND_WALKING);
+        this.playWalkingSound();
         this.isIdleLong = false;
     }
 
@@ -216,9 +228,7 @@ class Character extends MovableObject{
     performMoveLeft() {
         this.moveLeft();
         this.playAnimation(this.IMAGES_WALKING)
-        audioVolume = 0.5;
-        audioDuration = 1;
-        this.playAudio(this.SOUND_WALKING, audioVolume, audioDuration);
+        this.playWalkingSound();
         this.isIdleLong = false;
     }
 
@@ -227,9 +237,6 @@ class Character extends MovableObject{
     */
     performJump() {
         this.jump();
-        audioVolume = 0.5;
-        audioDuration = 1;
-        this.playAudio(this.SOUND_JUMPING, audioVolume, audioDuration);
         this.isIdleLong = false;
     }
 
@@ -237,10 +244,8 @@ class Character extends MovableObject{
     * Plays hurt animation when damaged.
     */
     performHurtAnimation() {
-        this.playAnimation(this.IMAGES_HURT)
-        audioVolume = 0.5;
-        audioDuration = 1;
-        this.playAudio(this.SOUND_HURT, audioVolume, audioDuration)
+        this.playAnimation(this.IMAGES_HURT);
+        this.playHurtingSound();
     }
 
     /**
@@ -249,17 +254,21 @@ class Character extends MovableObject{
     performDeathAnimation() {
         setTimeout (() => {
            this.playAnimation(this.IMAGES_DEAD);
-            audioVolume = 0.5;
-            audioDuration = 1;
-           this.playAudio(this.SOUND_DEATH, audioVolume, audioDuration) 
-        }, 2000)
-        this.endscreen.lostGame();
+        }, 1000)
+        setTimeout (() => {
+            this.endscreen.lostGame();
+            this.playDieSound();
+        }, 1500)
     }
 
     /**
     * Plays idle or long idle animation based on inactivity duration.
     */
     performIdle() {
+        if (this.isWalkingSoundPlaying) {
+            this.audioManager.stopAudio();
+            this.isWalkingSoundPlaying = false;
+        }
         if (!this.isIdleLong) {
             this.playAnimation(this.IMAGES_IDLE);
             setTimeout (() => {
@@ -268,5 +277,48 @@ class Character extends MovableObject{
         } else {
             this.playAnimation(this.IMAGES_IDLE_LONG);       
         }
+    }
+
+    /**
+     * Plays the hurt sound effect when the object takes damage.
+     */
+    playHurtingSound() {
+        let audioVolume = 0.5;
+        let stoppAtSeconds = 1000;
+        this.playAudio(this.SOUND_HURT, audioVolume, stoppAtSeconds)
+    }
+
+    /**
+     * Plays the death sound effect when the object dies.
+     */
+    playDieSound() {
+        let audioVolume = 0.5;
+        this.playAudio(this.SOUND_DEATH, audioVolume)
+    }
+
+    /**
+     * Plays the walking sound effect while the object is moving.
+     */
+    playWalkingSound() {
+        if (this.isWalkingSoundPlaying) {
+            let audioVolume = 0.3;
+            this.audioManager.playAudio(this.SOUND_WALKING, audioVolume);
+        }
+    }
+
+    /**
+     * Plays the landing sound effect when the object hits the ground after falling.
+     */
+    playLandSound() {
+        let audioVolume = 0.8;
+        let stoppAtSeconds = 1;
+        this.playAudio(this.SOUND_LANDING, audioVolume, stoppAtSeconds);
+        setTimeout(() => {
+            this.wasInAir = false;
+        }, 10)
+    }
+
+    playJumpSound() {
+        this.wasInAir =  true
     }
 }

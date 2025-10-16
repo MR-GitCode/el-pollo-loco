@@ -13,6 +13,7 @@ class MovableObject extends DrawableObject{
     lastHit = 0;
     isFalling = false;
     audioManager = new AudioManager();
+    isWalkingSoundPlaying = false;
 
     /**
     * Applies gravity to the object over time.
@@ -23,7 +24,8 @@ class MovableObject extends DrawableObject{
                 this.y -= this.speedY;
                 this.speedY -= this.acceleration;
                 this.isFalling = true
-            } else {
+            }
+            else {
                 setTimeout (() =>{
                     this.isFalling = false;
                 }, 300)
@@ -124,6 +126,7 @@ class MovableObject extends DrawableObject{
     */
     moveRight() {
         this.otherDirection = false;
+        this.isWalkingSoundPlaying = true; 
         this.x += this.speed;
     }
 
@@ -132,6 +135,7 @@ class MovableObject extends DrawableObject{
     */
     moveLeft() {
         this.otherDirection = true;
+        this.isWalkingSoundPlaying = true; 
         this.x -= this.speed;
     }
 
