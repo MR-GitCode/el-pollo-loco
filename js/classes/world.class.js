@@ -75,7 +75,7 @@ class World {
             if(this.character.isColliding(enemy) && enemy.energy > 0) {
                 if (this.character.isBottomCollision(enemy) && this.character.isFalling) {
                     enemy.energy -= this.character.attackJumpStrength;
-                    enemy.enemyDeath();                    
+                    enemy.performDeathAnimation();                    
                 } else {  
                     this.character.hit(enemy.attackStrength);
                     this.statusBarHealth.setPercentage(this.character.energy)

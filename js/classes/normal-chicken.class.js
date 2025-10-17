@@ -34,7 +34,7 @@ class normalChicken extends MovableObject{
     animate() {
         setInterval(() =>{
             if (this.energy == 0) {
-                this.enemyDeath()
+                this.performDeathAnimation()
             } else this.playAnimation(this.IMAGES_WALKING);
         }, 250);
         
@@ -45,7 +45,7 @@ class normalChicken extends MovableObject{
         this.enemyIntervals.push(moveInterval)
     }
 
-    enemyDeath() {
+    performDeathAnimation() {
         this.playAnimation(this.IMAGES_DEAD);
         clearInterval(this.enemyIntervals);
     }

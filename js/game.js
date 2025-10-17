@@ -4,6 +4,11 @@ let keyboard = new Keyboard();
 let startScreenImage = new Image();
 let audioManager = new AudioManager();
 let gameStarted = false;
+// let soundEnabled = false;
+
+const SOUND_THEME = [
+    'audio/intro_outro/intro/tex-mex-delight-mexican-mariachi.mp3'
+]
 
 /**
  * Initializes and displays the start screen.
@@ -11,14 +16,12 @@ let gameStarted = false;
 function showStartScreen() {
     canvas = document.getElementById('canvas');
     body = document.getElementsByTagName('body')
+    audioManager.loadAudio(SOUND_THEME);
     startScreenImage.src = 'img/9_intro_outro_screens/start/startscreen_2.png';
     startScreenImage.onload = function() {
         drawStartScreen();
     };
     addEventListenerToButtons();
-    document.body.addEventListener('click', () => {
-        audioManager.playAudio('audio/intro_outro/intro/tex-mex-delight-mexican-mariachi.mp3');
-    }, { once: true });
 }
 
 /**
@@ -40,6 +43,7 @@ function addEventListenerToButtons() {
     addControlsListener(btControls);
     addHomeListener(btStartGame, btControls);
     addScreenSizeListener();
+    addVolumeControlListener();
 }
 
 /**
@@ -94,6 +98,47 @@ function addScreenSizeListener() {
     const minScreen = document.getElementById('minimize-screen');
     changeScreenWithClick(changeScreenSize, maxScreen, minScreen);
     changeScreenWithEscape(maxScreen, minScreen);
+}
+
+function addVolumeControlListener() {
+    const volumeControl = document.getElementById('sound-volume');
+    volumeControl.addEventListener('click', () => {
+        toggleSoundIcon();      
+    })
+}
+
+function toggleSoundIcon() {
+    const soundOn = document.getElementById('sound-on');
+    const soundOff = document.getElementById('sound-off');
+    audioManager.soundEnabled = !audioManager.soundEnabled;
+    console.log(audioManager.soundEnabled);
+    
+    if (audioManager.soundEnabled) {
+        soundOn.style.display = 'block';
+        soundOff.style.display = 'none';
+        playSoundMenu();
+    } else {
+        soundOn.style.display = 'none';
+        soundOff.style.display = 'block';
+        audioManager.stopAll()
+    }
+}
+
+// function muteMe(elem) {
+//     elem.muted = true;
+//     elem.pause();
+// }
+
+// // Try to mute all video and audio elements on the page
+// function mutePage() {
+//     let allAudios = document.querySelectorAll("audio").forEach((elem) => muteMe(elem));
+//     console.log(allAudios);
+    
+// }
+
+function playSoundMenu() {
+    audioVolume = 0.2
+    audioManager.playAudio(SOUND_THEME, audioVolume);
 }
 
 /**
@@ -166,6 +211,7 @@ function changeScreenWithEscape(maxScreen, minScreen) {
 function setButtonsDependentScreenSize(screenSize) {
     const canvas = document.getElementById('canvas');
     const screenSizeButton = document.getElementById('min-max-screens');
+    const soundVolumeButton = document.getElementById('sound-volume')
     const menuButtons = document.getElementById('buttons');
 
     const canvasWidth = canvas.scrollWidth;
@@ -183,7 +229,7 @@ function setButtonsDependentScreenSize(screenSize) {
     const canvasHeight = canvas.scrollHeight;    
     
     stylePositionButtons(screenSize, canvasHeight, screenSizeButton, menuButtons);
-    styleButtonsScreenMax(canvasWidth, screenSizeButton);
+    styleButtonsScreenMax(canvasWidth, screenSizeButton, soundVolumeButton);
 }
 
 function stylePositionButtons(screenSize, canvasHeight, screenSizeButton, menuButtons) {
@@ -208,24 +254,26 @@ function calcPositionBtnMaxScreen(canvasHeight, screenSizeButton, menuButtons) {
     menuButtons.style.top = `${heightOutsideCanvas + factorMenuBtn}px`;
 }
 
-function styleButtonsScreenMax(canvasWidth, screenSizeButton) {
+function styleButtonsScreenMax(canvasWidth, screenSizeButton, soundVolumeButton) {
     const buttons = document.querySelectorAll('#buttons .button');
     if (canvasWidth >= 1000) {
-        styleBtnMax(screenSizeButton, buttons);
+        styleBtnMax(screenSizeButton, soundVolumeButton, buttons);
     } else {
-        styleBtnMin(screenSizeButton, buttons);
+        styleBtnMin(screenSizeButton, soundVolumeButton, buttons);
     }
 }
 
-function styleBtnMin(screenSizeButton, buttons) {
+function styleBtnMin(screenSizeButton, soundVolumeButton, buttons) {
     screenSizeButton.classList.remove('fullscreen-min-max-screens');
+    soundVolumeButton.classList.remove('fullscreen-sound-volume');
     buttons.forEach((btn) => {
         btn.classList.remove('fullscreen-button');
     });
 }
 
-function styleBtnMax(screenSizeButton, buttons) {
+function styleBtnMax(screenSizeButton, soundVolumeButton, buttons) {
     screenSizeButton.classList.add('fullscreen-min-max-screens');
+    soundVolumeButton.classList.add('fullscreen-sound-volume');
     buttons.forEach((btn) => {
         btn.classList.add('fullscreen-button');
     });

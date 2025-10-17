@@ -117,10 +117,6 @@ class MovableObject extends DrawableObject{
         this.currentImage++;
     }
 
-    playAudio(path, volume, duration) {
-        this.audioManager.playAudio(path, volume, duration);
-    }
-
     /**
     * Moves object to the right.
     */

@@ -173,7 +173,7 @@ class EndBoss extends MovableObject {
      */
     playDieSound() {
         let audioVolume = 0.5;
-        this.playAudio(this.SOUND_DEATH, audioVolume)
+        this.audioManager.playAudio(this.SOUND_DEATH, audioVolume)
     }
 
     /**
@@ -181,7 +181,7 @@ class EndBoss extends MovableObject {
      */
     playAlertSound() {
         let audioVolume = 0.5;
-        this.playAudio(this.SOUND_ALERT, audioVolume)
+        this.audioManager.playAudio(this.SOUND_ALERT, audioVolume)
     }
 
     /**
@@ -199,6 +199,6 @@ class EndBoss extends MovableObject {
      */
     playHurtingSound() {
         let audioVolume = 0.5;
-        this.playAudio(this.SOUND_HURT, audioVolume, stoppAtSeconds)
+        this.audioManager.playAudio(this.SOUND_HURT, audioVolume, stoppAtSeconds)
     }
 }

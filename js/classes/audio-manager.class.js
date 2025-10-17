@@ -2,6 +2,7 @@ class AudioManager {
     audioCache = {}
     currentAudio = null;
     currentAudioTimeListener = null;
+    soundEnabled = false;
 
     loadAudio(path) {
         const audio = new Audio(path);
@@ -10,56 +11,47 @@ class AudioManager {
         this.audioCache[path] = audio;
     }
 
-   playAudio(path, volume, stopAtSeconds) {
-
-        // Wenn gerade ein Audio läuft und einen Listener hat -> Listener entfernen
-        if (this.currentAudio && this.currentAudioTimeListener) {
-            this.currentAudio.removeEventListener('timeupdate', this.currentAudioTimeListener);
-            this.currentAudioListener = null;
+   playAudio(path, volume) {
+    console.log(this.soundEnabled);
+        if (this.soundEnabled) {
+            
+            
+            // Wenn Audio gerade läuft und einen Listener hat -> Listener entfernen
+            if (this.currentAudio && this.currentAudioTimeListener) {
+                this.currentAudio.removeEventListener('timeupdate', this.currentAudioTimeListener);
+                this.currentAudioTimeListener = null;
+            }
+            if (this.audioCache[path]) {
+                this.currentAudio = this.audioCache[path];
+                if (typeof volume !== 'number' || isNaN(volume)) {
+                    volume = 1;
+                }
+                this.currentAudio.volume = volume;
+                this.currentAudio.play();
+            } 
         }
 
-        // Prüfen, ob Audio vorher geladen wurde
-        if (this.audioCache[path]) {
-            this.currentAudio = this.audioCache[path];
 
-            // Fehler vermeiden: Wenn volume nicht gesetzt ist oder kein Zahl ist
-            if (typeof volume !== 'number' || isNaN(volume)) {
-                volume = 1; // Standardlautstärke
-            }
-
-            this.currentAudio.volume = volume;
-
-            // Nur, wenn stopAtSeconds angegeben ist
-            if (typeof stopAtSeconds === 'number') {
-
-                // Eine einfache anonyme Funktion für den Zeitvergleich
-                this.currentAudioTimeListener = () => {
-                    if (this.currentAudio.currentTime >= stopAtSeconds) {
-                        console.log('Audio gestoppt bei:', stopAtSeconds);
-                        this.stopAudio();
-                    }
-                };
-
-                // Hier wird der Listener hinzugefügt
-                this.currentAudio.addEventListener('timeupdate', this.currentAudioTimeListener);
-            }
-
-            // Jetzt wird das Audio abgespielt
-            this.currentAudio.play();
-        } else {
-            console.error('Audio nicht geladen:', path);
-        }
+        // else {
+        //     console.error('Audio nicht geladen:', path);
+        // }
     }
 
     stopAudio() {
         if(this.currentAudio) {
-            if (this.currentAudioListener) {
-                this.currentAudio.removeEventListener('timeupdate', this.currentAudioListener);
-                this.currentAudioListener = null;
+            if (this.currentAudioTimeListener) {
+                this.currentAudio.removeEventListener('timeupdate', this.currentAudioTimeListener);
+                this.currentAudioTimeListener = null;
             }
-
             this.currentAudio.pause();
             this.currentAudio.currentTime = 0;
         }
+    }
+
+    stopAll() {
+        Object.values(this.audioCache).forEach(audio => {
+            audio.pause();
+            audio.currentTime = 0;
+        });
     }
 }

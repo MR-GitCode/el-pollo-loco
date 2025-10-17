@@ -75,16 +75,28 @@ canvas{
     scale: 1.05;
 }
 
-#min-max-screens {
-    width: 28px;
-    height: 28px;
-    position: absolute;
+#control-panel {
     bottom: 10px;
     right: 10px;
+    position: absolute;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+#sound-volume {
+    width: 30px;
     cursor: pointer;
 }
 
-#min-max-screens:hover {
+#min-max-screens {
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+}
+
+#min-max-screens:hover,
+#sound-volume:hover {
     scale: 1.05;
 }
 
@@ -93,11 +105,16 @@ canvas{
     height: 50px !important;
 }
 
+.fullscreen-sound-volume {
+    width: 65px !important;
+}
+
 .fullscreen-button {
     width: 300px !important;
     height: 80px !important;
     font-size: 64px !important;
 }
+
 /* 
 @media screen and (min-width: 1000px) {
     .button {

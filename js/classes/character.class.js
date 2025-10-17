@@ -285,7 +285,7 @@ class Character extends MovableObject{
     playHurtingSound() {
         let audioVolume = 0.5;
         let stoppAtSeconds = 1000;
-        this.playAudio(this.SOUND_HURT, audioVolume, stoppAtSeconds)
+        this.audioManager.playAudio(this.SOUND_HURT, audioVolume, stoppAtSeconds)
     }
 
     /**
@@ -293,7 +293,7 @@ class Character extends MovableObject{
      */
     playDieSound() {
         let audioVolume = 0.5;
-        this.playAudio(this.SOUND_DEATH, audioVolume)
+        this.audioManager.playAudio(this.SOUND_DEATH, audioVolume)
     }
 
     /**
@@ -312,7 +312,7 @@ class Character extends MovableObject{
     playLandSound() {
         let audioVolume = 0.8;
         let stoppAtSeconds = 1;
-        this.playAudio(this.SOUND_LANDING, audioVolume, stoppAtSeconds);
+        this.audioManager.playAudio(this.SOUND_LANDING, audioVolume, stoppAtSeconds);
         setTimeout(() => {
             this.wasInAir = false;
         }, 10)
