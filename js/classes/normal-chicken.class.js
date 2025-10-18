@@ -24,6 +24,7 @@ class normalChicken extends MovableObject{
 
     constructor (){
         super().loadImage('img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');
+        this.audioManager = audioManager;
         this.x = 400 + Math.random() * 1900;
         this.speed = 0.2 + Math.random() * 0.4;
         this.loadImages(this.IMAGES_WALKING);

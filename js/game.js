@@ -4,7 +4,10 @@ let keyboard = new Keyboard();
 let startScreenImage = new Image();
 let audioManager = new AudioManager();
 let gameStarted = false;
-// let soundEnabled = false;
+
+const IMAGE_STARTSCREEN = [
+    'img/9_intro_outro_screens/start/startscreen_2.png'
+]
 
 const SOUND_THEME = [
     'audio/intro_outro/intro/tex-mex-delight-mexican-mariachi.mp3'
@@ -17,7 +20,7 @@ function showStartScreen() {
     canvas = document.getElementById('canvas');
     body = document.getElementsByTagName('body')
     audioManager.loadAudio(SOUND_THEME);
-    startScreenImage.src = 'img/9_intro_outro_screens/start/startscreen_2.png';
+    startScreenImage.src = IMAGE_STARTSCREEN;
     startScreenImage.onload = function() {
         drawStartScreen();
     };
@@ -28,6 +31,7 @@ function showStartScreen() {
  * Draws the start screen image on the canvas.
  */
 function drawStartScreen() {
+    // startScreenImage.src = 'img/9_intro_outro_screens/start/startscreen_2.png';
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(startScreenImage, 0, 0, canvas.width, canvas.height);
@@ -79,14 +83,19 @@ function addControlsListener(btControls) {
 function addHomeListener(btStartGame, btControls) {
     const btHome = document.getElementById('bt-home');
     btHome.addEventListener('click' , () => {
-        const btGame = document.getElementById('buttons');
-        btGame.classList.remove('buttons-endscreen');
-        btGame.style.display = 'flex';
-        btStartGame.innerHTML = 'Start';
-        btControls.style.display = 'flex';
-        btHome.style.display = 'none';
-        showStartScreen();
-    })
+        resetButtons(btStartGame, btControls, btHome);
+        startScreenImage.src = IMAGE_STARTSCREEN;
+        drawStartScreen();
+    });
+}
+
+function resetButtons(btStartGame, btControls, btHome) {
+    const btGame = document.getElementById('buttons');
+    btGame.classList.remove('buttons-endscreen');
+    btGame.style.display = 'flex';
+    btStartGame.innerHTML = 'Start';
+    btControls.style.display = 'flex';
+    btHome.style.display = 'none';
 }
 
 /**

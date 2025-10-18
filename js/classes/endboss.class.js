@@ -74,6 +74,7 @@ class EndBoss extends MovableObject {
 
     constructor () {
         super().loadImage(this.IMAGES_ALERT[0]);
+        this.audioManager = audioManager;
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_ALERT);
         this.loadImages(this.IMAGES_ATTACK);
