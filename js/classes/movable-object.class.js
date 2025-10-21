@@ -12,8 +12,11 @@ class MovableObject extends DrawableObject{
     energy = 100;
     lastHit = 0;
     isFalling = false;
-    audioManager = new AudioManager();
-    isWalkingSoundPlaying = false;
+
+    constructor () {
+        super();
+        this.audioManager = audioManager;
+    }
 
     /**
     * Applies gravity to the object over time.
@@ -122,7 +125,6 @@ class MovableObject extends DrawableObject{
     */
     moveRight() {
         this.otherDirection = false;
-        this.isWalkingSoundPlaying = true; 
         this.x += this.speed;
     }
 
@@ -130,8 +132,7 @@ class MovableObject extends DrawableObject{
     * Moves object to the left.
     */
     moveLeft() {
-        this.otherDirection = true;
-        this.isWalkingSoundPlaying = true; 
+        this.otherDirection = true; 
         this.x -= this.speed;
     }
 
@@ -146,7 +147,8 @@ class MovableObject extends DrawableObject{
     * Performs a jump while moving right.
     */
     jumpRight() {
-        if (!this.isAboveGround()) {  
+        if (!this.isAboveGround()) { 
+            this.audioManager.stopAudio(); 
             this.speedY = 12;         
             this.x += 10;            
             this.horizontalSpeed = 5;
@@ -161,7 +163,8 @@ class MovableObject extends DrawableObject{
     * Performs a jump while moving left.
     */
     jumpLeft() {
-        if (!this.isAboveGround()) {  
+        if (!this.isAboveGround()) {
+            this.audioManager.stopAudio();   
             this.speedY = 12;         
             this.x -= 10;            
             this.horizontalSpeed = 5;

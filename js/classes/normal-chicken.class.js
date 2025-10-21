@@ -12,31 +12,25 @@ class normalChicken extends MovableObject{
     enemyIntervals = [];
     attackStrength = 2;
 
-    IMAGES_WALKING = [
-        'img/3_enemies_chicken/chicken_normal/1_walk/1_w.png',
-        'img/3_enemies_chicken/chicken_normal/1_walk/2_w.png',
-        'img/3_enemies_chicken/chicken_normal/1_walk/3_w.png'
-    ];
-
-    IMAGES_DEAD = [
-        'img/3_enemies_chicken/chicken_normal/2_dead/dead.png'
-    ]
-
     constructor (){
         super().loadImage('img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');
         this.audioManager = audioManager;
         this.x = 400 + Math.random() * 1900;
         this.speed = 0.2 + Math.random() * 0.4;
-        this.loadImages(this.IMAGES_WALKING);
-        this.loadImages(this.IMAGES_DEAD);
+        this.loadAssets();
         this.animate(); 
+    }
+
+    loadAssets() {
+        this.loadImages(NORMAL_CHICKEN_ASSETS.IMAGES.DEAD);
+        this.loadImages(NORMAL_CHICKEN_ASSETS.IMAGES.WALKING);
     }
 
     animate() {
         setInterval(() =>{
             if (this.energy == 0) {
                 this.performDeathAnimation()
-            } else this.playAnimation(this.IMAGES_WALKING);
+            } else this.playAnimation(NORMAL_CHICKEN_ASSETS.IMAGES.WALKING);
         }, 250);
         
         const moveInterval = setInterval(() => {
@@ -47,7 +41,7 @@ class normalChicken extends MovableObject{
     }
 
     performDeathAnimation() {
-        this.playAnimation(this.IMAGES_DEAD);
+        this.playAnimation(NORMAL_CHICKEN_ASSETS.IMAGES.DEAD);
         clearInterval(this.enemyIntervals);
     }
 }

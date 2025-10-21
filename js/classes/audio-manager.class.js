@@ -11,11 +11,17 @@ class AudioManager {
         this.audioCache[path] = audio;
     }
 
-   playAudio(path, volume) {
-    console.log(this.soundEnabled);
+    loadAudios(array) {
+        array.forEach((path) => {
+            let audio = new Audio();
+            audio.preload = 'auto';
+            audio.src = path;
+            this.audioCache[path] = audio
+        })
+    }
+
+    playAudio(path, volume = 1, audioLoop = false) {
         if (this.soundEnabled) {
-            
-            
             // Wenn Audio gerade läuft und einen Listener hat -> Listener entfernen
             if (this.currentAudio && this.currentAudioTimeListener) {
                 this.currentAudio.removeEventListener('timeupdate', this.currentAudioTimeListener);
@@ -23,18 +29,13 @@ class AudioManager {
             }
             if (this.audioCache[path]) {
                 this.currentAudio = this.audioCache[path];
-                if (typeof volume !== 'number' || isNaN(volume)) {
-                    volume = 1;
-                }
+                this.currentAudio.loop = audioLoop;
                 this.currentAudio.volume = volume;
                 this.currentAudio.play();
-            } 
+            }  else {
+            console.error('Audio nicht geladen:', path, this.audioCache);
+            }
         }
-
-
-        // else {
-        //     console.error('Audio nicht geladen:', path);
-        // }
     }
 
     stopAudio() {

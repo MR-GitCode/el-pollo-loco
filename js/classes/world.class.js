@@ -6,10 +6,10 @@ class World {
     throwableObjects = [];
     coinCount = 0;
     bottleCount = 0;
-    statusBarBottle = new StatusBar(IMAGES_BOTTLE, 10, 0, this.bottleCount);
-    statusBarHealth = new StatusBar(IMAGES_HEALTH, 10, 45, percentage);
-    statusBarCoin = new StatusBar(IMAGES_COIN, 10, 90, this.coinCount);
-    statusBarHealthBoss = new StatusBar(IMAGES_HEALTH_BOSS, 470, 8, 100);
+    statusBarBottle = new StatusBar(STATUSBARS.IMAGES.CHARACTER_BOTTLE, 10, 0, this.bottleCount);
+    statusBarHealth = new StatusBar(STATUSBARS.IMAGES.CHARACTER_HEALTH, 10, 45, percentage);
+    statusBarCoin = new StatusBar(STATUSBARS.IMAGES.CHARACTER_COIN, 10, 90, this.coinCount);
+    statusBarHealthBoss = new StatusBar(STATUSBARS.IMAGES.BOSS_HEALTH, 470, 8, 100);
     gameOver = false;
     bottleHitsEnemy = false;
 
@@ -17,6 +17,7 @@ class World {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
+        this.audioManager =  audioManager;
         if (gameStarted & !this.gameOver) {
             initLevel();
             this.level = level1;
@@ -91,8 +92,9 @@ class World {
         this.level.coins.forEach((coin, index) => {
             if(this.character.isColliding(coin)) {
                 this.coinCount++;
-                this.changeStatusBar(this.coinCount , this.level.maxCoins , "statusBarCoin")
-                this.level.coins.splice(index, 1)
+                this.changeStatusBar(this.coinCount , this.level.maxCoins , "statusBarCoin");
+                this.level.coins.splice(index, 1);
+                this.audioManager.playAudio(COIN_ASSETS.SOUND.COLLECT)
             }  
         });
     }

@@ -6,11 +6,7 @@ class SpawnBottle extends SpawnableObjects {
         bottom: 35
     };
     static attackStrength = 100;
-    
-    IMAGE_BOTTLE = [
-        'img/6_salsa_bottle/1_salsa_bottle_on_ground.png',
-    ];
-    
+        
     constructor() {
         let imageScale = 0.3;
         const x = 200 + 1900 * Math.random();
@@ -18,9 +14,16 @@ class SpawnBottle extends SpawnableObjects {
         const width = 400 * imageScale;
         const height = 400 * imageScale;
         super(x, y, width, height);
-        this.loadImages(this.IMAGE_BOTTLE);
-        this.spawnObject(this.IMAGE_BOTTLE);
+        this.audioManager = audioManager;
+        this.loadAssets();
+        this.spawnObject(BOTTLE_ASSETS.IMAGES.BOTTLE);
         this.randomMirrorImage();
+    }
+
+    loadAssets() {
+        this.loadImages(BOTTLE_ASSETS.IMAGES.BOTTLE);
+        this.audioManager.loadAudio(BOTTLE_ASSETS.SOUNDS.BREAKING);
+        this.audioManager.loadAudio(BOTTLE_ASSETS.SOUNDS.COLLECT);
     }
 
     /**

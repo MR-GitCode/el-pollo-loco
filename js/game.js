@@ -60,6 +60,7 @@ function addStartGameListener(btStartGame) {
         const btGame = document.getElementById('buttons');
         btGame.classList.remove('buttons-endscreen');
         btGame.style.display = 'none';
+        audioManager.stopAudio(SOUND_THEME);
         init();   
     })
 }
@@ -120,12 +121,12 @@ function toggleSoundIcon() {
     const soundOn = document.getElementById('sound-on');
     const soundOff = document.getElementById('sound-off');
     audioManager.soundEnabled = !audioManager.soundEnabled;
-    console.log(audioManager.soundEnabled);
-    
     if (audioManager.soundEnabled) {
         soundOn.style.display = 'block';
         soundOff.style.display = 'none';
-        playSoundMenu();
+        if (!gameStarted) {
+            playSoundMenu();  
+        }
     } else {
         soundOn.style.display = 'none';
         soundOff.style.display = 'block';
@@ -133,21 +134,10 @@ function toggleSoundIcon() {
     }
 }
 
-// function muteMe(elem) {
-//     elem.muted = true;
-//     elem.pause();
-// }
-
-// // Try to mute all video and audio elements on the page
-// function mutePage() {
-//     let allAudios = document.querySelectorAll("audio").forEach((elem) => muteMe(elem));
-//     console.log(allAudios);
-    
-// }
-
 function playSoundMenu() {
-    audioVolume = 0.2
-    audioManager.playAudio(SOUND_THEME, audioVolume);
+    audioVolume = 0.2;
+    audioLoop = true;
+    audioManager.playAudio(SOUND_THEME, audioVolume, audioLoop);
 }
 
 /**

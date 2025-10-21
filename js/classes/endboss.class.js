@@ -15,78 +15,27 @@ class EndBoss extends MovableObject {
     attackCharacter = false;
     endscreen = new Endscreen();
    
-    IMAGES_WALKING = [
-        'img/4_enemie_boss_chicken/1_walk/G1.png',
-        'img/4_enemie_boss_chicken/1_walk/G2.png',
-        'img/4_enemie_boss_chicken/1_walk/G3.png',
-        'img/4_enemie_boss_chicken/1_walk/G4.png',
-    ];
 
-    IMAGES_ALERT = [
-        'img/4_enemie_boss_chicken/2_alert/G5.png',
-        'img/4_enemie_boss_chicken/2_alert/G6.png',
-        'img/4_enemie_boss_chicken/2_alert/G7.png',
-        'img/4_enemie_boss_chicken/2_alert/G8.png',
-        'img/4_enemie_boss_chicken/2_alert/G9.png',
-        'img/4_enemie_boss_chicken/2_alert/G10.png',
-        'img/4_enemie_boss_chicken/2_alert/G11.png',
-        'img/4_enemie_boss_chicken/2_alert/G12.png',
-    ]
-
-    IMAGES_ATTACK = [
-        'img/4_enemie_boss_chicken/3_attack/G13.png',
-        'img/4_enemie_boss_chicken/3_attack/G14.png',
-        'img/4_enemie_boss_chicken/3_attack/G15.png',
-        'img/4_enemie_boss_chicken/3_attack/G16.png',
-        'img/4_enemie_boss_chicken/3_attack/G17.png',
-        'img/4_enemie_boss_chicken/3_attack/G18.png',
-        'img/4_enemie_boss_chicken/3_attack/G19.png',
-        'img/4_enemie_boss_chicken/3_attack/G20.png',
-    ]
-
-    IMAGES_HURT = [
-        'img/4_enemie_boss_chicken/4_hurt/G21.png',
-        'img/4_enemie_boss_chicken/4_hurt/G22.png',
-        'img/4_enemie_boss_chicken/4_hurt/G23.png',
-    ]
-
-    IMAGES_DEAD = [
-        'img/4_enemie_boss_chicken/5_dead/G24.png',
-        'img/4_enemie_boss_chicken/5_dead/G25.png',
-        'img/4_enemie_boss_chicken/5_dead/G26.png',
-    ]
-
-    SOUND_WALKING = [
-        'audio/enemies/endboss/walk/chicken-cluking-type-2-293319.mp3'
-    ]
-
-    SOUND_ALERT = [
-        'audio/enemies/endboss/alert_attack/chicken-single-alarm-call.mp3'
-    ]
-
-    SOUND_HURT = [
-        'audio/character/noises/hurt/male-grunt.mp3'
-    ]
-
-    SOUND_DEATH = [
-        ''
-    ]
 
     constructor () {
-        super().loadImage(this.IMAGES_ALERT[0]);
+        super().loadImage(ENDBOSS_ASSETS.IMAGES.ALERT[0]);
         this.audioManager = audioManager;
-        this.loadImages(this.IMAGES_WALKING);
-        this.loadImages(this.IMAGES_ALERT);
-        this.loadImages(this.IMAGES_ATTACK);
-        this.loadImages(this.IMAGES_HURT);
-        this.loadImages(this.IMAGES_DEAD);
-        this.audioManager.loadAudio(this.SOUND_WALKING);
-        this.audioManager.loadAudio(this.SOUND_HURT);
-        this.audioManager.loadAudio(this.SOUND_DEATH);
-        this.audioManager.loadAudio(this.SOUND_ALERT);
+        this.loadAssets();
         this.x = 2400;
         this.isBoss = true;
         this.animate();
+    }
+
+    loadAssets() {
+        this.loadImages(ENDBOSS_ASSETS.IMAGES.WALKING);
+        this.loadImages(ENDBOSS_ASSETS.IMAGES.ALERT);
+        this.loadImages(ENDBOSS_ASSETS.IMAGES.ATTACK);
+        this.loadImages(ENDBOSS_ASSETS.IMAGES.HURT);
+        this.loadImages(ENDBOSS_ASSETS.IMAGES.DEAD);
+        this.audioManager.loadAudio(ENDBOSS_ASSETS.SOUNDS.WALKING);
+        this.audioManager.loadAudio(ENDBOSS_ASSETS.SOUNDS.HURT);
+        this.audioManager.loadAudio(ENDBOSS_ASSETS.SOUNDS.DEATH);
+        this.audioManager.loadAudio(ENDBOSS_ASSETS.SOUNDS.ALERT);
     }
 
     /**
@@ -122,7 +71,7 @@ class EndBoss extends MovableObject {
      * Plays hurt animation and temporarily increases speed.
      */
     performHurtAnimation() {
-        this.playAnimation(this.IMAGES_HURT);
+        this.playAnimation(ENDBOSS_ASSETS.IMAGES.HURT);
         this.speed += 0.5;
         setTimeout(() => {
             this.attackCharacter = true;
@@ -134,7 +83,7 @@ class EndBoss extends MovableObject {
      * Plays death animation and triggers win screen after a delay.
      */
     performDeathAnimation() {
-        this.playAnimation(this.IMAGES_DEAD);
+        this.playAnimation(ENDBOSS_ASSETS.IMAGES.DEAD);
         this.playDieSound();
         setTimeout(() => {
             this.endscreen.winGame();
@@ -145,14 +94,14 @@ class EndBoss extends MovableObject {
      * Plays attack animation.
      */
     performAttackAnimation() {
-        this.playAnimation(this.IMAGES_ATTACK);
+        this.playAnimation(ENDBOSS_ASSETS.IMAGES.ATTACK);
     }
 
     /**
      * Plays alert animation and activates attack behavior after delay.
      */
     performAlertAnimation() {
-        this.playAnimation(this.IMAGES_ALERT);
+        this.playAnimation(ENDBOSS_ASSETS.IMAGES.ALERT);
         this.playAlertSound();
         setTimeout(() => {
             this.attackCharacter = true;
@@ -163,7 +112,7 @@ class EndBoss extends MovableObject {
      * Plays walking animation and moves the boss toward the player.
      */
     performWalkAnimation() {
-        this.playAnimation(this.IMAGES_WALKING);
+        this.playAnimation(ENDBOSS_ASSETS.IMAGES.WALKING);
         this.moveLeft();
         this.playWalkingSound();
         this.otherDirection = false;
@@ -174,7 +123,7 @@ class EndBoss extends MovableObject {
      */
     playDieSound() {
         let audioVolume = 0.5;
-        this.audioManager.playAudio(this.SOUND_DEATH, audioVolume)
+        this.audioManager.playAudio(ENDBOSS_ASSETS.SOUNDS.DEATH, audioVolume)
     }
 
     /**
@@ -182,7 +131,7 @@ class EndBoss extends MovableObject {
      */
     playAlertSound() {
         let audioVolume = 0.5;
-        this.audioManager.playAudio(this.SOUND_ALERT, audioVolume)
+        this.audioManager.playAudio(ENDBOSS_ASSETS.SOUNDS.ALERT, audioVolume)
     }
 
     /**
@@ -191,7 +140,7 @@ class EndBoss extends MovableObject {
     playWalkingSound() {
         if (this.isWalkingSoundPlaying) {
             let audioVolume = 0.3;
-            this.audioManager.playAudio(this.SOUND_WALKING, audioVolume);
+            this.audioManager.playAudio(ENDBOSS_ASSETS.SOUNDS.WALKING, audioVolume);
         }
     }
 
@@ -200,6 +149,6 @@ class EndBoss extends MovableObject {
      */
     playHurtingSound() {
         let audioVolume = 0.5;
-        this.audioManager.playAudio(this.SOUND_HURT, audioVolume, stoppAtSeconds)
+        this.audioManager.playAudio(ENDBOSS_ASSETS.SOUNDS.HURT, audioVolume, stoppAtSeconds)
     }
 }
