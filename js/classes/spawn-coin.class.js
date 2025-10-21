@@ -32,4 +32,10 @@ class SpawnCoin extends SpawnableObjects {
          this.currentImage++;
       },  500);
    }
+
+   playCoinCollectSound() {
+      let audioVolume = 1
+      this.audioManager.stopAudio();
+      this.audioManager.playAudio(COIN_ASSETS.SOUNDS.COLLECT, audioVolume);
+   }
 }

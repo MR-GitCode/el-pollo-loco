@@ -35,4 +35,10 @@ class SpawnBottle extends SpawnableObjects {
             this.otherDirection = true;
         } else this.otherDirection = false;
     }
+
+    playBottleCollectSound() {
+        let audioVolume = 1
+        // this.audioManager.stopAudio();
+        this.audioManager.playAudio(BOTTLE_ASSETS.SOUNDS.COLLECT, audioVolume);
+   }
 }

@@ -22,28 +22,19 @@ class AudioManager {
 
     playAudio(path, volume = 1, audioLoop = false) {
         if (this.soundEnabled) {
-            // Wenn Audio gerade läuft und einen Listener hat -> Listener entfernen
-            if (this.currentAudio && this.currentAudioTimeListener) {
-                this.currentAudio.removeEventListener('timeupdate', this.currentAudioTimeListener);
-                this.currentAudioTimeListener = null;
-            }
             if (this.audioCache[path]) {
                 this.currentAudio = this.audioCache[path];
                 this.currentAudio.loop = audioLoop;
                 this.currentAudio.volume = volume;
                 this.currentAudio.play();
             }  else {
-            console.error('Audio nicht geladen:', path, this.audioCache);
+                console.error('Audio nicht geladen:', path);
             }
         }
     }
 
     stopAudio() {
         if(this.currentAudio) {
-            if (this.currentAudioTimeListener) {
-                this.currentAudio.removeEventListener('timeupdate', this.currentAudioTimeListener);
-                this.currentAudioTimeListener = null;
-            }
             this.currentAudio.pause();
             this.currentAudio.currentTime = 0;
         }
