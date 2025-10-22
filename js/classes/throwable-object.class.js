@@ -72,7 +72,7 @@ class ThrowableObject extends MovableObject {
 
     playSplashSound() {
         this.audioManager.stopAudio();
-        let audioVolume = 1;
+        let audioVolume = 0.8;
         this.audioManager.playAudio(BOTTLE_ASSETS.SOUNDS.SLIME[0], audioVolume);
     }
 }

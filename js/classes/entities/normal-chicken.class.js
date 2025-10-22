@@ -24,6 +24,7 @@ class normalChicken extends MovableObject{
     loadAssets() {
         this.loadImages(NORMAL_CHICKEN_ASSETS.IMAGES.DEAD);
         this.loadImages(NORMAL_CHICKEN_ASSETS.IMAGES.WALKING);
+        this.audioManager.loadAudios(NORMAL_CHICKEN_ASSETS.SOUNDS.JUMP_KILL)
     }
 
     animate() {
@@ -43,5 +44,11 @@ class normalChicken extends MovableObject{
     performDeathAnimation() {
         this.playAnimation(NORMAL_CHICKEN_ASSETS.IMAGES.DEAD);
         clearInterval(this.enemyIntervals);
+    }
+
+    playJumpKillSound() {
+        let randomIndex = Math.floor(Math.random() * NORMAL_CHICKEN_ASSETS.SOUNDS.JUMP_KILL.length);
+        let audioVolume = 0.6;
+        this.audioManager.playAudio(NORMAL_CHICKEN_ASSETS.SOUNDS.JUMP_KILL[randomIndex], audioVolume)
     }
 }

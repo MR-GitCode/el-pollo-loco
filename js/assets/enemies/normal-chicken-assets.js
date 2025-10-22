@@ -12,6 +12,14 @@ const NORMAL_CHICKEN_ASSETS = {
     },
 
     SOUNDS: {
-
+        JUMP_KILL: [
+            'audio/enemies/normal_chicken/death/jump_kill/bone-break-1.mp3',
+            'audio/enemies/normal_chicken/death/jump_kill/bone-break-2.mp3',
+            'audio/enemies/normal_chicken/death/jump_kill/bone-break-3.mp3',
+            'audio/enemies/normal_chicken/death/jump_kill/bone-break-4.mp3',
+            'audio/enemies/normal_chicken/death/jump_kill/bone-break-5.mp3',
+            'audio/enemies/normal_chicken/death/jump_kill/bone-break-8.mp3',
+            'audio/enemies/normal_chicken/death/jump_kill/bone-break-10.mp3',
+        ]
     },
 }

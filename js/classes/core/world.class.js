@@ -75,8 +75,10 @@ class World {
         this.level.enemies.forEach((enemy) => {
             if(this.character.isColliding(enemy) && enemy.energy > 0) {
                 if (this.character.isBottomCollision(enemy) && this.character.isFalling) {
+                    if (enemy.isBoss == true) return;                     
                     enemy.energy -= this.character.attackJumpStrength;
-                    enemy.performDeathAnimation();                    
+                    enemy.performDeathAnimation();
+                    enemy.playJumpKillSound();                    
                 } else {  
                     this.character.hit(enemy.attackStrength);
                     this.statusBarHealth.setPercentage(this.character.energy)

@@ -66,7 +66,7 @@ const CHARACTER_ASSETS = {
 
     SOUNDS: {
         WALKING: [
-            'audio/character/movements/walk/running-on-sand3.mp3'
+            'audio/character/movements/walk/running-on-the-floor.mp3'
         ],
 
         LANDING: [

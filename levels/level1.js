@@ -51,13 +51,6 @@ function initLevel() {
             new SpawnBottle(),
             new SpawnBottle(),
             new SpawnBottle(),
-            // new SpawnBottle(),
-            // new SpawnBottle(),
-            // new SpawnBottle(),
-            // new SpawnBottle(),
-            // new SpawnBottle(),
-            // new SpawnBottle(),
-            // new SpawnBottle(),
         ],
         
         [
