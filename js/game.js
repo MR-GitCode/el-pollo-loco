@@ -48,6 +48,7 @@ function addEventListenerToButtons() {
     addHomeListener(btStartGame, btControls);
     addScreenSizeListener();
     addVolumeControlListener();
+    addCloseControlMenuListener();
 }
 
 /**
@@ -70,8 +71,9 @@ function addStartGameListener(btStartGame) {
  * @param {HTMLElement} btControls - The Controls button element.
  */
 function addControlsListener(btControls) {
-    btControls.addEventListener('click', () => {
-        console.log("open controls");
+    const controlsMenu = document.getElementById('controls-window')
+    btControls.addEventListener('click', () =>  {
+        controlsMenu.classList.remove('hidden');
     })
 }
 
@@ -88,6 +90,14 @@ function addHomeListener(btStartGame, btControls) {
         startScreenImage.src = IMAGE_STARTSCREEN;
         drawStartScreen();
     });
+}
+
+function addCloseControlMenuListener() {
+    const closeBtn = document.getElementById('bt-close-control-menu');
+    const controlsMenu = document.getElementById('controls-window')
+    closeBtn.addEventListener('click' , () => {
+        controlsMenu.classList.add('hidden');
+    })
 }
 
 function resetButtons(btStartGame, btControls, btHome) {
