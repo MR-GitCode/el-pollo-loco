@@ -86,8 +86,9 @@ class EndBoss extends MovableObject {
         this.playAnimation(ENDBOSS_ASSETS.IMAGES.DEAD);
         this.playDieSound();
         setTimeout(() => {
+            this.audioManager.stopAudio(ENDBOSS_ASSETS.SOUNDS.DEATH[0])
             this.endscreen.winGame();
-        }, 800);
+        }, 1200);
     }
 
     /**

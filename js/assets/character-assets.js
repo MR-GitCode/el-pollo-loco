@@ -76,9 +76,5 @@ const CHARACTER_ASSETS = {
         HURT: [
             'audio/character/noises/hurt/male-grunt.mp3'
         ],
-
-        DEATH: [
-            'audio/character/noises/hurt/human-voice-saying-oh-no.mp3'
-        ],
     }
 }

@@ -148,7 +148,7 @@ class MovableObject extends DrawableObject{
     */
     jumpRight() {
         if (!this.isAboveGround()) { 
-            this.audioManager.stopAudio(); 
+            this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.WALKING[0]);
             this.speedY = 12;         
             this.x += 10;            
             this.horizontalSpeed = 5;
@@ -164,7 +164,7 @@ class MovableObject extends DrawableObject{
     */
     jumpLeft() {
         if (!this.isAboveGround()) {
-            this.audioManager.stopAudio();   
+            this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.WALKING[0]);   
             this.speedY = 12;         
             this.x -= 10;            
             this.horizontalSpeed = 5;

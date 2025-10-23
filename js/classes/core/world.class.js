@@ -97,6 +97,8 @@ class World {
                 this.changeStatusBar(this.coinCount , this.level.maxCoins , "statusBarCoin");
                 this.level.coins.splice(index, 1);
                 coin.playCoinCollectSound();
+                console.log('coin count', this.bottleCount);
+                
             }  
         });
     }
@@ -111,6 +113,7 @@ class World {
                 this.changeStatusBar(this.bottleCount , this.level.maxBottles , "statusBarBottle")
                 this.level.bottles.splice(index, 1);
                 bottle.playBottleCollectSound();
+                console.log('bottle count', this.bottleCount);
             }  
         });  
     }

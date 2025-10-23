@@ -86,6 +86,7 @@ function addControlsListener(btControls) {
 function addHomeListener(btStartGame, btControls) {
     const btHome = document.getElementById('bt-home');
     btHome.addEventListener('click' , () => {
+        audioManager.stopAll();
         resetButtons(btStartGame, btControls, btHome);
         startScreenImage.src = IMAGE_STARTSCREEN;
         drawStartScreen();

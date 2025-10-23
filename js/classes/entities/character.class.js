@@ -35,7 +35,6 @@ class Character extends MovableObject{
         this.loadImages(CHARACTER_ASSETS.IMAGES.IDLE_LONG);
         this.loadImages(CHARACTER_ASSETS.IMAGES.JUMPING);
         this.loadImages(CHARACTER_ASSETS.IMAGES.WALKING);
-        this.audioManager.loadAudio(CHARACTER_ASSETS.SOUNDS.DEATH);
         this.audioManager.loadAudio(CHARACTER_ASSETS.SOUNDS.HURT);
         this.audioManager.loadAudio(CHARACTER_ASSETS.SOUNDS.LANDING);
         this.audioManager.loadAudio(CHARACTER_ASSETS.SOUNDS.WALKING);
@@ -189,7 +188,6 @@ class Character extends MovableObject{
         }, 1000)
         setTimeout (() => {
             this.endscreen.lostGame();
-            this.playDieSound();
         }, 1500)
     }
 
@@ -198,7 +196,7 @@ class Character extends MovableObject{
     */
     performIdle() {
         if (this.isWalkingSoundPlaying) {
-            this.audioManager.stopAudio();
+            this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.WALKING[0]);
             this.isWalkingSoundPlaying = false;
         }
         if (!this.isIdleLong) {
@@ -217,14 +215,6 @@ class Character extends MovableObject{
     playHurtingSound() {
         let audioVolume = 0.5;
         this.audioManager.playAudio(CHARACTER_ASSETS.SOUNDS.HURT, audioVolume)
-    }
-
-    /**
-     * Plays the death sound effect when the object dies.
-     */
-    playDieSound() {
-        let audioVolume = 0.5;
-        this.audioManager.playAudio(CHARACTER_ASSETS.SOUNDS.DEATH, audioVolume)
     }
 
     /**

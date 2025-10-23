@@ -21,6 +21,7 @@ class AudioManager {
     }
 
     playAudio(path, volume = 1, audioLoop = false) {
+        console.log('Sound play', path);
         if (this.soundEnabled) {
             if (this.audioCache[path]) {
                 this.currentAudio = this.audioCache[path];
@@ -33,9 +34,9 @@ class AudioManager {
         }
     }
 
-    stopAudio() {
+    stopAudio(audioPath) {
         if(this.currentAudio) {
-            this.currentAudio.pause();
+            this.audioCache[audioPath].pause();
             this.currentAudio.currentTime = 0;
         }
     }

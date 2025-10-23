@@ -37,6 +37,7 @@ class SpawnBottle extends SpawnableObjects {
     }
 
     playBottleCollectSound() {
+        console.log('Bottle collect');        
         let audioVolume = 0.5;
         this.audioManager.playAudio(BOTTLE_ASSETS.SOUNDS.COLLECT, audioVolume);
    }

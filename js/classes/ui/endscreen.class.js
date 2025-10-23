@@ -1,6 +1,7 @@
 class Endscreen extends DrawableObject {   
     constructor () {
         super();
+        this.audioManager = audioManager;
         this.loadAssets();
         this.canvas = document.getElementById('canvas');
         this.ctx = this.canvas.getContext('2d');
@@ -9,6 +10,8 @@ class Endscreen extends DrawableObject {
     loadAssets() {
         this.loadImages(ENDSCREEN_ASSETS.IMAGES.GAMEOVER);
         this.loadImages(ENDSCREEN_ASSETS.IMAGES.WINNING);
+        this.audioManager.loadAudio(ENDSCREEN_ASSETS.SOUNDS.WINNING);
+        this.audioManager.loadAudio(ENDSCREEN_ASSETS.SOUNDS.GAMEOVER)
     }
 
     /**
@@ -19,16 +22,29 @@ class Endscreen extends DrawableObject {
         let img = ENDSCREEN_ASSETS.IMAGES.GAMEOVER[randomIndex];
         this.drawImage(img);
         this.showButtons();
+        this.playLostGameSound();
+    }
+
+    playLostGameSound() {
+        let audioVolume = 0.5;
+        this.audioManager.playAudio(ENDSCREEN_ASSETS.SOUNDS.GAMEOVER, audioVolume);
     }
 
     /**
      * Displays a random "win" image and shows end screen buttons.
      */
     winGame() {
+        this.audioManager.playAudio()
         let randomIndex = Math.floor(Math.random() * ENDSCREEN_ASSETS.IMAGES.WINNING.length);        
         let img = ENDSCREEN_ASSETS.IMAGES.WINNING[randomIndex];
         this.drawImage(img);
         this.showButtons();
+        this.playWinGameSound();
+    }
+
+    playWinGameSound() {
+        let audioVolume = 0.3;
+        this.audioManager.playAudio(ENDSCREEN_ASSETS.SOUNDS.WINNING, audioVolume);
     }
 
     /**

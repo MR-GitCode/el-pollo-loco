@@ -11,5 +11,16 @@ const ENDSCREEN_ASSETS = {
             'img/You won, you lost/You_win_C.png',
             'img/You won, you lost/You_won_C.png',
         ],
+    },
+
+    
+    SOUNDS: {
+        GAMEOVER: [
+            'audio/intro_outro/game_over/human-voice-saying-oh-no.mp3',
+        ],
+
+        WINNING: [
+            'audio/intro_outro/winning/winning-218995.mp3',
+        ],
     }
 }
