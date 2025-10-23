@@ -18,6 +18,8 @@ class Character extends MovableObject{
     attackJumpStrength = 100;
     wasInAir = false;
     isWalkingSoundPlaying = false;
+    isBreathing = false;
+    isSnoring = false;
 
     constructor () {
         super().loadImage('img/2_character_pepe/2_walk/W-21.png');
@@ -38,6 +40,8 @@ class Character extends MovableObject{
         this.audioManager.loadAudio(CHARACTER_ASSETS.SOUNDS.HURT);
         this.audioManager.loadAudio(CHARACTER_ASSETS.SOUNDS.LANDING);
         this.audioManager.loadAudio(CHARACTER_ASSETS.SOUNDS.WALKING);
+        this.audioManager.loadAudio(CHARACTER_ASSETS.SOUNDS.SNORING);
+        this.audioManager.loadAudio(CHARACTER_ASSETS.SOUNDS.BREATH);
     }
 
     /**
@@ -124,51 +128,46 @@ class Character extends MovableObject{
     * Jumps and moves right.
     */
     performJumpRight() {
+        this.stopIdleSounds();
         this.jumpRight()
         this.playAnimation(CHARACTER_ASSETS.IMAGES.JUMPING);
-        this.isIdleLong = false;
-        // console.log(this.wasInAir, 'jump right');
-        
-        // this.wasInAir =  true
-        // console.log(this.wasInAir, 'jump right end');
     }
 
     /**
     * Jumps and moves left.
     */
     performJumpLeft() {
+        this.stopIdleSounds();
         this.jumpLeft()
-        this.playAnimation(CHARACTER_ASSETS.IMAGES.JUMPING);
-        this.isIdleLong = false;        
-        // this.wasInAir =  true
+        this.playAnimation(CHARACTER_ASSETS.IMAGES.JUMPING);        
     }
 
     /**
     * Moves right and plays walking animation.
     */
     performMoveRight() {
+        this.stopIdleSounds();
         this.moveRight();
         this.playAnimation(CHARACTER_ASSETS.IMAGES.WALKING);
         this.playWalkingSound();
-        this.isIdleLong = false;
     }
 
     /**
     * Moves left and plays walking animation.
     */
     performMoveLeft() {
+        this.stopIdleSounds();
         this.moveLeft();
         this.playAnimation(CHARACTER_ASSETS.IMAGES.WALKING)
         this.playWalkingSound();
-        this.isIdleLong = false;
     }
 
     /**
     * Performs a vertical jump.
     */
     performJump() {
+        this.stopIdleSounds();
         this.jump();
-        this.isIdleLong = false;
     }
 
     /**
@@ -199,14 +198,55 @@ class Character extends MovableObject{
             this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.WALKING[0]);
             this.isWalkingSoundPlaying = false;
         }
+        // if (this.idleTimer) {
+        //     clearTimeout(this.idleTimer);
+        //     this.idleTimer = null;
+        // }
         if (!this.isIdleLong) {
-            this.playAnimation(CHARACTER_ASSETS.IMAGES.IDLE);
-            setTimeout (() => {
-                this.isIdleLong = true;
-            }, 10000)
+            this.performNormalIdle();
         } else {
-            this.playAnimation(CHARACTER_ASSETS.IMAGES.IDLE_LONG);       
+            this.performIdleLong();       
         }
+    }
+
+    performNormalIdle() {
+        this.playAnimation(CHARACTER_ASSETS.IMAGES.IDLE);
+        this.playBreathSound();
+        setTimeout(() => {
+            this.isIdleLong = true;
+        }, 10000);
+    }
+
+    performIdleLong() {
+        this.playAnimation(CHARACTER_ASSETS.IMAGES.IDLE_LONG);
+        this.playSnoringSound();
+    }
+
+    playBreathSound() {
+        if (!this.isBreathing) {
+            this.isBreathing = true;
+            let audioVolume = 0.15;
+            this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.SNORING[0]);
+            this.audioManager.playAudio(CHARACTER_ASSETS.SOUNDS.BREATH, audioVolume);
+        }
+    }
+
+    playSnoringSound() {
+        if (!this.isSnoring) {
+            this.isSnoring = true;
+            let audioVolume = 0.1;
+            let audioLoop = true;
+            this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.BREATH[0]);
+            this.audioManager.playAudio(CHARACTER_ASSETS.SOUNDS.SNORING, audioVolume, audioLoop);
+        }
+    }
+
+    stopIdleSounds() {
+        this.isIdleLong = false;
+        this.isBreathing = false;
+        this.isSnoring = false;
+        this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.BREATH[0]);
+        this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.SNORING[0]);
     }
 
     /**
@@ -222,7 +262,7 @@ class Character extends MovableObject{
      */
     playWalkingSound() {
         if (!this.isWalkingSoundPlaying) {
-            this.isWalkingSoundPlaying = true; 
+            this.isWalkingSoundPlaying = true;
             let audioVolume = 0.3;
             let loop = true;
             this.audioManager.playAudio(CHARACTER_ASSETS.SOUNDS.WALKING, audioVolume, loop);
@@ -233,6 +273,7 @@ class Character extends MovableObject{
      * Plays the landing sound effect when the object hits the ground after falling.
      */
     playLandSound() {
+        this.stopIdleSounds()
         let audioVolume = 0.8;
         this.audioManager.playAudio(CHARACTER_ASSETS.SOUNDS.LANDING, audioVolume)
         setTimeout(() => {

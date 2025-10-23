@@ -76,5 +76,13 @@ const CHARACTER_ASSETS = {
         HURT: [
             'audio/character/noises/hurt/male-grunt.mp3'
         ],
+
+        SNORING: [
+            'audio/character/noises/snoring/male-snoring.mp3'
+        ],
+
+        BREATH: [
+            'audio/character/noises/breath/heavy-breath-male.mp3'
+        ],
     }
 }
