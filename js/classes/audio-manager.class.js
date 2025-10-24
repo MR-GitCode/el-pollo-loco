@@ -1,13 +1,13 @@
 class AudioManager {   
     audioCache = {}
     currentAudio = null;
-    currentAudioTimeListener = null;
     soundEnabled = false;
 
     loadAudio(path) {
         const audio = new Audio(path);
         audio.preload = 'auto';      // Browser soll die Datei komplett laden
-        audio.load(); 
+        audio.load();
+        audio.key = path;
         this.audioCache[path] = audio;
     }
 
@@ -21,13 +21,15 @@ class AudioManager {
     }
 
     playAudio(path, volume = 1, audioLoop = false) {
-        console.log('Sound play', path);
+        console.log('Sound play', path, this.currentAudio);
         if (this.soundEnabled) {
             if (this.audioCache[path]) {
                 this.currentAudio = this.audioCache[path];
                 this.currentAudio.loop = audioLoop;
                 this.currentAudio.volume = volume;
                 this.currentAudio.play();
+                // console.log('audio is now playing', this.currentAudio);
+                
             }  else {
                 console.error('Audio nicht geladen:', path);
             }

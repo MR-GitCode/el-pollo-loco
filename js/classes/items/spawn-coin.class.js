@@ -5,6 +5,9 @@ class SpawnCoin extends SpawnableObjects {
       right: 100,
       bottom: 100
    };
+   audioVolume = {
+        collect: 1,
+   }
  
    constructor() {
       let imageScale = 0.5;
@@ -34,8 +37,8 @@ class SpawnCoin extends SpawnableObjects {
    }
 
    playCoinCollectSound() {
-      console.log('Coin collect');
-      let audioVolume = 1
-      this.audioManager.playAudio(COIN_ASSETS.SOUNDS.COLLECT, audioVolume);
-   }
+      if (this.audioManager.currentAudio.key !== COIN_ASSETS.SOUNDS.COLLECT) {     
+         this.audioManager.playAudio(COIN_ASSETS.SOUNDS.COLLECT, this.audioVolume.collect)
+      }
+   }   
 }

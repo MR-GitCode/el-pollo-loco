@@ -67,7 +67,8 @@ class ThrowableObject extends MovableObject {
     };
 
     playRotationSound() {
-        this.audioManager.playAudio(BOTTLE_ASSETS.SOUNDS.ROTATE);
+        let audioVolume = 0.8;
+        this.audioManager.playAudio(BOTTLE_ASSETS.SOUNDS.ROTATE, audioVolume);
     }
 
     playSplashSound() {

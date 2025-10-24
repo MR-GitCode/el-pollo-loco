@@ -5,6 +5,12 @@ class SpawnBottle extends SpawnableObjects {
         right: 75,
         bottom: 35
     };
+    audioVolume = {
+        rotate: 0.8,
+        collect: 0.5,
+        splash: 0.8
+    }
+    
     static attackStrength = 100;
         
     constructor() {
@@ -37,8 +43,8 @@ class SpawnBottle extends SpawnableObjects {
     }
 
     playBottleCollectSound() {
-        console.log('Bottle collect');        
-        let audioVolume = 0.5;
-        this.audioManager.playAudio(BOTTLE_ASSETS.SOUNDS.COLLECT, audioVolume);
-   }
+        if (this.audioManager.currentAudio.key !== BOTTLE_ASSETS.SOUNDS.COLLECT) {
+            this.audioManager.playAudio(BOTTLE_ASSETS.SOUNDS.COLLECT, this.audioVolume.collect);
+        }          
+    }
 }
