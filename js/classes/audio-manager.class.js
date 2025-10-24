@@ -35,7 +35,7 @@ class AudioManager {
     }
 
     stopAudio(audioPath) {
-        console.log('stopp audio', audioPath);
+        // console.log('stopp audio', audioPath);
         
         if(this.currentAudio) {
             this.audioCache[audioPath].pause();
