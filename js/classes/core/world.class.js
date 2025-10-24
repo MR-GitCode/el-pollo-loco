@@ -29,11 +29,18 @@ class World {
         }
     }
 
+    /**
+     * Links the character and each enemy to this world context for interactions.
+     */
     setWorld() {
         this.character.world = this;
         this.level.enemies.forEach(enemy => enemy.world = this);
     }
 
+    /**
+     * Starts the main game logic loops.
+     * Continuously checks for collisions and periodically handles throwable object actions.
+     */
     run() {
         this.checkCollisions();
         setInterval(() => {
@@ -97,8 +104,7 @@ class World {
                 this.changeStatusBar(this.coinCount , this.level.maxCoins , "statusBarCoin");
                 this.level.coins.splice(index, 1);
                 coin.playCoinCollectSound();
-                console.log('coin count', this.bottleCount);
-                
+                console.log('coin count', this.coinCount);
             }  
         });
     }

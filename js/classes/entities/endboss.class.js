@@ -15,8 +15,6 @@ class EndBoss extends MovableObject {
     attackCharacter = false;
     endscreen = new Endscreen();
    
-
-
     constructor () {
         super().loadImage(ENDBOSS_ASSETS.IMAGES.ALERT[0]);
         this.audioManager = audioManager;
@@ -26,6 +24,9 @@ class EndBoss extends MovableObject {
         this.animate();
     }
 
+    /**
+     * Loads all assets of the endboss.
+     */
     loadAssets() {
         this.loadImages(ENDBOSS_ASSETS.IMAGES.WALKING);
         this.loadImages(ENDBOSS_ASSETS.IMAGES.ALERT);

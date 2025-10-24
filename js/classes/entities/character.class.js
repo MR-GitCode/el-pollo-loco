@@ -25,11 +25,14 @@ class Character extends MovableObject{
         super().loadImage('img/2_character_pepe/2_walk/W-21.png');
         this.audioManager = audioManager;
         this.loadAssets();
-        this.playingAudio();
+        this.checkIfJumping();
         this.applyGravity();
         this.animate();
     }
 
+    /**
+     * Loads all assets of the character.
+     */
     loadAssets() {
         this.loadImages(CHARACTER_ASSETS.IMAGES.DEAD);
         this.loadImages(CHARACTER_ASSETS.IMAGES.HURT);
@@ -59,7 +62,10 @@ class Character extends MovableObject{
         }, 140);
     }
 
-    playingAudio() {
+    /**
+     * Checks vertical state to trigger jump and landing sounds.
+     */
+    checkIfJumping() {
         setInterval(() => {
             if(this.isAboveGround()) {
                 this.playJumpSound() 
@@ -125,8 +131,8 @@ class Character extends MovableObject{
     }
 
     /**
-    * Jumps and moves right.
-    */
+     * Jumps and moves right.
+     */
     performJumpRight() {
         this.stopIdleSounds();
         this.jumpRight()
@@ -134,8 +140,8 @@ class Character extends MovableObject{
     }
 
     /**
-    * Jumps and moves left.
-    */
+     * Jumps and moves left.
+     */
     performJumpLeft() {
         this.stopIdleSounds();
         this.jumpLeft()
@@ -143,8 +149,8 @@ class Character extends MovableObject{
     }
 
     /**
-    * Moves right and plays walking animation.
-    */
+     * Moves right and plays walking animation.
+     */
     performMoveRight() {
         this.stopIdleSounds();
         this.moveRight();
@@ -153,8 +159,8 @@ class Character extends MovableObject{
     }
 
     /**
-    * Moves left and plays walking animation.
-    */
+     * Moves left and plays walking animation.
+     */
     performMoveLeft() {
         this.stopIdleSounds();
         this.moveLeft();
@@ -163,24 +169,24 @@ class Character extends MovableObject{
     }
 
     /**
-    * Performs a vertical jump.
-    */
+     * Performs a vertical jump.
+     */
     performJump() {
         this.stopIdleSounds();
         this.jump();
     }
 
     /**
-    * Plays hurt animation when damaged.
-    */
+     * Plays hurt animation when damaged.
+     */
     performHurtAnimation() {
         this.playAnimation(CHARACTER_ASSETS.IMAGES.HURT);
         this.playHurtingSound();
     }
 
     /**
-    * Plays death animation and triggers end screen.
-    */
+     * Plays death animation and triggers end screen.
+     */
     performDeathAnimation() {
         setTimeout (() => {
            this.playAnimation(CHARACTER_ASSETS.IMAGES.DEAD);
@@ -191,17 +197,13 @@ class Character extends MovableObject{
     }
 
     /**
-    * Plays idle or long idle animation based on inactivity duration.
-    */
+     * Plays idle or long idle animation based on inactivity duration.
+     */
     performIdle() {
         if (this.isWalkingSoundPlaying) {
             this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.WALKING[0]);
             this.isWalkingSoundPlaying = false;
         }
-        // if (this.idleTimer) {
-        //     clearTimeout(this.idleTimer);
-        //     this.idleTimer = null;
-        // }
         if (!this.isIdleLong) {
             this.performNormalIdle();
         } else {
@@ -209,6 +211,9 @@ class Character extends MovableObject{
         }
     }
 
+    /**
+     * Plays the normal idle animation and breathing sound.
+     */
     performNormalIdle() {
         this.playAnimation(CHARACTER_ASSETS.IMAGES.IDLE);
         this.playBreathSound();
@@ -217,36 +222,49 @@ class Character extends MovableObject{
         }, 10000);
     }
 
+    /**
+     * Plays the long idle animation and snoring sound.
+     */
     performIdleLong() {
         this.playAnimation(CHARACTER_ASSETS.IMAGES.IDLE_LONG);
         this.playSnoringSound();
     }
 
+
+    /**
+     * Plays the breathing sound during normal idle.
+     */
     playBreathSound() {
         if (!this.isBreathing) {
             this.isBreathing = true;
-            let audioVolume = 0.15;
+            let audioVolume = 0;
             this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.SNORING[0]);
             this.audioManager.playAudio(CHARACTER_ASSETS.SOUNDS.BREATH, audioVolume);
         }
     }
 
+    /**
+     * Plays the snoring sound during long idle.
+     * Stops any ongoing breathing audio before looping the snore sound.
+     */ 
     playSnoringSound() {
         if (!this.isSnoring) {
-            this.isSnoring = true;
-            let audioVolume = 0.1;
+            this.isSnoring = true; 
+            let audioVolume = 0;
             let audioLoop = true;
             this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.BREATH[0]);
             this.audioManager.playAudio(CHARACTER_ASSETS.SOUNDS.SNORING, audioVolume, audioLoop);
         }
     }
 
+    /**
+     * Stops all idle-related sounds and resets idle states.
+     * Used when the character resumes activity.
+     */
     stopIdleSounds() {
         this.isIdleLong = false;
         this.isBreathing = false;
         this.isSnoring = false;
-        this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.BREATH[0]);
-        this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.SNORING[0]);
     }
 
     /**
