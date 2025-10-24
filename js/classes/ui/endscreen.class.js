@@ -1,4 +1,9 @@
-class Endscreen extends DrawableObject {   
+class Endscreen extends DrawableObject { 
+    audioVolume = {
+        gameOver: 0.5,
+        winGame: 0.3
+    };
+    
     constructor () {
         super();
         this.audioManager = audioManager;
@@ -26,8 +31,7 @@ class Endscreen extends DrawableObject {
     }
 
     playLostGameSound() {
-        let audioVolume = 0.5;
-        this.audioManager.playAudio(ENDSCREEN_ASSETS.SOUNDS.GAMEOVER, audioVolume);
+        this.audioManager.playAudio(ENDSCREEN_ASSETS.SOUNDS.GAMEOVER, this.audioVolume.gameOver);
     }
 
     /**
@@ -43,8 +47,7 @@ class Endscreen extends DrawableObject {
     }
 
     playWinGameSound() {
-        let audioVolume = 0.3;
-        this.audioManager.playAudio(ENDSCREEN_ASSETS.SOUNDS.WINNING, audioVolume);
+        this.audioManager.playAudio(ENDSCREEN_ASSETS.SOUNDS.WINNING, this.audioVolume.winGame);
     }
 
     /**

@@ -110,14 +110,21 @@ class MovableObject extends DrawableObject{
     }
 
     /**
-    * Plays the next animation frame from a given image list.
-    * @param {string[]} images - Array of image paths.
-    */
-    playAnimation(images) {
+     * Plays an animation by cycling through a list of images.
+     * The animation speed can changed by `frameSpeed` parameter.
+     * 
+     * @param {string[]} images - Array of image paths..
+     * @param {number} [frameSpeed=1] - Speed multiplier for frame progression.
+     */
+    playAnimation(images, frameSpeed = 1) {      
+        this.animationFrameCounter = (this.animationFrameCounter || 0) + frameSpeed;
+        if (this.animationFrameCounter >= 1) {
+            this.currentImage++;
+            this.animationFrameCounter = 0;
+        }
         let i = this.currentImage % images.length;
         let path = images[i];
         this.img = this.imageCache[path];
-        this.currentImage++;
     }
 
     /**

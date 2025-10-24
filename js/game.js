@@ -135,6 +135,7 @@ function toggleSoundIcon() {
     if (audioManager.soundEnabled) {
         soundOn.style.display = 'block';
         soundOff.style.display = 'none';
+        localStorage.setItem('soundEnabled', audioManager.soundEnabled)
         if (!gameStarted) {
             playSoundMenu();  
         }
@@ -142,9 +143,13 @@ function toggleSoundIcon() {
         soundOn.style.display = 'none';
         soundOff.style.display = 'block';
         audioManager.stopAll()
+        localStorage.setItem('soundEnabled', audioManager.soundEnabled)
     }
 }
 
+/**
+ * Played the theme music.
+ */
 function playSoundMenu() {
     audioVolume = 0.2;
     audioLoop = true;

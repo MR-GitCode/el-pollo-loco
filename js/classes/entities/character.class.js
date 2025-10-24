@@ -12,6 +12,21 @@ class Character extends MovableObject{
         right: 45,
         bottom: 0
     };
+    frameSpeed = {
+        idle: 0.25,
+        idleLong: 0.5,
+        walk: 1,
+        jump: 0.25,
+        hurt: 0.5,
+        death: 1
+    };
+    audioVolume = {
+        breath: 0,
+        snor: 0,
+        walk: 0.3,
+        jump: 0.8,
+        hurt: 0.4,
+    }
     coinAmount = 0;
     bottleAmount = 0;
     endscreen = new Endscreen();
@@ -53,13 +68,17 @@ class Character extends MovableObject{
      */
     animate() {
         setInterval(() => {
-            if (this.isAboveGround()) this.playAnimation(CHARACTER_ASSETS.IMAGES.JUMPING);
-
-            else {
-                this.updateCharacterActions();
-            }
+            if (this.isAboveGround()) this.performJumpingAnimation();
+            else if (this.canJumpRight()) this.performJumpRight();
+            else if (this.canJumpLeft()) this.performJumpLeft();
+            else if (this.canMoveRight()) this.performMoveRight();
+            else if (this.canMoveLeft()) this.performMoveLeft();
+            else if (this.canJump()) this.performJump();
+            else if (this.isHurt()) this.performHurtAnimation();
+            else if (this.isDead()) this.performDeathAnimation();
+            else this.performIdle();
             this.world.camera_x = -this.x + 100;
-        }, 140);
+        }, 1000 / 10);
     }
 
     /**
@@ -73,21 +92,6 @@ class Character extends MovableObject{
                 this.playLandSound()
             }
         }, 1000 / 70);
-    }
-
-    /**
-     * Determines and executes the appropriate character action
-     * based on movement and state conditions.
-     */
-    updateCharacterActions() {
-        if (this.canJumpRight()) this.performJumpRight();
-        else if (this.canJumpLeft()) this.performJumpLeft();
-        else if (this.canMoveRight()) this.performMoveRight();
-        else if (this.canMoveLeft()) this.performMoveLeft();
-        else if (this.canJump()) this.performJump();
-        else if (this.isHurt()) this.performHurtAnimation();
-        else if (this.isDead()) this.performDeathAnimation();
-        else this.performIdle();
     }
 
     /**
@@ -129,6 +133,13 @@ class Character extends MovableObject{
     canJumpRight() {
         return (this.world.keyboard.RIGHT && this.world.keyboard.SPACE) && this.x < this.world.level.level_end_x;
     }
+    
+    /**
+     * Play the jump animation.
+     */
+    performJumpingAnimation() {
+        this.playAnimation(CHARACTER_ASSETS.IMAGES.JUMPING, this.frameSpeed.jump);
+    }
 
     /**
      * Jumps and moves right.
@@ -136,7 +147,6 @@ class Character extends MovableObject{
     performJumpRight() {
         this.stopIdleSounds();
         this.jumpRight()
-        this.playAnimation(CHARACTER_ASSETS.IMAGES.JUMPING);
     }
 
     /**
@@ -144,8 +154,7 @@ class Character extends MovableObject{
      */
     performJumpLeft() {
         this.stopIdleSounds();
-        this.jumpLeft()
-        this.playAnimation(CHARACTER_ASSETS.IMAGES.JUMPING);        
+        this.jumpLeft()       
     }
 
     /**
@@ -154,7 +163,7 @@ class Character extends MovableObject{
     performMoveRight() {
         this.stopIdleSounds();
         this.moveRight();
-        this.playAnimation(CHARACTER_ASSETS.IMAGES.WALKING);
+        this.playAnimation(CHARACTER_ASSETS.IMAGES.WALKING, this.frameSpeed.walk);
         this.playWalkingSound();
     }
 
@@ -164,7 +173,7 @@ class Character extends MovableObject{
     performMoveLeft() {
         this.stopIdleSounds();
         this.moveLeft();
-        this.playAnimation(CHARACTER_ASSETS.IMAGES.WALKING)
+        this.playAnimation(CHARACTER_ASSETS.IMAGES.WALKING, this.frameSpeed.walk)
         this.playWalkingSound();
     }
 
@@ -180,7 +189,7 @@ class Character extends MovableObject{
      * Plays hurt animation when damaged.
      */
     performHurtAnimation() {
-        this.playAnimation(CHARACTER_ASSETS.IMAGES.HURT);
+        this.playAnimation(CHARACTER_ASSETS.IMAGES.HURT, this.frameSpeed.hurt);
         this.playHurtingSound();
     }
 
@@ -189,7 +198,7 @@ class Character extends MovableObject{
      */
     performDeathAnimation() {
         setTimeout (() => {
-           this.playAnimation(CHARACTER_ASSETS.IMAGES.DEAD);
+           this.playAnimation(CHARACTER_ASSETS.IMAGES.DEAD, this.frameSpeed.death);
         }, 1000)
         setTimeout (() => {
             this.endscreen.lostGame();
@@ -215,7 +224,7 @@ class Character extends MovableObject{
      * Plays the normal idle animation and breathing sound.
      */
     performNormalIdle() {
-        this.playAnimation(CHARACTER_ASSETS.IMAGES.IDLE);
+        this.playAnimation(CHARACTER_ASSETS.IMAGES.IDLE, this.frameSpeed.idle);
         this.playBreathSound();
         setTimeout(() => {
             this.isIdleLong = true;
@@ -226,7 +235,7 @@ class Character extends MovableObject{
      * Plays the long idle animation and snoring sound.
      */
     performIdleLong() {
-        this.playAnimation(CHARACTER_ASSETS.IMAGES.IDLE_LONG);
+        this.playAnimation(CHARACTER_ASSETS.IMAGES.IDLE_LONG, this.frameSpeed.idleLong);
         this.playSnoringSound();
     }
 
@@ -237,9 +246,8 @@ class Character extends MovableObject{
     playBreathSound() {
         if (!this.isBreathing) {
             this.isBreathing = true;
-            let audioVolume = 0;
             this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.SNORING[0]);
-            this.audioManager.playAudio(CHARACTER_ASSETS.SOUNDS.BREATH, audioVolume);
+            this.audioManager.playAudio(CHARACTER_ASSETS.SOUNDS.BREATH, this.audioVolume.breath);
         }
     }
 
@@ -250,10 +258,9 @@ class Character extends MovableObject{
     playSnoringSound() {
         if (!this.isSnoring) {
             this.isSnoring = true; 
-            let audioVolume = 0;
             let audioLoop = true;
             this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.BREATH[0]);
-            this.audioManager.playAudio(CHARACTER_ASSETS.SOUNDS.SNORING, audioVolume, audioLoop);
+            this.audioManager.playAudio(CHARACTER_ASSETS.SOUNDS.SNORING, this.audioVolume.snor, audioLoop);
         }
     }
 
@@ -271,8 +278,7 @@ class Character extends MovableObject{
      * Plays the hurt sound effect when the object takes damage.
      */
     playHurtingSound() {
-        let audioVolume = 0.5;
-        this.audioManager.playAudio(CHARACTER_ASSETS.SOUNDS.HURT, audioVolume)
+        this.audioManager.playAudio(CHARACTER_ASSETS.SOUNDS.HURT, this.audioVolume.hurt)
     }
 
     /**
@@ -281,9 +287,8 @@ class Character extends MovableObject{
     playWalkingSound() {
         if (!this.isWalkingSoundPlaying) {
             this.isWalkingSoundPlaying = true;
-            let audioVolume = 0.3;
             let loop = true;
-            this.audioManager.playAudio(CHARACTER_ASSETS.SOUNDS.WALKING, audioVolume, loop);
+            this.audioManager.playAudio(CHARACTER_ASSETS.SOUNDS.WALKING, this.audioVolume.walk, loop);
         }
     }
 
@@ -292,8 +297,7 @@ class Character extends MovableObject{
      */
     playLandSound() {
         this.stopIdleSounds()
-        let audioVolume = 0.8;
-        this.audioManager.playAudio(CHARACTER_ASSETS.SOUNDS.LANDING, audioVolume)
+        this.audioManager.playAudio(CHARACTER_ASSETS.SOUNDS.LANDING, this.audioVolume.jump)
         setTimeout(() => {
             this.wasInAir = false;
         }, 10)

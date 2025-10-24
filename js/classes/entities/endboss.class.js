@@ -9,6 +9,19 @@ class EndBoss extends MovableObject {
         right: 25,
         bottom: 80
     };
+    frameSpeed = {
+        walk: 1,
+        alert: 1,
+        hurt: 1,
+        death: 0.75,
+        attack: 1
+    };
+    audioVolume = {
+        walk: 0.3,
+        alert: 0.5,
+        hurt: 0.5,
+        death: 0.5,
+    }
     energy = 300;
     attackStrength = 6;
     speed = 25;
@@ -72,7 +85,7 @@ class EndBoss extends MovableObject {
      * Plays hurt animation and temporarily increases speed.
      */
     performHurtAnimation() {
-        this.playAnimation(ENDBOSS_ASSETS.IMAGES.HURT);
+        this.playAnimation(ENDBOSS_ASSETS.IMAGES.HURT, this.frameSpeed.hurt);
         this.speed += 0.5;
         setTimeout(() => {
             this.attackCharacter = true;
@@ -84,7 +97,7 @@ class EndBoss extends MovableObject {
      * Plays death animation and triggers win screen after a delay.
      */
     performDeathAnimation() {
-        this.playAnimation(ENDBOSS_ASSETS.IMAGES.DEAD);
+        this.playAnimation(ENDBOSS_ASSETS.IMAGES.DEAD, this.frameSpeed.death);
         this.playDieSound();
         setTimeout(() => {
             this.audioManager.stopAudio(ENDBOSS_ASSETS.SOUNDS.DEATH[0])
@@ -96,14 +109,14 @@ class EndBoss extends MovableObject {
      * Plays attack animation.
      */
     performAttackAnimation() {
-        this.playAnimation(ENDBOSS_ASSETS.IMAGES.ATTACK);
+        this.playAnimation(ENDBOSS_ASSETS.IMAGES.ATTACK, this.frameSpeed.attack);
     }
 
     /**
      * Plays alert animation and activates attack behavior after delay.
      */
     performAlertAnimation() {
-        this.playAnimation(ENDBOSS_ASSETS.IMAGES.ALERT);
+        this.playAnimation(ENDBOSS_ASSETS.IMAGES.ALERT, this.frameSpeed.alert);
         this.playAlertSound();
         setTimeout(() => {
             this.attackCharacter = true;
@@ -114,7 +127,7 @@ class EndBoss extends MovableObject {
      * Plays walking animation and moves the boss toward the player.
      */
     performWalkAnimation() {
-        this.playAnimation(ENDBOSS_ASSETS.IMAGES.WALKING);
+        this.playAnimation(ENDBOSS_ASSETS.IMAGES.WALKING, this.frameSpeed.walk);
         this.moveLeft();
         this.playWalkingSound();
         this.otherDirection = false;
@@ -124,16 +137,14 @@ class EndBoss extends MovableObject {
      * Plays the death sound effect at a predefined volume.
      */
     playDieSound() {
-        let audioVolume = 0.5;
-        this.audioManager.playAudio(ENDBOSS_ASSETS.SOUNDS.DEATH, audioVolume)
+        this.audioManager.playAudio(ENDBOSS_ASSETS.SOUNDS.DEATH, this.audioVolume.death)
     }
 
     /**
      * Plays the alert sound effect.
      */
     playAlertSound() {
-        let audioVolume = 0.5;
-        this.audioManager.playAudio(ENDBOSS_ASSETS.SOUNDS.ALERT, audioVolume)
+        this.audioManager.playAudio(ENDBOSS_ASSETS.SOUNDS.ALERT, this.audioVolume.alert)
     }
 
     /**
@@ -141,8 +152,7 @@ class EndBoss extends MovableObject {
      */
     playWalkingSound() {
         if (this.isWalkingSoundPlaying) {
-            let audioVolume = 0.3;
-            this.audioManager.playAudio(ENDBOSS_ASSETS.SOUNDS.WALKING, audioVolume);
+            this.audioManager.playAudio(ENDBOSS_ASSETS.SOUNDS.WALKING, this.audioVolume.walk);
         }
     }
 
@@ -150,7 +160,6 @@ class EndBoss extends MovableObject {
      *  Plays the hurt sound effect when the object takes damage.
      */
     playHurtingSound() {
-        let audioVolume = 0.5;
-        this.audioManager.playAudio(ENDBOSS_ASSETS.SOUNDS.HURT, audioVolume, stoppAtSeconds)
+        this.audioManager.playAudio(ENDBOSS_ASSETS.SOUNDS.HURT, this.audioVolume.hurt)
     }
 }

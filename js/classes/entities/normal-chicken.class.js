@@ -8,6 +8,14 @@ class normalChicken extends MovableObject{
         right: 0,
         bottom: 10
     };
+    frameSpeed = {
+        walk: 1,
+        death: 1
+    };
+    audioVolume = {
+        walk: 1,
+        death: 0.4
+    }
     energy = 100;
     enemyIntervals = [];
     attackStrength = 2;
@@ -31,7 +39,7 @@ class normalChicken extends MovableObject{
         setInterval(() =>{
             if (this.energy == 0) {
                 this.performDeathAnimation()
-            } else this.playAnimation(NORMAL_CHICKEN_ASSETS.IMAGES.WALKING);
+            } else this.playAnimation(NORMAL_CHICKEN_ASSETS.IMAGES.WALKING, this.frameSpeed.walk);
         }, 250);
         
         const moveInterval = setInterval(() => {
@@ -42,13 +50,12 @@ class normalChicken extends MovableObject{
     }
 
     performDeathAnimation() {
-        this.playAnimation(NORMAL_CHICKEN_ASSETS.IMAGES.DEAD);
+        this.playAnimation(NORMAL_CHICKEN_ASSETS.IMAGES.DEAD, this.frameSpeed.death);
         clearInterval(this.enemyIntervals);
     }
 
     playJumpKillSound() {
         let randomIndex = Math.floor(Math.random() * NORMAL_CHICKEN_ASSETS.SOUNDS.JUMP_KILL.length);
-        let audioVolume = 0.6;
-        this.audioManager.playAudio(NORMAL_CHICKEN_ASSETS.SOUNDS.JUMP_KILL[randomIndex], audioVolume)
+        this.audioManager.playAudio(NORMAL_CHICKEN_ASSETS.SOUNDS.JUMP_KILL[randomIndex], this.audioVolume.death)
     }
 }
