@@ -34,6 +34,17 @@ canvas{
     aspect-ratio: 3 / 2 !important;
 }
 
+/* canvas {
+    border-radius: 15px;
+    background-color: black;
+    display: block;
+    width: 100%;
+    max-width: 720px;
+    aspect-ratio: 3 / 2;
+    height: auto;
+    margin: 0 auto;
+} */
+
 #screen {
     position: relative;
     display: flex;
@@ -187,19 +198,18 @@ canvas{
     display: none !important;
 }
 
-/* 
 @media screen and (min-width: 1000px) {
-    .button {
+    /* .button {
         width: 300px;
         height: 80px;
         font-size: 64px;
-    }
+    } */
 
-    #min-max-screens {
+    /* #min-max-screens {
         width: 50px;
         height: 50px;
-    }
-} */
+    } */
+}
 
 @media only screen and (max-width: 720px){
     canvas {

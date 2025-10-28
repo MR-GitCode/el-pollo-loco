@@ -8,8 +8,8 @@ const ENDSCREEN_ASSETS = {
         ],
 
         WINNING: [
-            'img/You won, you lost/You_win_C.png',
-            'img/You won, you lost/You_won_C.png',
+            'img/You_won_you_lost/You_win_C.png',
+            'img/You_won_you_lost/You_won_C.png',
         ],
     },
 

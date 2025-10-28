@@ -38,7 +38,6 @@ class Endscreen extends DrawableObject {
      * Displays a random "win" image and shows end screen buttons.
      */
     winGame() {
-        this.audioManager.playAudio()
         let randomIndex = Math.floor(Math.random() * ENDSCREEN_ASSETS.IMAGES.WINNING.length);        
         let img = ENDSCREEN_ASSETS.IMAGES.WINNING[randomIndex];
         this.drawImage(img);

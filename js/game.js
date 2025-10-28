@@ -148,15 +148,6 @@ function toggleSoundIcon() {
 }
 
 /**
- * Played the theme music.
- */
-function playSoundMenu() {
-    audioVolume = 0.2;
-    audioLoop = true;
-    audioManager.playAudio(SOUND_THEME, audioVolume, audioLoop);
-}
-
-/**
  * Adds a click listener to toggle fullscreen mode.
  * Updates the display of the maximize/minimize buttons.
  * 
@@ -210,7 +201,6 @@ function changeScreenWithEscape(maxScreen, minScreen) {
             maxScreen.style.display = 'none';
             minScreen.style.display = 'block';
             setButtonsDependentScreenSize('maxScreen');
-            
         } else {
             maxScreen.style.display = 'block';
             minScreen.style.display = 'none';
@@ -225,26 +215,20 @@ function changeScreenWithEscape(maxScreen, minScreen) {
 
 function setButtonsDependentScreenSize(screenSize) {
     const canvas = document.getElementById('canvas');
-    const screenSizeButton = document.getElementById('min-max-screens');
-    const soundVolumeButton = document.getElementById('sound-volume')
+    const screenSizeButton = document.getElementById('control-panel');
     const menuButtons = document.getElementById('buttons');
 
     const canvasWidth = canvas.scrollWidth;
-    const isFullscreen = !!document.fullscreenElement;
-    canvas.style.width = '100%'
-    canvas.style.height = '100%'
+    // const isFullscreen = !!document.fullscreenElement;
+    // canvas.style.width = '100%'
     // dynamisch Fenster --> Problem mit fullscreen -->andere Lösung?
     // if (isFullscreen && (canvasWidth !== window.innerWidth)) {
-    //     console.log(canvasWidth, window.innerWidth );
-        
     //     canvas.style.height = '100%'
-    // } else {
-    //     canvas.style.height = ''
     // }
     const canvasHeight = canvas.scrollHeight;    
     
     stylePositionButtons(screenSize, canvasHeight, screenSizeButton, menuButtons);
-    styleButtonsScreenMax(canvasWidth, screenSizeButton, soundVolumeButton);
+    styleButtonsScreenMax(canvasWidth, screenSizeButton);
 }
 
 function stylePositionButtons(screenSize, canvasHeight, screenSizeButton, menuButtons) {
@@ -267,10 +251,19 @@ function calcPositionBtnMaxScreen(canvasHeight, screenSizeButton, menuButtons) {
     let factorMenuBtn = canvasHeight * 0.1;
     screenSizeButton.style.bottom = `${heightOutsideCanvas + factorScreenSizeBtn}px`;
     menuButtons.style.top = `${heightOutsideCanvas + factorMenuBtn}px`;
+    let minTopDistance = 90;
+    if (parseFloat(menuButtons.style.top) <= minTopDistance){
+        menuButtons.style.top = '10%'
+    };
+    if (parseFloat(screenSizeButton.style.bottom) <= 30){
+        screenSizeButton.style.bottom = '10px'
+    }    
 }
 
-function styleButtonsScreenMax(canvasWidth, screenSizeButton, soundVolumeButton) {
+function styleButtonsScreenMax(canvasWidth) {
     const buttons = document.querySelectorAll('#buttons .button');
+    const soundVolumeButton = document.getElementById('sound-volume')
+    const screenSizeButton = document.getElementById('min-max-screens')
     if (canvasWidth >= 1000) {
         styleBtnMax(screenSizeButton, soundVolumeButton, buttons);
     } else {
@@ -310,49 +303,34 @@ function stopGame() {
 }
 
 /**
+ * Played the theme music.
+ */
+function playSoundMenu() {
+    audioVolume = 0.2;
+    audioLoop = true;
+    audioManager.playAudio(SOUND_THEME, audioVolume, audioLoop);
+}
+
+/**
  * Handles keyboard keydown events for movement and actions.
  */
 window.addEventListener('keydown', (event) => {   
-    if (event.code == "KeyA" || event.code == "ArrowLeft") {
-        keyboard.LEFT = true;    
-    }
-    if (event.code == "KeyD" || event.code == "ArrowRight") {
-        keyboard.RIGHT = true;        
-    }
-    if (event.code == "KeyS" || event.code == "ArrowDown") {
-        keyboard.DOWN = true;        
-    }
-    if (event.code == "KeyW"|| event.code == "ArrowUp") {
-        keyboard.UP = true;        
-     }
-    if (event.code == "Space") {
-        keyboard.SPACE = true;        
-    }
-    if (event.code == "KeyE") {
-        keyboard.E = true;        
-    }
+    if (event.code == "KeyA" || event.code == "ArrowLeft") keyboard.LEFT = true;
+    if (event.code == "KeyD" || event.code == "ArrowRight") keyboard.RIGHT = true;
+    if (event.code == "KeyS" || event.code == "ArrowDown") keyboard.DOWN = true;
+    if (event.code == "KeyW"|| event.code == "ArrowUp") keyboard.UP = true;
+    if (event.code == "Space") keyboard.SPACE = true;
+    if (event.code == "KeyE") keyboard.E = true;
 })
 
 /**
  * Handles keyboard keyup events to stop movement or actions.
  */
 window.addEventListener('keyup', (event) => {
-    if (event.code == "KeyA" || event.code == "ArrowLeft") {
-        keyboard.LEFT = false;        
-    }
-    if (event.code == "KeyD" || event.code == "ArrowRight") {
-        keyboard.RIGHT = false;        
-    }
-    if (event.code == "KeyS" || event.code == "ArrowDown") {
-        keyboard.DOWN = false;        
-    }
-    if (event.code == "KeyW"|| event.code == "ArrowUp") {
-        keyboard.UP = false;        
-     }
-    if (event.code == "Space") {
-        keyboard.SPACE = false;        
-    }
-    if (event.code == "KeyE") {
-        keyboard.E = false;        
-    }
+    if (event.code == "KeyA" || event.code == "ArrowLeft") keyboard.LEFT = false;        
+    if (event.code == "KeyD" || event.code == "ArrowRight") keyboard.RIGHT = false;
+    if (event.code == "KeyS" || event.code == "ArrowDown") keyboard.DOWN = false;
+    if (event.code == "KeyW"|| event.code == "ArrowUp") keyboard.UP = false;
+    if (event.code == "Space") keyboard.SPACE = false;
+    if (event.code == "KeyE") keyboard.E = false;
 }) 

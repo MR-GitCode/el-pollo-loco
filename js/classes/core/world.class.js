@@ -22,9 +22,9 @@ class World {
             initLevel();
             this.level = level1;
             this.character = new Character();
+            this.gameLoop();
             this.draw();
-            this.setWorld();
-            this.run();
+            this.setWorld();  
         }
     }
 
@@ -40,7 +40,7 @@ class World {
      * Starts the main game logic loops.
      * Continuously checks for collisions and periodically handles throwable object actions.
      */
-    run() {
+    gameLoop() {
         this.checkCollisions();
         setInterval(() => {
             this.checkThrowObjects();
@@ -52,7 +52,7 @@ class World {
      * and bottles are available. Updates status bar.
      */
     checkThrowObjects() {
-        if(this.keyboard.E & (this.bottleCount > 0)) {
+        if(this.keyboard.E && (this.bottleCount > 0)) {
             let bottle = new ThrowableObject(this.character.x, this.character.y, this.bottleHitsEnemy);
             this.throwableObjects.push(bottle);
             this.bottleCount --
@@ -104,7 +104,6 @@ class World {
                 this.level.coins.splice(index, 1);
                 console.log('coin count', this.coinCount);
                 coin.playCoinCollectSound();
-                
             }  
         });
     }
@@ -154,7 +153,7 @@ class World {
     }
 
     draw() {
-        if (gameStarted & !this.gameOver) {           
+        if (gameStarted && !this.gameOver) {           
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
             this.ctx.translate(this.camera_x, 0);
             this.addObjectsToCanvas(this.level.backgrounds);
