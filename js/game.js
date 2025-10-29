@@ -25,6 +25,22 @@ function showStartScreen() {
         drawStartScreen();
     };
     addEventListenerToButtons();
+    checkDisplaySize();
+}
+
+/**
+ * Checks the display size and toggles the visibility of a "rotate device" message.
+ */
+function checkDisplaySize() {
+    let containerRotateScreen = document.getElementById('rotate-screen');
+    window.addEventListener('resize', () => {
+        let screenWidth =  window.innerWidth;
+        if (screenWidth < 600) {
+            containerRotateScreen.classList.remove('hidden');
+        } else {
+            containerRotateScreen.classList.add('hidden');
+        }
+    })
 }
 
 /**

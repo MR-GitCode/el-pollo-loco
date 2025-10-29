@@ -21,8 +21,8 @@ class Character extends MovableObject{
         death: 1
     };
     audioVolume = {
-        breath: 0.1,
-        snor: 0.04,
+        breath: 0.05,
+        snor: 0.03,
         walk: 0.3,
         jump: 0.8,
         hurt: 0.4,
@@ -288,6 +288,7 @@ class Character extends MovableObject{
         if (!this.isWalkingSoundPlaying) {
             this.isWalkingSoundPlaying = true;
             let loop = true;
+            this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.BREATH[0]);
             this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.SNORING[0]);
             this.audioManager.playAudio(CHARACTER_ASSETS.SOUNDS.WALKING, this.audioVolume.walk, loop);
         }
