@@ -27,6 +27,7 @@ function showStartScreen() {
     addEventListenerToButtons();
     checkDisplaySize();
     checkDisplayTouch();
+    keyboard.addControllingEventListeners();
 }
 
 /**
@@ -98,27 +99,3 @@ function playSoundMenu() {
     audioLoop = true;
     audioManager.playAudio(SOUND_THEME, audioVolume, audioLoop);
 }
-
-/**
- * Handles keyboard keydown events for movement and actions.
- */
-window.addEventListener('keydown', (event) => {   
-    if (event.code == "KeyA" || event.code == "ArrowLeft") keyboard.LEFT = true;
-    if (event.code == "KeyD" || event.code == "ArrowRight") keyboard.RIGHT = true;
-    if (event.code == "KeyS" || event.code == "ArrowDown") keyboard.DOWN = true;
-    if (event.code == "KeyW"|| event.code == "ArrowUp") keyboard.UP = true;
-    if (event.code == "Space") keyboard.SPACE = true;
-    if (event.code == "KeyE") keyboard.E = true;
-})
-
-/**
- * Handles keyboard keyup events to stop movement or actions.
- */
-window.addEventListener('keyup', (event) => {
-    if (event.code == "KeyA" || event.code == "ArrowLeft") keyboard.LEFT = false;        
-    if (event.code == "KeyD" || event.code == "ArrowRight") keyboard.RIGHT = false;
-    if (event.code == "KeyS" || event.code == "ArrowDown") keyboard.DOWN = false;
-    if (event.code == "KeyW"|| event.code == "ArrowUp") keyboard.UP = false;
-    if (event.code == "Space") keyboard.SPACE = false;
-    if (event.code == "KeyE") keyboard.E = false;
-}) 
