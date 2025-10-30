@@ -26,6 +26,7 @@ function showStartScreen() {
     };
     addEventListenerToButtons();
     checkDisplaySize();
+    checkDisplayTouch();
 }
 
 /**
@@ -33,15 +34,37 @@ function showStartScreen() {
  */
 function checkDisplaySize() {
     let containerRotateScreen = document.getElementById('rotate-screen');
-    window.addEventListener('resize', () => {
+    const updateDisplaySize = () => {
         let screenWidth =  window.innerWidth;
         if (screenWidth < 600) {
-            containerRotateScreen.classList.remove('hidden');
+            containerRotateScreen.classList.remove('hidden');            
         } else {
             containerRotateScreen.classList.add('hidden');
         }
-    })
+    };
+    updateDisplaySize();
+    window.addEventListener('resize', updateDisplaySize);
 }
+
+/**
+ * Detects if the current device supports touch input and toggles control buttons.
+ */
+function checkDisplayTouch() {
+    let touchControl = document.getElementById('mobile-buttons');
+    let controlPanel = document.getElementById('control-panel');
+    const updateTouchDisplay = () => {
+        let isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        if (isTouchDevice) {
+            touchControl.classList.remove('hidden');
+            // controlPanel.classList.add('change-position');             
+        } else {
+            touchControl.classList.add('hidden');
+            // controlPanel.classList.remove('change-position');
+        }
+    };
+    updateTouchDisplay();
+    window.addEventListener('resize', updateTouchDisplay);
+};
 
 /**
  * Draws the start screen image on the canvas.

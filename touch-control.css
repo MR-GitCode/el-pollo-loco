@@ -1,0 +1,63 @@
+#mobile-buttons{
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    bottom: 20px
+}
+
+.bt-touch-control{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    background-color: #ffca1c;
+    border-radius: 30px;
+    cursor: pointer;
+    -webkit-box-shadow: 0px 0px 20px 6px #993A17; 
+    box-shadow: 0px 0px 20px 6px #993A17;
+}
+
+.bt-touch-control:active path {
+    fill: #993a17;
+}
+
+#buttons-left,
+#buttons-right{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+}
+
+#throw {
+    width: 46px;
+    height: 46px;
+    border: 2px solid #000000;
+}
+
+#throw img{
+    width: 55px;
+}
+
+#throw:active {
+    border-color: #993a17;
+}
+
+/* #throw svg {
+    width: 13px;
+    fill:#000000;
+}
+
+#throw svg style {
+   fill:#000000; 
+} */
+
+.change-position {
+    flex-direction: column;
+    top: 10px !important;
+    right: -40px !important;
+    align-items: baseline !important;
+}
