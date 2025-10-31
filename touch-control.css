@@ -3,8 +3,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
-    bottom: 20px
+    width: 100vw;
+    bottom: 15%;
 }
 
 .bt-touch-control{
@@ -29,7 +29,7 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-    padding: 20px;
+    padding: 0 10px;
 }
 
 #throw {

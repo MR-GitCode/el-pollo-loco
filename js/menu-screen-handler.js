@@ -168,6 +168,7 @@ function changeScreenWithClick(changeScreenSize, maxScreen, minScreen) {
  */
 function fullscreenOffHandler(maxScreen, minScreen) {
     exitFullscreen();
+    touchDisplayFullscreenHandler();
     maxScreen.style.display = 'block';
     minScreen.style.display = 'none';
 }
@@ -181,8 +182,22 @@ function fullscreenOffHandler(maxScreen, minScreen) {
  */
 function fullscreenOnHandler(screen, maxScreen, minScreen) {
     enterFullscreen(screen);
+    touchDisplayFullscreenHandler();
     maxScreen.style.display = 'none';
     minScreen.style.display = 'block';
+}
+
+/**
+ * Handles the fullscreensize of the canvas of the touch display.
+ */
+function touchDisplayFullscreenHandler() {
+    let isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    let canvas = document.getElementById('canvas');
+    if (isTouchDevice) {
+        const currentHeight = window.innerHeight;
+        const aspectRatio = 3 / 2;
+        canvas.style.width = `${currentHeight * aspectRatio}px`;
+    }
 }
 
 /**
