@@ -168,7 +168,7 @@ function changeScreenWithClick(changeScreenSize, maxScreen, minScreen) {
  */
 function fullscreenOffHandler(maxScreen, minScreen) {
     exitFullscreen();
-    touchDisplayFullscreenHandler();
+    touchDisplayFullscreenHandler('fullscreenOff');
     maxScreen.style.display = 'block';
     minScreen.style.display = 'none';
 }
@@ -182,7 +182,7 @@ function fullscreenOffHandler(maxScreen, minScreen) {
  */
 function fullscreenOnHandler(screen, maxScreen, minScreen) {
     enterFullscreen(screen);
-    touchDisplayFullscreenHandler();
+    touchDisplayFullscreenHandler('fullscreenOn');
     maxScreen.style.display = 'none';
     minScreen.style.display = 'block';
 }
@@ -190,14 +190,47 @@ function fullscreenOnHandler(screen, maxScreen, minScreen) {
 /**
  * Handles the fullscreensize of the canvas of the touch display.
  */
-function touchDisplayFullscreenHandler() {
-    let isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    let canvas = document.getElementById('canvas');
+function touchDisplayFullscreenHandler(mode) {
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
     if (isTouchDevice) {
-        const currentHeight = window.innerHeight;
-        const aspectRatio = 3 / 2;
-        canvas.style.width = `${currentHeight * aspectRatio}px`;
-    }
+        if (mode === 'fullscreenOn') {
+            touchPosBtnFullscreenOn();
+        }
+        if (mode === 'fullscreenOff') {
+            touchPosBtnFullscreenOff();
+        }
+    }   
+}
+
+/**
+ * Adjusts the position of the touch control button when fullscreen off.
+ */
+function touchPosBtnFullscreenOff() {
+    const screenSizeButton = document.getElementById('control-panel');
+    screenSizeButton.style.right = '10px';
+}
+
+/**
+ * Adjusts the position of the touch control button when fullscreen on.
+ */
+function touchPosBtnFullscreenOn() {
+    const canvas = document.getElementById('canvas');
+    const currentHeight = window.innerHeight;
+    const aspectRatio = 3 / 2;
+    const newWidth = currentHeight * aspectRatio;
+    canvas.style.width = `${newWidth}px`;
+    calcPosBtnTouchMaxScreen(newWidth);
+}
+
+/**
+ * Calculates and sets the new position of the touch control button
+ * @param {number} canvasWidth - The current width of the canvas in pixels. 
+ */
+function calcPosBtnTouchMaxScreen(canvasWidth) { 
+    const screenSizeButton = document.getElementById('control-panel');
+    let widthOutsideCanvas = (screen.width - canvasWidth) / 2;
+    let factorScreenSizeBtn = canvasWidth * 0.01;
+    screenSizeButton.style.right = `${widthOutsideCanvas + factorScreenSizeBtn}px`;
 }
 
 /**
