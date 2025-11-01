@@ -123,7 +123,7 @@ class Character extends MovableObject{
      * @returns {boolean} True if LEFT + SPACE pressed.
      */
     canJumpLeft() {
-        return (this.world.keyboard.LEFT && this.world.keyboard.SPACE) && this.x > 0;
+        return (this.world.keyboard.LEFT && (this.world.keyboard.SPACE || this.world.keyboard.UP)) && this.x > 0;
     }
 
     /**
@@ -131,7 +131,7 @@ class Character extends MovableObject{
      * @returns {boolean} True if RIGHT + SPACE pressed.
      */
     canJumpRight() {
-        return (this.world.keyboard.RIGHT && this.world.keyboard.SPACE) && this.x < this.world.level.level_end_x;
+        return (this.world.keyboard.RIGHT && (this.world.keyboard.SPACE || this.world.keyboard.UP)) && this.x < this.world.level.level_end_x;
     }
     
     /**
