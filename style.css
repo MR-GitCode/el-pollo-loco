@@ -80,6 +80,7 @@ canvas{
     box-shadow: 2px 2px #993a17;
     font-size: 32px;
     font-weight: 400;
+    color: #000 !important;
 }
 
 .button:hover {

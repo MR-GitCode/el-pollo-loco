@@ -215,7 +215,7 @@ function touchPosBtnFullscreenOff() {
  */
 function touchPosBtnFullscreenOn() {
     const canvas = document.getElementById('canvas');
-    const currentHeight = window.innerHeight;
+    const currentHeight = screen.height;
     const aspectRatio = 3 / 2;
     const newWidth = currentHeight * aspectRatio;
     canvas.style.width = `${newWidth}px`;
