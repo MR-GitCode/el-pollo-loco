@@ -31,6 +31,8 @@ class Endscreen extends DrawableObject {
     }
 
     playLostGameSound() {
+        console.log('gameOver');
+        
         this.audioManager.playAudio(ENDSCREEN_ASSETS.SOUNDS.GAMEOVER, this.audioVolume.gameOver);
     }
 
@@ -46,6 +48,8 @@ class Endscreen extends DrawableObject {
     }
 
     playWinGameSound() {
+        console.log('winning');
+        
         this.audioManager.playAudio(ENDSCREEN_ASSETS.SOUNDS.WINNING, this.audioVolume.winGame);
     }
 

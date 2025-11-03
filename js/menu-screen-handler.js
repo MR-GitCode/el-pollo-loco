@@ -18,12 +18,15 @@ function addEventListenerToButtons() {
  * @param {HTMLElement} btStartGame - The Start Game button element.
  */
 function addStartGameListener(btStartGame) {
-    btStartGame.addEventListener('click', () => {
-        const btGame = document.getElementById('buttons');
-        btGame.classList.remove('buttons-endscreen');
-        btGame.style.display = 'none';
-        audioManager.stopAudio(SOUND_THEME);
-        init();   
+    ['click', 'touchstart'].forEach(eventType => {
+        btStartGame.addEventListener(eventType, (e) => {
+            e.preventDefault();
+            const btGame = document.getElementById('buttons');
+            btGame.classList.remove('buttons-endscreen');
+            btGame.style.display = 'none';
+            audioManager.stopAudio(SOUND_THEME);
+            init();  
+        });
     })
 }
 
@@ -32,9 +35,12 @@ function addStartGameListener(btStartGame) {
  * @param {HTMLElement} btControls - The Controls button element.
  */
 function addControlsListener(btControls) {
-    const controlsMenu = document.getElementById('controls-window')
-    btControls.addEventListener('click', () =>  {
-        controlsMenu.classList.remove('hidden');
+    const controlsMenu = document.getElementById('controls-window');
+    ['click', 'touchstart'].forEach(eventType => {
+        btControls.addEventListener(eventType, (e) =>  {
+            e.preventDefault();
+            controlsMenu.classList.remove('hidden');
+        })
     })
 }
 
@@ -46,12 +52,15 @@ function addControlsListener(btControls) {
  */
 function addHomeListener(btStartGame, btControls) {
     const btHome = document.getElementById('bt-home');
-    btHome.addEventListener('click' , () => {
-        audioManager.stopAll();
-        resetButtons(btStartGame, btControls, btHome);
-        startScreenImage.src = IMAGE_STARTSCREEN;
-        drawStartScreen();
-    });
+    ['click', 'touchstart'].forEach(eventType => {
+        btHome.addEventListener(eventType, (e) =>  {
+            e.preventDefault();
+            audioManager.stopAll();
+            resetButtons(btStartGame, btControls, btHome);
+            startScreenImage.src = IMAGE_STARTSCREEN;
+            drawStartScreen();
+        });
+    })    
 }
 
 /**
@@ -74,10 +83,13 @@ function resetButtons(btStartGame, btControls, btHome) {
  */
 function addCloseControlMenuListener() {
     const closeBtn = document.getElementById('bt-close-control-menu');
-    const controlsMenu = document.getElementById('controls-window')
-    closeBtn.addEventListener('click' , () => {
-        controlsMenu.classList.add('hidden');
-    })
+    const controlsMenu = document.getElementById('controls-window');
+    ['click', 'touchstart'].forEach(eventType => {
+        closeBtn.addEventListener(eventType, (e) =>  {
+            e.preventDefault();
+            controlsMenu.classList.add('hidden');
+        })
+    })    
 }
 
 /**
@@ -96,8 +108,11 @@ function addScreenSizeListener() {
  */
 function addVolumeControlListener() {
     const volumeControl = document.getElementById('sound-volume');
-    volumeControl.addEventListener('click', () => {
-        toggleSoundIcon();      
+    ['click', 'touchstart'].forEach(eventType => {
+        volumeControl.addEventListener(eventType, (e) =>  {
+            e.preventDefault();
+            toggleSoundIcon();      
+        })
     })
 }
 
@@ -150,13 +165,16 @@ function soundOnHandler(soundOn, soundOff) {
  * @param {HTMLElement} minScreen - The button element to minimize the screen.
  */
 function changeScreenWithClick(changeScreenSize, maxScreen, minScreen) {
-    changeScreenSize.addEventListener('click', () => {
-        const screen = document.getElementById('screen')
-        if (!document.fullscreenElement) {
-            fullscreenOnHandler(screen, maxScreen, minScreen);
-        } else {
-            fullscreenOffHandler(maxScreen, minScreen);
-        }
+    ['click', 'touchstart'].forEach(eventType => {
+        changeScreenSize.addEventListener(eventType, (e) =>  {
+            e.preventDefault();
+            const screen = document.getElementById('screen')
+            if (!document.fullscreenElement) {
+                fullscreenOnHandler(screen, maxScreen, minScreen);
+            } else {
+                fullscreenOffHandler(maxScreen, minScreen);
+            }
+        });
     });
 }
 
