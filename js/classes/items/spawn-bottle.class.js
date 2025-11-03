@@ -7,7 +7,7 @@ class SpawnBottle extends SpawnableObjects {
     };
     audioVolume = {
         rotate: 0.8,
-        collect: 0.5,
+        collect: 0.3,
         splash: 0.8
     }
     
@@ -43,10 +43,7 @@ class SpawnBottle extends SpawnableObjects {
     }
 
     playBottleCollectSound() {
-        let bottle = new Audio (BOTTLE_ASSETS.SOUNDS.COLLECT);
-        // console.log(bottle);
-        bottle.volume = this.audioVolume.collect;
-        bottle.play();
-        // this.audioManager.playAudio(BOTTLE_ASSETS.SOUNDS.COLLECT, this.audioVolume.collect);         
+        const isShortAudio = true;
+        this.audioManager.playAudio(BOTTLE_ASSETS.SOUNDS.COLLECT, this.audioVolume.collect, isShortAudio);         
     }
 }

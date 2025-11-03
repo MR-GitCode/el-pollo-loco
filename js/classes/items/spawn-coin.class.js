@@ -6,7 +6,7 @@ class SpawnCoin extends SpawnableObjects {
       bottom: 100
    };
    audioVolume = {
-        collect: 1,
+        collect: 0.4,
    }
  
    constructor() {
@@ -36,11 +36,8 @@ class SpawnCoin extends SpawnableObjects {
       },  500);
    }
 
-   playCoinCollectSound() {
-      let coin = new Audio (COIN_ASSETS.SOUNDS.COLLECT);
-      // console.log(coin);
-      coin.volume = this.audioVolume.collect;
-      coin.play(); 
-         // this.audioManager.playAudio(COIN_ASSETS.SOUNDS.COLLECT, this.audioVolume.collect)
+   playCoinCollectSound() { 
+      const isShortAudio = true;
+      this.audioManager.playAudio(COIN_ASSETS.SOUNDS.COLLECT, this.audioVolume.collect, isShortAudio)
    }   
 }

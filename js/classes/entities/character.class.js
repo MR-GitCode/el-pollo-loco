@@ -257,10 +257,11 @@ class Character extends MovableObject{
      */ 
     playSnoringSound() {
         if (!this.isSnoring) {
-            this.isSnoring = true; 
-            let audioLoop = true;
+            this.isSnoring = true;
+            const isShortAudio = false; 
+            const audioLoop = true;
             this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.BREATH[0]);
-            this.audioManager.playAudio(CHARACTER_ASSETS.SOUNDS.SNORING, this.audioVolume.snor, audioLoop);
+            this.audioManager.playAudio(CHARACTER_ASSETS.SOUNDS.SNORING, this.audioVolume.snor, isShortAudio, audioLoop);
         }
     }
 
@@ -287,10 +288,11 @@ class Character extends MovableObject{
     playWalkingSound() {
         if (!this.isWalkingSoundPlaying) {
             this.isWalkingSoundPlaying = true;
-            let loop = true;
+            const isShortAudio = false;
+            const audioLoop = true;
             this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.BREATH[0]);
             this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.SNORING[0]);
-            this.audioManager.playAudio(CHARACTER_ASSETS.SOUNDS.WALKING, this.audioVolume.walk, loop);
+            this.audioManager.playAudio(CHARACTER_ASSETS.SOUNDS.WALKING, this.audioVolume.walk, isShortAudio, audioLoop);
         }
     }
 

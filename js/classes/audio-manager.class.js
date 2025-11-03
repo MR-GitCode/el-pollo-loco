@@ -3,6 +3,11 @@ class AudioManager {
     currentAudio = null;
     soundEnabled = false;
 
+    /**
+     * Loads a single audio file and stores it in the cache.
+     * 
+     * @param {string} path - The file path of the audio resource.
+     */
     loadAudio(path) {
         const audio = new Audio(path);
         audio.preload = 'auto';      // Browser soll die Datei komplett laden
@@ -11,6 +16,11 @@ class AudioManager {
         this.audioCache[path] = audio;
     }
 
+    /**
+     * Loads multiple audio files at once and stores them in the cache.
+     * 
+     * @param {string[]} array - Array of audio file paths.
+     */
     loadAudios(array) {
         array.forEach((path) => {
             let audio = new Audio();
@@ -20,30 +30,66 @@ class AudioManager {
         })
     }
 
-    playAudio(path, volume = 1, audioLoop = false) {
-        // console.log('Sound play', path, this.currentAudio);
-        if (this.soundEnabled) {
-            if (this.audioCache[path]) {
-                this.currentAudio = this.audioCache[path];
-                this.currentAudio.loop = audioLoop;
-                this.currentAudio.volume = volume;
-                this.currentAudio.play();
-                // console.log('audio is now playing', this.currentAudio);
-                
-            }  else {
-                console.error('Audio nicht geladen:', path);
+    /**
+     * Plays a specific audio file if sound is enabled.
+     * 
+     * @param {string} path - Path of the audio file to play.
+     * @param {number} [volume=1] - Playback volume (0.0–1.0).
+     * @param {boolean} [isShortAudio=false] - Whether the audio is a short sound effect.
+     * @param {boolean} [audioLoop=false] - Whether the audio should loop.
+     */
+    playAudio(path, volume = 1, isShortAudio = false, audioLoop = false) {
+        if (this.soundEnabled && this.audioCache[path]) {
+            if (isShortAudio){
+                this.shortAudioHandler(path, volume);
+            } else {
+                this.longAudioHandler(path, audioLoop, volume);
             }
         }
     }
 
+    /**
+     * Handles long audio playback.
+     * 
+     * @param {string} path - The audio file path.
+     * @param {boolean} audioLoop - Whether to loop the audio.
+     * @param {number} volume - Volume of the playback.
+     */
+    longAudioHandler(path, audioLoop, volume) {
+        this.currentAudio = this.audioCache[path];
+        this.currentAudio.loop = audioLoop;
+        this.currentAudio.volume = volume;
+        this.currentAudio.play();
+    }
+
+    /**
+     * Handles short sound effects.
+     * 
+     * @param {string} path - The audio file path.
+     * @param {number} volume - Playback volume.
+     */
+    shortAudioHandler(path, volume) {
+        const shortAudio = this.audioCache[path].cloneNode(true);
+        shortAudio.volume = volume;
+        shortAudio.play();
+    }
+
+    
+    /**
+     * Stops a specific audio file and resets its playback position.
+     * 
+     * @param {string} audioPath - Path of the audio file to stop.
+     */
     stopAudio(audioPath) {
-        // console.log('stopp audio', audioPath);
         if(this.currentAudio) {
             this.audioCache[audioPath].pause();
             this.currentAudio.currentTime = 0;
         }
     }
 
+    /**
+     * Stops all currently playing audio.
+     */
     stopAll() {
         Object.values(this.audioCache).forEach(audio => {
             audio.pause();
@@ -51,70 +97,3 @@ class AudioManager {
         });
     }
 }
-
-// class AudioManager {   
-//     audioCache = {}
-//     currentAudio = null;
-//     soundEnabled = false;
-
-//     // Audio laden und im Cache speichern
-//     loadAudio(path) {
-//         const audio = new Audio(path);
-//         audio.preload = 'auto';
-//         audio.load();
-//         this.audioCache[path] = audio;
-//     }
-
-//     // Mehrere Audios laden
-//     loadAudios(array) {
-//         array.forEach(path => this.loadAudio(path));
-//     }
-
-//     // Audio abspielen, instanziiert es bei jedem Aufruf neu
-//     playAudio(path, volume = 1, audioLoop = false) {
-//         if (!this.soundEnabled) return;
-
-//         const cachedAudio = this.audioCache[path];
-//         if (!cachedAudio) {
-//             console.error('Audio nicht geladen:', path);
-//             return;
-//         }
-
-//         // Stoppe aktuelles Audio, falls es das gleiche ist
-//         if (this.currentAudio) {
-//             this.currentAudio.pause();
-//         }
-
-//         // Neues Audio-Objekt erstellen, um frisch zu starten
-//         const audio = new Audio(cachedAudio.src);
-//         audio.preload = 'auto';
-//         audio.loop = audioLoop;
-//         audio.volume = volume;
-
-//         this.currentAudio = audio;
-//         audio.play().catch(err => {
-//             console.warn('Audio konnte nicht abgespielt werden:', err);
-//         });
-//     }
-
-//     // Stoppt ein bestimmtes Audio
-//     stopAudio(audioPath) {
-//         const audio = this.audioCache[audioPath];
-//         if(audio && this.currentAudio && this.currentAudio.src === audio.src) {
-//             this.currentAudio.pause();
-//             this.currentAudio.currentTime = 0;
-//             this.currentAudio = null;
-//         }
-//     }
-
-//     // Stoppt alle Audios
-//     stopAll() {
-//         Object.values(this.audioCache).forEach(audio => {
-//             if(this.currentAudio && this.currentAudio.src === audio.src) {
-//                 this.currentAudio.pause();
-//                 this.currentAudio.currentTime = 0;
-//             }
-//         });
-//         this.currentAudio = null;
-//     }
-// }

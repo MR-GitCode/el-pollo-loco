@@ -4,6 +4,9 @@ let keyboard = new Keyboard();
 let startScreenImage = new Image();
 let audioManager = new AudioManager();
 let gameStarted = false;
+let audioVolume = {
+    theme: 0.2,
+}
 
 const IMAGE_STARTSCREEN = [
     'img/9_intro_outro_screens/start/startscreen_2.png'
@@ -95,7 +98,7 @@ function stopGame() {
  * Played the theme music.
  */
 function playSoundMenu() {
-    audioVolume = 0.2;
-    audioLoop = true;
-    audioManager.playAudio(SOUND_THEME, audioVolume, audioLoop);
+    const isShortAudio = false;
+    const audioLoop = true;
+    audioManager.playAudio(SOUND_THEME, audioVolume.theme, isShortAudio, audioLoop);
 }
