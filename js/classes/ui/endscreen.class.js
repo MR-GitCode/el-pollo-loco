@@ -31,8 +31,8 @@ class Endscreen extends DrawableObject {
     }
 
     playLostGameSound() {
-        console.log('gameOver');
-        
+        this.audioManager.stopAll();
+        // this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.SNORING[0]);
         this.audioManager.playAudio(ENDSCREEN_ASSETS.SOUNDS.GAMEOVER, this.audioVolume.gameOver);
     }
 
@@ -47,9 +47,9 @@ class Endscreen extends DrawableObject {
         this.playWinGameSound();
     }
 
-    playWinGameSound() {
-        console.log('winning');
-        
+    playWinGameSound() { 
+        this.audioManager.stopAll();
+        // this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.SNORING[0]);     
         this.audioManager.playAudio(ENDSCREEN_ASSETS.SOUNDS.WINNING, this.audioVolume.winGame);
     }
 

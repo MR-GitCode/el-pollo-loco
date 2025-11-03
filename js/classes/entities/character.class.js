@@ -21,8 +21,8 @@ class Character extends MovableObject{
         death: 1
     };
     audioVolume = {
-        breath: 0.05,
-        snor: 0.03,
+        breath: 0.03,
+        snor: 0.02,
         walk: 0.3,
         jump: 0.8,
         hurt: 0.4,
