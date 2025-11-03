@@ -52,9 +52,10 @@ class World {
      * and bottles are available. Updates status bar.
      */
     checkThrowObjects() {
-        if(this.keyboard.THROW && (this.bottleCount > 0)) {
+        if(this.keyboard.THROW && (this.bottleCount > 0) && this.throwableObjects.length < 1) {
             let bottle = new ThrowableObject(this.character.x, this.character.y, this.bottleHitsEnemy);
             this.throwableObjects.push(bottle);
+            console.log(this.throwableObjects);
             this.bottleCount --
             this.changeStatusBar(this.bottleCount , this.level.maxBottles , "statusBarBottle")
         }
