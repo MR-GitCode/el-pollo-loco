@@ -12,6 +12,9 @@ class Endscreen extends DrawableObject {
         this.ctx = this.canvas.getContext('2d');
     }
 
+    /**
+     * Loads all assets of the endscreens.
+     */
     loadAssets() {
         this.loadImages(ENDSCREEN_ASSETS.IMAGES.GAMEOVER);
         this.loadImages(ENDSCREEN_ASSETS.IMAGES.WINNING);
@@ -30,9 +33,11 @@ class Endscreen extends DrawableObject {
         this.playLostGameSound();
     }
 
+    /**
+     * Plays the game over sound.
+     */
     playLostGameSound() {
         this.audioManager.stopAll();
-        // this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.SNORING[0]);
         this.audioManager.playAudio(ENDSCREEN_ASSETS.SOUNDS.GAMEOVER, this.audioVolume.gameOver);
     }
 
@@ -47,9 +52,11 @@ class Endscreen extends DrawableObject {
         this.playWinGameSound();
     }
 
+    /**
+     * Plays the winning sound.
+     */
     playWinGameSound() { 
-        this.audioManager.stopAll();
-        // this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.SNORING[0]);     
+        this.audioManager.stopAll();   
         this.audioManager.playAudio(ENDSCREEN_ASSETS.SOUNDS.WINNING, this.audioVolume.winGame);
     }
 

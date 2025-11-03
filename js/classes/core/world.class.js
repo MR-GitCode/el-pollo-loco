@@ -165,14 +165,25 @@ class World {
             this.addToCanvas(this.statusBarBottle);
             this.addToCanvas(this.statusBarHealth);
             this.addToCanvas(this.statusBarCoin);
-            this.addToCanvas(this.statusBarHealthBoss);
-
+            this.drawEndbossHealthBar();
+            
             //draw() wird immer wieder aufgerufen
             let self = this;
             requestAnimationFrame( function () {
                 self.draw(); 
             }); 
         }
+    }
+
+    drawEndbossHealthBar() {
+        const boss = this.level.enemies.find(e => e instanceof EndBoss);
+        if (this.bossIsNearCharacter(boss)){
+            this.addToCanvas(this.statusBarHealthBoss);
+        }
+    }
+
+    bossIsNearCharacter(boss) {
+        return Math.abs(boss.x - this.character.x) < 500 || boss.attackCharacter;
     }
 
     addObjectsToCanvas(objects) {

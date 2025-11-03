@@ -1,5 +1,6 @@
 class EndBoss extends MovableObject {  
     static bossEnergy = 300
+    x = 2400
     y = 90;
     width = 1045 * 0.3;
     height = 1217 * 0.3;
@@ -31,8 +32,8 @@ class EndBoss extends MovableObject {
     constructor () {
         super().loadImage(ENDBOSS_ASSETS.IMAGES.ALERT[0]);
         this.audioManager = audioManager;
+        this.world = world;
         this.loadAssets();
-        this.x = 2400;
         this.isBoss = true;
         this.animate();
     }
@@ -78,7 +79,7 @@ class EndBoss extends MovableObject {
      * @returns {boolean} True if player is within attack range.
      */
     canAttack() {
-        return this.x - this.world.character.x < 90;
+        return Math.abs(this.x - this.world.character.x) < 75;
     }
 
     /**
@@ -127,10 +128,17 @@ class EndBoss extends MovableObject {
      * Plays walking animation and moves the boss toward the player.
      */
     performWalkAnimation() {
-        this.playAnimation(ENDBOSS_ASSETS.IMAGES.WALKING, this.frameSpeed.walk);
-        this.moveLeft();
+        this.playAnimation(ENDBOSS_ASSETS.IMAGES.WALKING, this.frameSpeed.walk); 
+        const bossLeftFromChracter = this.world.character.x - this.x;     
+        if (bossLeftFromChracter > 0) {
+            this.moveRight();
+            this.otherDirection = true;
+        } else {
+           this.moveLeft();
+           this.otherDirection = false; 
+        }
         this.playWalkingSound();
-        this.otherDirection = false;
+        
     }
   
     /**
