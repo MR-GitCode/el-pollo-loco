@@ -77,6 +77,10 @@
     .controls-section {
         gap: 25px !important;
     }
+
+    #buttons.buttons-endscreen {
+        bottom: -10px;
+    }
 }
 
 @media screen and (max-width: 1000px) {

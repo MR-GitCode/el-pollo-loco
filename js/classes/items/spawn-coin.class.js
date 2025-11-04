@@ -37,7 +37,7 @@ class SpawnCoin extends SpawnableObjects {
    }
 
    playCoinCollectSound() { 
-      const isShortAudio = true;
-      this.audioManager.playAudio(COIN_ASSETS.SOUNDS.COLLECT, this.audioVolume.collect, isShortAudio)
+      const audioTyp = 'isShortSound';
+      this.audioManager.playAudio(COIN_ASSETS.SOUNDS.COLLECT, this.audioVolume.collect, audioTyp)
    }   
 }

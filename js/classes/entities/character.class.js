@@ -17,7 +17,7 @@ class Character extends MovableObject{
         idleLong: 0.5,
         walk: 1,
         jump: 0.25,
-        hurt: 0.5,
+        hurt: 0.25,
         death: 1
     };
     audioVolume = {
@@ -33,8 +33,10 @@ class Character extends MovableObject{
     attackJumpStrength = 100;
     wasInAir = false;
     isWalkingSoundPlaying = false;
+    lastHurtSoundTime = 0;
     isBreathing = false;
     isSnoring = false;
+    lastHurtSoundTime = 0;
 
     constructor () {
         super().loadImage('img/2_character_pepe/2_walk/W-21.png');
@@ -258,10 +260,10 @@ class Character extends MovableObject{
     playSnoringSound() {
         if (!this.isSnoring) {
             this.isSnoring = true;
-            const isShortAudio = false; 
+            const audioTyp = false; 
             const audioLoop = true;
             this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.BREATH[0]);
-            this.audioManager.playAudio(CHARACTER_ASSETS.SOUNDS.SNORING, this.audioVolume.snor, isShortAudio, audioLoop);
+            this.audioManager.playAudio(CHARACTER_ASSETS.SOUNDS.SNORING, this.audioVolume.snor, audioTyp, audioLoop);
         }
     }
 
@@ -279,7 +281,11 @@ class Character extends MovableObject{
      * Plays the hurt sound effect when the object takes damage.
      */
     playHurtingSound() {
-        this.audioManager.playAudio(CHARACTER_ASSETS.SOUNDS.HURT, this.audioVolume.hurt)
+        const now = Date.now();
+        if (now - this.lastHurtSoundTime < 1000) return; // Cooldown 0.5s
+        this.lastHurtSoundTime = now;
+        const audioTyp = 'isSpamSound'
+        this.audioManager.playAudio(CHARACTER_ASSETS.SOUNDS.HURT, this.audioVolume.hurt, audioTyp);
     }
 
     /**
@@ -288,11 +294,11 @@ class Character extends MovableObject{
     playWalkingSound() {
         if (!this.isWalkingSoundPlaying) {
             this.isWalkingSoundPlaying = true;
-            const isShortAudio = false;
+            const audioTyp = false;
             const audioLoop = true;
             this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.BREATH[0]);
             this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.SNORING[0]);
-            this.audioManager.playAudio(CHARACTER_ASSETS.SOUNDS.WALKING, this.audioVolume.walk, isShortAudio, audioLoop);
+            this.audioManager.playAudio(CHARACTER_ASSETS.SOUNDS.WALKING, this.audioVolume.walk, audioTyp, audioLoop);
         }
     }
 

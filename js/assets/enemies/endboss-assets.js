@@ -52,7 +52,7 @@ const ENDBOSS_ASSETS = {
         ],
 
         HURT: [
-            'audio/character/noises/hurt/male-grunt.mp3'
+            'audio/enemies/endboss/hurt/pan-frying-chicken-46760.mp3'
         ],
 
         DEATH: [

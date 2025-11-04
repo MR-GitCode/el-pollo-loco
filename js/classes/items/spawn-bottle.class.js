@@ -43,7 +43,7 @@ class SpawnBottle extends SpawnableObjects {
     }
 
     playBottleCollectSound() {
-        const isShortAudio = true;
-        this.audioManager.playAudio(BOTTLE_ASSETS.SOUNDS.COLLECT, this.audioVolume.collect, isShortAudio);         
+        const audioTyp = 'isShortSound';
+        this.audioManager.playAudio(BOTTLE_ASSETS.SOUNDS.COLLECT, this.audioVolume.collect, audioTyp);         
     }
 }

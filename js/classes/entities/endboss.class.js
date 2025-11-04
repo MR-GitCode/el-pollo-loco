@@ -88,6 +88,7 @@ class EndBoss extends MovableObject {
     performHurtAnimation() {
         this.playAnimation(ENDBOSS_ASSETS.IMAGES.HURT, this.frameSpeed.hurt);
         this.speed += 0.5;
+        this.playHurtingSound();
         setTimeout(() => {
             this.attackCharacter = true;
         }, 700);;
@@ -98,9 +99,11 @@ class EndBoss extends MovableObject {
      * Plays death animation and triggers win screen after a delay.
      */
     performDeathAnimation() {
+        this.audioManager.stopAudio(ENDBOSS_ASSETS.SOUNDS.WALKING);
         this.playAnimation(ENDBOSS_ASSETS.IMAGES.DEAD, this.frameSpeed.death);
         this.playDieSound();
         setTimeout(() => {
+            this.audioManager.stopAll(); 
             this.audioManager.stopAudio(ENDBOSS_ASSETS.SOUNDS.DEATH[0])
             this.endscreen.winGame();
         }, 1200);
@@ -110,6 +113,7 @@ class EndBoss extends MovableObject {
      * Plays attack animation.
      */
     performAttackAnimation() {
+        this.audioManager.stopAudio(ENDBOSS_ASSETS.SOUNDS.WALKING);
         this.playAnimation(ENDBOSS_ASSETS.IMAGES.ATTACK, this.frameSpeed.attack);
     }
 
@@ -129,7 +133,7 @@ class EndBoss extends MovableObject {
      */
     performWalkAnimation() {
         this.playAnimation(ENDBOSS_ASSETS.IMAGES.WALKING, this.frameSpeed.walk); 
-        const bossLeftFromChracter = this.world.character.x - this.x;     
+        const bossLeftFromChracter = this.world.character.x - this.x;    
         if (bossLeftFromChracter > 0) {
             this.moveRight();
             this.otherDirection = true;
@@ -137,15 +141,15 @@ class EndBoss extends MovableObject {
            this.moveLeft();
            this.otherDirection = false; 
         }
-        this.playWalkingSound();
-        
+        this.playWalkingSound(); 
     }
   
     /**
      * Plays the death sound effect at a predefined volume.
      */
     playDieSound() {
-        this.audioManager.playAudio(ENDBOSS_ASSETS.SOUNDS.DEATH, this.audioVolume.death)
+        const audioTyp = 'isSpamSound';
+        this.audioManager.playAudio(ENDBOSS_ASSETS.SOUNDS.DEATH, this.audioVolume.death, audioTyp);
     }
 
     /**
@@ -159,9 +163,10 @@ class EndBoss extends MovableObject {
      * Plays the walking sound effect while the object is moving.
      */
     playWalkingSound() {
-        if (this.isWalkingSoundPlaying) {
-            this.audioManager.playAudio(ENDBOSS_ASSETS.SOUNDS.WALKING, this.audioVolume.walk);
-        }
+        console.log('walk');
+        this.audioManager.playAudio(ENDBOSS_ASSETS.SOUNDS.WALKING, this.audioVolume.walk);
+        this.audioManager.stopAudio(ENDBOSS_ASSETS.SOUNDS.HURT[0]);
+        
     }
 
     /**

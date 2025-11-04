@@ -2,6 +2,7 @@ class AudioManager {
     audioCache = {}
     currentAudio = null;
     soundEnabled = false;
+    activeSounds = [];
 
     /**
      * Loads a single audio file and stores it in the cache.
@@ -38,11 +39,15 @@ class AudioManager {
      * @param {boolean} [isShortAudio=false] - Whether the audio is a short sound effect.
      * @param {boolean} [audioLoop=false] - Whether the audio should loop.
      */
-    playAudio(path, volume = 1, isShortAudio = false, audioLoop = false) {
+    playAudio(path, volume = 1, audioTyp = false, audioLoop = false) {
         if (this.soundEnabled && this.audioCache[path]) {
-            if (isShortAudio){
+            if (audioTyp === 'isShortSound') {
                 this.shortAudioHandler(path, volume);
-            } else {
+            }
+            else if (audioTyp == 'isSpamSound') {
+                this.antiSpamAudioHandler(path, volume);
+            }          
+            else {
                 this.longAudioHandler(path, audioLoop, volume);
             }
         }
@@ -59,7 +64,7 @@ class AudioManager {
         this.currentAudio = this.audioCache[path];
         this.currentAudio.loop = audioLoop;
         this.currentAudio.volume = volume;
-        this.currentAudio.play();
+        this.currentAudio.play(); 
     }
 
     /**
@@ -69,11 +74,23 @@ class AudioManager {
      * @param {number} volume - Playback volume.
      */
     shortAudioHandler(path, volume) {
-        const shortAudio = this.audioCache[path].cloneNode(true);
-        shortAudio.volume = volume;
-        shortAudio.play();
+            const shortAudio = this.audioCache[path].cloneNode(true);
+            shortAudio.volume = volume;
+            shortAudio.play();
     }
 
+    antiSpamAudioHandler(path, volume) {
+        const alreadyActive = this.activeSounds.some(e => e.src === this.audioCache[path].src)
+        if (!alreadyActive) {
+            const spamAudio = this.audioCache[path].cloneNode(true);
+            spamAudio.volume = volume;
+            spamAudio.play();
+            spamAudio.addEventListener('ended', () => {
+                this.activeSounds = this.activeSounds.filter(a => a !== spamAudio);
+            });
+            this.activeSounds.push(spamAudio)
+        } 
+    }
     
     /**
      * Stops a specific audio file and resets its playback position.
@@ -95,5 +112,11 @@ class AudioManager {
             audio.pause();
             audio.currentTime = 0;
         });
+        this.activeSounds.forEach(audio => {
+            audio.pause();
+            audio.currentTime = 0;
+        });
+        this.activeSounds = [];
+        this.currentAudio = null;
     }
 }

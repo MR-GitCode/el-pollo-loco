@@ -55,8 +55,7 @@ class Endscreen extends DrawableObject {
     /**
      * Plays the winning sound.
      */
-    playWinGameSound() { 
-        this.audioManager.stopAll();   
+    playWinGameSound() {   
         this.audioManager.playAudio(ENDSCREEN_ASSETS.SOUNDS.WINNING, this.audioVolume.winGame);
     }
 
