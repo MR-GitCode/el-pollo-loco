@@ -79,6 +79,12 @@ class AudioManager {
             shortAudio.play();
     }
 
+    /**
+     * Handles some audio with multiplayback.
+     * 
+     * @param {string} path - The audio file path.
+     * @param {number} volume - Playback volume. 
+     */
     antiSpamAudioHandler(path, volume) {
         const alreadyActive = this.activeSounds.some(e => e.src === this.audioCache[path].src)
         if (!alreadyActive) {

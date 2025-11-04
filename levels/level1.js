@@ -14,6 +14,9 @@ function initLevel() {
 
         [
             new Clouds(),
+            new Clouds(),
+            new Clouds(),
+            new Clouds(),
         ],
         
         [
