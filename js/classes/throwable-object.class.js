@@ -14,6 +14,9 @@ class ThrowableObject extends MovableObject {
         this.objectHasHit = false;
     }
 
+    /**
+     * Loads all assets of the throwable objects.
+     */
     loadAssets() {
         this.loadImages(BOTTLE_ASSETS.IMAGES.ROTATION);
         this.loadImages(BOTTLE_ASSETS.IMAGES.SPLASH)
@@ -21,6 +24,9 @@ class ThrowableObject extends MovableObject {
         this.audioManager.loadAudios(BOTTLE_ASSETS.SOUNDS.SLIME);
     }
 
+    /**
+     * Initiates the throwing motion of the object.
+     */
     throw() {        
         this.speedY = 10;
         this.applyGravity();
@@ -41,11 +47,18 @@ class ThrowableObject extends MovableObject {
         this.world.bottleHitsEnemy = false;
     }
 
+    /**
+     * Play the rotation animation and sound while the flight.
+     */
     rotate() {
        this.playAnimation(BOTTLE_ASSETS.IMAGES.ROTATION);
        this.playRotationSound();
     }
 
+    /**
+     * Plays the splash animation of the object.
+     * @returns 
+     */
     splash() {
         if (this.splashPlayed) return; // verhindert mehrfaches Abspielen
         this.splashPlayed = true;
@@ -62,15 +75,24 @@ class ThrowableObject extends MovableObject {
         }, 100);
     }
 
+    /**
+     * Removes the throwable object from the world after the splash animation finishes.
+     */
     removeObject(){
         this.world.throwableObjects = [];       
     };
 
+    /**
+     * Plays the sound effect for the bottle’s rotation.
+     */
     playRotationSound() {
         let audioVolume = 0.8;
         this.audioManager.playAudio(BOTTLE_ASSETS.SOUNDS.ROTATE, audioVolume);
     }
 
+    /**
+     * Stops the rotation sound and plays the slime splash sound.
+     */
     playSplashSound() {
         this.audioManager.stopAudio(BOTTLE_ASSETS.SOUNDS.ROTATE[0]);
         let audioVolume = 0.8;

@@ -1,5 +1,9 @@
 let level1;
 
+/**
+ * Initializes and configures the first game level (level1).
+ * Creates enemies, clouds, background layers, collectible bottles, and coins.
+ */
 function initLevel() {
     level1 = new Level (
         [

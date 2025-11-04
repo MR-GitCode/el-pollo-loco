@@ -29,12 +29,18 @@ class normalChicken extends MovableObject{
         this.animate(); 
     }
 
+    /**
+     * Loads all assets of the normal chicken.
+     */
     loadAssets() {
         this.loadImages(NORMAL_CHICKEN_ASSETS.IMAGES.DEAD);
         this.loadImages(NORMAL_CHICKEN_ASSETS.IMAGES.WALKING);
         this.audioManager.loadAudios(NORMAL_CHICKEN_ASSETS.SOUNDS.JUMP_KILL)
     }
 
+    /**
+     * Handles normal chicken animation and camera movement.
+     */
     animate() {
         setInterval(() =>{
             if (this.energy == 0) {
@@ -49,11 +55,17 @@ class normalChicken extends MovableObject{
         this.enemyIntervals.push(moveInterval)
     }
 
+    /**
+     * Plays death animation and triggers end screen.
+     */
     performDeathAnimation() {
         this.playAnimation(NORMAL_CHICKEN_ASSETS.IMAGES.DEAD, this.frameSpeed.death);
         clearInterval(this.enemyIntervals);
     }
 
+    /**
+     * Plays a random sound effect when the chicken is killed by a jump attack.
+     */
     playJumpKillSound() {
         let randomIndex = Math.floor(Math.random() * NORMAL_CHICKEN_ASSETS.SOUNDS.JUMP_KILL.length);
         this.audioManager.playAudio(NORMAL_CHICKEN_ASSETS.SOUNDS.JUMP_KILL[randomIndex], this.audioVolume.death)

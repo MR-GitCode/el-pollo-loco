@@ -66,7 +66,6 @@ class Character extends MovableObject{
 
     /**
      * Handles character animation and camera movement.
-     *
      */
     animate() {
         setInterval(() => {
@@ -313,6 +312,9 @@ class Character extends MovableObject{
         }, 10)
     }
 
+    /**
+     * Plays the jumping sound effect.
+     */
     playJumpSound() {
         this.wasInAir =  true
     }

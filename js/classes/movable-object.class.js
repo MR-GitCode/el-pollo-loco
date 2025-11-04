@@ -62,18 +62,38 @@ class MovableObject extends DrawableObject{
         )
     }
 
+    /**
+     * Checks for collision along the top edge of the current object.
+     * @param {MovableObject} model - The object to compare against.
+     * @returns 
+     */
     isTopCollision(model) {
         return this.y + this.offset.top < model.y + model.height - model.offset.bottom;
     }
 
+    /**
+     * Checks for collision along the bottom edge of the current object.
+     * @param {MovableObject} model - The object to compare against.
+     * @returns 
+     */
     isBottomCollision(model) {
         return this.y + this.height - this.offset.bottom > model.y + model.offset.top;
     }
 
+    /**
+     * Checks for collision along the left edge of the current object.
+     * @param {MovableObject} model - The object to compare against. 
+     * @returns 
+     */
     isLeftCollision(model) {
         return this.x + this.offset.left < model.x + model.width - model.offset.right;
     }
 
+    /**
+     *  Checks for collision along the right edge of the current object.
+     * @param {MovableObject} model - The object to compare against. 
+     * @returns 
+     */
     isRightCollision(model) {
         return this.x + this.width - this.offset.right > model.x + model.offset.left;
     }

@@ -7,11 +7,19 @@ class DrawableObject {
     height;
     width;
 
+    /**
+     * Loads a single image and assigns it to the current object.
+     * @param {string} path - The file path of the image to load. 
+     */
     loadImage(path){
         this.img = new Image();
         this.img.src = path
     }
 
+    /**
+     * Loads multiple images and stores them in the image cache for quick access.
+     * @param {string} array - Array of image file paths to preload.
+     */
     loadImages(array) {
         array.forEach((path) => {
             let img = new Image();
@@ -20,10 +28,18 @@ class DrawableObject {
         })
     }
         
+    /**
+     * Draws the current image of the object on the canvas.
+     * @param {CanvasRenderingContext2D} ctx - The canvas rendering context. 
+     */
     draw(ctx) {
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height) //drawImage is a methode
     }
 
+    /**
+     * Draws a blue outline around the object’s bounding box for debugging purposes.
+     * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
+     */
     drawFrame(ctx) {
         if(this instanceof Character || this instanceof normalChicken || this instanceof EndBoss || this instanceof SpawnCoin || this instanceof SpawnBottle) {
             ctx.beginPath();
@@ -34,6 +50,10 @@ class DrawableObject {
         }
     }
 
+    /**
+     * Draws a red outline around the object’s offset area for collision debugging.
+     * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
+     */
     drawOffsetFrame(ctx) {
         if(this instanceof Character || this instanceof normalChicken || this instanceof EndBoss || this instanceof SpawnCoin || this instanceof SpawnBottle) {
             ctx.beginPath();

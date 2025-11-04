@@ -138,6 +138,10 @@ class World {
         });
     };
 
+    /**
+     * Updates the boss health bar based on the current boss energy.
+     * @param {MovableObject} enemy The enemy object to check; applies only if it's a boss.
+     */
     collisionObjectWithBoss (enemy) {
         if (enemy.isBoss) {
                 let percentage = (enemy.energy / EndBoss.bossEnergy) * 100;
@@ -145,11 +149,20 @@ class World {
         } 
     }
 
+    /**
+     * Updates a specified status bar (e.g., bottles, coins, health) based on current progress.
+     * @param {number} objectCount - Current number of collected or remaining objects.
+     * @param {number} maxObject - Maximum possible count for this object type.
+     * @param {string} statusBarName - The property name of the status bar to update.
+     */
     changeStatusBar (objectCount, maxObject, statusBarName) {
         let percentage = (objectCount / maxObject) * 100;
         this[statusBarName].setPercentage(percentage);
     }
 
+    /**
+     * Continuously renders the game scene including backgrounds, objects, characters, and UI.
+     */
     draw() {
         if (gameStarted && !this.gameOver) {           
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -175,6 +188,9 @@ class World {
         }
     }
 
+    /**
+     * Draws the boss health bar when the boss is close enough to the character.
+     */
     drawEndbossHealthBar() {
         const boss = this.level.enemies.find(e => e instanceof EndBoss);
         if (this.bossIsNearCharacter(boss)){
@@ -182,16 +198,29 @@ class World {
         }
     }
 
+    /**
+     * Checks whether the boss is within visible range of the player character.
+     * @param {EndBoss} boss - The boss instance to check distance for.
+     * @returns {boolean} True if the boss is near or actively attacking.
+     */
     bossIsNearCharacter(boss) {
         return Math.abs(boss.x - this.character.x) < 500 || boss.attackCharacter;
     }
 
+    /**
+     * Draws an array of drawable objects on the canvas.
+     * @param {DrawableObject[]} objects - A list of drawable game objects.
+     */
     addObjectsToCanvas(objects) {
         objects.forEach(obj => {
             this.addToCanvas(obj);
         })
     }
 
+    /**
+     * Draws a single object on the canvas, handling mirroring if needed.
+     * @param {DrawableObject} model - The object to be drawn.
+     */
     addToCanvas(model) {
         if (model.otherDirection) {
             this.mirrorImage(model)

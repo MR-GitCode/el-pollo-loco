@@ -22,11 +22,17 @@ class SpawnCoin extends SpawnableObjects {
       this.spawnObject(COIN_ASSETS.IMAGES.COIN);
    }
 
+   /**
+    * Loads all assets of the coin item.
+    */
    loadAssets() {
       this.loadImages(COIN_ASSETS.IMAGES.COIN);
       this.audioManager.loadAudio(COIN_ASSETS.SOUNDS.COLLECT);
    }
 
+    /**
+     * Handles coin animation.
+     */
    animate() {
       setInterval(() => {
          let i = this.currentImage % COIN_ASSETS.IMAGES.COIN.length;

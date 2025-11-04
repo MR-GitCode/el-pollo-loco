@@ -26,6 +26,9 @@ class SpawnBottle extends SpawnableObjects {
         this.randomMirrorImage();
     }
 
+    /**
+     * Loads all assets of the bottle item.
+     */
     loadAssets() {
         this.loadImages(BOTTLE_ASSETS.IMAGES.BOTTLE);
         this.audioManager.loadAudio(BOTTLE_ASSETS.SOUNDS.BREAKING);
@@ -42,6 +45,9 @@ class SpawnBottle extends SpawnableObjects {
         } else this.otherDirection = false;
     }
 
+    /**
+     * Play the collect sound of the bottle.
+     */
     playBottleCollectSound() {
         const audioTyp = 'isShortSound';
         this.audioManager.playAudio(BOTTLE_ASSETS.SOUNDS.COLLECT, this.audioVolume.collect, audioTyp);         
