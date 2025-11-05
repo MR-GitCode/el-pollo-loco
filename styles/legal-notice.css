@@ -1,0 +1,57 @@
+body{
+    color:rgba(0, 0, 0, 0.9)  ;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    margin: 0 10%;
+    max-height: 100vh;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)),
+        url('../img/5_background/body_background_desert.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+h2{
+    margin-block-start: 0;
+    margin-block-end: 0;
+}
+
+.legal-notice-content {
+    overflow-y: scroll;
+    scroll-behavior: auto;
+}
+
+.legal-notice-content::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.legal-notice-content::-webkit-scrollbar-button {
+  width: 0px;
+  height: 0px;
+}
+.legal-notice-content::-webkit-scrollbar-thumb {
+  background: #8a2206;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
+
+.legal-notice-content::-webkit-scrollbar-track {
+  background: #ffaf47;
+  border: 0px none #ffffff;
+  border-radius: 35px;
+}
+
+.sources {
+    height: 150px;
+}
+
+.sources p {
+    margin-block-start: 0em;
+    margin-block-end: 2px;
+}
+
+@media only screen and (max-width: 720px) {
+    body{
+        margin: 0 3%;
+    }
+}

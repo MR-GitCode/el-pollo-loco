@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'Zabars';
-    src: url('fonts/ZABARS/Zabars.ttf') format('truetype');
+    src: url('../fonts/ZABARS/Zabars.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
@@ -9,7 +9,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-image: url('img/5_background/body_background_desert.png');
+    background-image: url('../img/5_background/body_background_desert.png');
     justify-content: center;
     height: 100vh;
     background-size: cover;
