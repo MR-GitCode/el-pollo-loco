@@ -405,3 +405,15 @@ function styleBtnMax(screenSizeButton, soundVolumeButton, buttons) {
         btn.classList.add('fullscreen-button');
     });
 }
+
+/**
+ * Toggles the nav menu under the hamburger menu.
+ */
+function openNavMenu() {
+  const menuIcon = document.getElementById("hamburger-menu");
+  if (menuIcon.style.display === "block") {
+    menuIcon.style.display = "none";
+  } else {
+    menuIcon.style.display = "block";
+  }
+}

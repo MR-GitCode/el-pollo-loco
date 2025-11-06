@@ -1,14 +1,29 @@
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
 body{
     color:rgba(0, 0, 0, 0.9)  ;
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-family: monospace, serif;
     margin: 0 10%;
-    max-height: 100vh;
+    min-height: 100dvh;
+    height: 100dvh;
     background-image:
         linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)),
         url('../img/5_background/body_background_desert.png');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
+    display: flex;
+    align-items: center;
+}
+
+h1{
+    font-size: 84px;
+    font-weight: 400;
+    margin-block-start: 0;
+    margin-block-end:15px;
 }
 
 h2{
@@ -46,12 +61,71 @@ h2{
 }
 
 .sources p {
-    margin-block-start: 0em;
+    margin-block-start: 0em !important;
     margin-block-end: 2px;
 }
 
+.headline-legal-notice{
+    position: relative;
+}
+
+#back-arrow {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    right: 10px;
+    top: 20px;
+    cursor: pointer;
+    border-radius: 30px;
+}
+
+#back-arrow:hover path {
+    fill: #8a2206;
+    scale: 1.1;
+}
+
 @media only screen and (max-width: 720px) {
-    body{
-        margin: 0 3%;
+    body {
+        margin: 0 2%;
+    }
+
+    .legal-notice {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .scroll-bar {
+        flex: 1 1 auto;
+        min-height: 0;
+    }
+
+    .legal-notice-content {
+        height: 105%
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    h1 {
+        font-size: 32px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    .legal-notice-content p {
+        font-size: 16px;
+        margin-block-start: 2px;
+        margin-block-end: 2px;
+    }
+
+    #back-arrow {
+        right: 0px;
+        top: 5px;
+    }
+
+    .scroll-bar {
+        max-height: calc(100dvh - 100px);
     }
 }
