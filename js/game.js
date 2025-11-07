@@ -5,16 +5,9 @@ let startScreenImage = new Image();
 let audioManager = new AudioManager();
 let gameStarted = false;
 let audioVolume = {
-    theme: 0.2,
+    menuTheme: 0.2,
+    ingameTheme: 0.03,
 }
-
-const IMAGE_STARTSCREEN = [
-    'img/9_intro_outro_screens/start/startscreen_2.png'
-]
-
-const SOUND_THEME = [
-    'audio/intro_outro/intro/tex-mex-delight-mexican-mariachi.mp3'
-]
 
 /**
  * Initializes and displays the start screen.
@@ -22,8 +15,9 @@ const SOUND_THEME = [
 function showStartScreen() {
     canvas = document.getElementById('canvas');
     body = document.getElementsByTagName('body')
-    audioManager.loadAudio(SOUND_THEME);
-    startScreenImage.src = IMAGE_STARTSCREEN;
+    audioManager.loadAudio(STARTSCREEN_ASSETS.SOUNDS.THEME);
+    audioManager.loadAudio(INGAME_ASSETS.SOUNDS.THEME);
+    startScreenImage.src = STARTSCREEN_ASSETS.IMAGES.SCREEN;
     startScreenImage.onload = function() {
         drawStartScreen();
     };
@@ -92,10 +86,19 @@ function stopGame() {
 }
 
 /**
- * Played the theme music.
+ * Played the menu theme music.
  */
 function playSoundMenu() {
     const isShortAudio = false;
     const audioLoop = true;
-    audioManager.playAudio(SOUND_THEME, audioVolume.theme, isShortAudio, audioLoop);
+    audioManager.playAudio(STARTSCREEN_ASSETS.SOUNDS.THEME, audioVolume.menuTheme, isShortAudio, audioLoop);
+}
+
+/**
+ * Played the the background music.
+ */
+function playBackgroundMusic() {  
+    const isShortAudio = false;
+    const audioLoop = true;
+    audioManager.playAudio(INGAME_ASSETS.SOUNDS.THEME, audioVolume.ingameTheme, isShortAudio, audioLoop);
 }

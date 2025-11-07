@@ -24,7 +24,7 @@ function addStartGameListener(btStartGame) {
             const btGame = document.getElementById('buttons');
             btGame.classList.remove('buttons-endscreen');
             btGame.style.display = 'none';
-            audioManager.stopAudio(SOUND_THEME);
+            audioManager.stopAll();
             init();  
         });
     })
@@ -153,6 +153,8 @@ function soundOnHandler(soundOn, soundOff) {
     localStorage.setItem('soundEnabled', audioManager.soundEnabled);
     if (!gameStarted) {
         playSoundMenu();
+    } else {
+        playBackgroundMusic();
     }
 }
 

@@ -1,4 +1,5 @@
 class Level {
+    music;
     enemies;
     clouds;
     backgrounds;
@@ -6,7 +7,8 @@ class Level {
     coins;
     level_end_x = 2800;
 
-    constructor(enemies, clouds, backgrounds, bottles, coins) {
+    constructor(music, enemies, clouds, backgrounds, bottles, coins) {
+        this.music = music;
         this.enemies = enemies;
         this.clouds = clouds;
         this.backgrounds = backgrounds;

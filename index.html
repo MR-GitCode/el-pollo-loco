@@ -8,15 +8,18 @@
     <link rel="stylesheet" href="../styles/touch-control.css">
     <link rel="icon" type="image/svg+xml" href="icons/favicon_el_pollo_loco.png">
     <title>El pollo loco</title>
-    <script src="js/assets/character-assets.js"></script>
-    <script src="js/assets/enemies/endboss-assets.js"></script>
-    <script src="js/assets/enemies/normal-chicken-assets.js"></script>
+    <script src="js/assets/entities/character-assets.js"></script>
+    <script src="js/assets/entities/endboss-assets.js"></script>
+    <script src="js/assets/entities/normal-chicken-assets.js"></script>
     <script src="js/assets/objects/bottle-assets.js"></script>
     <script src="js/assets/objects/coin-assets.js"></script>
     <script src="js/assets/environment/environment-assets.js"></script>
     <script src="js/assets/statusbars/statusbars.js"></script>
-    <script src="js/assets/endscreen-assets.js"></script>
-    <script src="js/classes/audio-manager.class.js"></script>
+    <script src="js/assets/screens/endscreen-assets.js"></script>
+    <script src="js/assets/screens/startscreen-assets.js"></script>
+    <script src="js/assets/screens/ingame-assets.js"></script>
+    <script src="js/classes/audio/audio-manager.class.js"></script>
+    <script src="js/classes/audio/background-music.class.js"></script>
     <script src="js/classes/drawable-object.class.js"></script>
     <script src="js/classes/movable-object.class.js"></script>
     <script src="js/classes/environment/background.class.js"></script>
@@ -28,13 +31,14 @@
     <script src="js/classes/spawnable-objects.class.js"></script>
     <script src="js/classes/items/spawn-bottle.class.js"></script>
     <script src="js/classes/items/spawn-coin.class.js"></script>
+        <script src="js/classes/core/level.class.js"></script>
     <script src="levels/level1.js"></script>
     <script src="js/classes/core/world.class.js"></script>
     <script src="js/classes/core/keyboard.class.js"></script>
     <script src="js/classes/entities/endboss.class.js"></script>
-    <script src="js/classes/core/level.class.js"></script>
+
     <script src="js/classes/throwable-object.class.js"></script>
-    <script src="js/menu-screen-handler.js"></script>
+    <script src="js/btn-handler.js"></script>
     <script src="js/game.js" defer></script>
 </head>
 <body onload="showStartScreen()">

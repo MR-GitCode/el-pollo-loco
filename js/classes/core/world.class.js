@@ -21,9 +21,11 @@ class World {
         if (gameStarted & !this.gameOver) {
             initLevel();
             this.level = level1;
+            // this.level.music.soundEnabled = true;
+            // this.level.music.playMusic(); 
             this.character = new Character();
             this.gameLoop();
-            this.setWorld();  
+            this.setWorld();
         }
     }
 
