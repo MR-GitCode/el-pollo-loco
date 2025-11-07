@@ -37,6 +37,7 @@ class Character extends MovableObject{
     isBreathing = false;
     isSnoring = false;
     lastHurtSoundTime = 0;
+    idleLongTimer;
 
     constructor () {
         super().loadImage('img/2_character_pepe/2_walk/W-21.png');
@@ -190,6 +191,8 @@ class Character extends MovableObject{
      * Plays hurt animation when damaged.
      */
     performHurtAnimation() {
+        this.stopIdleSounds();
+        this.stopWalkingSound();
         this.playAnimation(CHARACTER_ASSETS.IMAGES.HURT, this.frameSpeed.hurt);
         this.playHurtingSound();
     }
@@ -210,10 +213,7 @@ class Character extends MovableObject{
      * Plays idle or long idle animation based on inactivity duration.
      */
     performIdle() {
-        if (this.isWalkingSoundPlaying) {
-            this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.WALKING[0]);
-            this.isWalkingSoundPlaying = false;
-        }
+        this.stopWalkingSound();
         if (!this.isIdleLong) {
             this.performNormalIdle();
         } else {
@@ -227,9 +227,12 @@ class Character extends MovableObject{
     performNormalIdle() {
         this.playAnimation(CHARACTER_ASSETS.IMAGES.IDLE, this.frameSpeed.idle);
         this.playBreathSound();
-        setTimeout(() => {
-            this.isIdleLong = true;
-        }, 10000);
+        if (!this.idleLongTimer) {
+            this.idleLongTimer = setTimeout(() => {
+                this.isIdleLong = true;
+                // this.idleLongTimer = null;
+            }, 10000);
+        }
     }
 
     /**
@@ -272,8 +275,21 @@ class Character extends MovableObject{
      */
     stopIdleSounds() {
         this.isIdleLong = false;
+        if (this.idleLongTimer) {
+            clearTimeout(this.idleLongTimer);
+            this.idleLongTimer = null;
+        }
+        this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.BREATH[0]);
+        this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.SNORING[0]);
         this.isBreathing = false;
         this.isSnoring = false;
+    }
+
+    stopWalkingSound() {
+        if (this.isWalkingSoundPlaying) {
+            this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.WALKING[0]);
+            this.isWalkingSoundPlaying = false;
+        }
     }
 
     /**
@@ -282,6 +298,7 @@ class Character extends MovableObject{
     playHurtingSound() {
         const now = Date.now();
         if (now - this.lastHurtSoundTime < 1000) return; // Cooldown 0.5s
+        this.stopIdleSounds();
         this.lastHurtSoundTime = now;
         const audioTyp = 'isSpamSound'
         this.audioManager.playAudio(CHARACTER_ASSETS.SOUNDS.HURT, this.audioVolume.hurt, audioTyp);

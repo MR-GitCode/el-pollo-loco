@@ -57,11 +57,6 @@ canvas{
     /* bottom: 20px; */
 }
 
-.buttons-endscreen-fullscreen {
-    display: flex !important;
-    position: absolute;
-}
-
 .button{
     display: flex;
     justify-content: center;

@@ -55,15 +55,12 @@ function checkDisplaySize() {
  */
 function checkDisplayTouch() {
     let touchControl = document.getElementById('mobile-buttons');
-    let controlPanel = document.getElementById('control-panel');
     const updateTouchDisplay = () => {
         let isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
         if (isTouchDevice) {
-            touchControl.classList.remove('hidden');
-            // controlPanel.classList.add('change-position');             
+            touchControl.classList.remove('hidden');          
         } else {
             touchControl.classList.add('hidden');
-            // controlPanel.classList.remove('change-position');
         }
     };
     updateTouchDisplay();

@@ -12,7 +12,7 @@ class SpawnCoin extends SpawnableObjects {
    constructor() {
       let imageScale = 0.5;
       const x = 200 + 1900 * Math.random();
-      const y = 325;
+      const y = 325 * Math.random();
       const width = 300 * imageScale;
       const height = 300 * imageScale;
       super(x, y, width, height);

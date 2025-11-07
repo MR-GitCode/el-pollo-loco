@@ -7,12 +7,12 @@ let level1;
 function initLevel() {
     level1 = new Level (
         [
-            new normalChicken(),
-            new normalChicken(),
-            new normalChicken(),
-            new normalChicken(),
-            new normalChicken(),
-            new normalChicken(),
+            // new normalChicken(),
+            // new normalChicken(),
+            // new normalChicken(),
+            // new normalChicken(),
+            // new normalChicken(),
+            // new normalChicken(),
             new EndBoss(),
         ],
 
@@ -61,6 +61,11 @@ function initLevel() {
         ],
         
         [
+            new SpawnCoin(),
+            new SpawnCoin(),
+            new SpawnCoin(),
+            new SpawnCoin(),
+            new SpawnCoin(),
             new SpawnCoin(),
             new SpawnCoin(),
             new SpawnCoin(),

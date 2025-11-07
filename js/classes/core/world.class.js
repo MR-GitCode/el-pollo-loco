@@ -23,7 +23,6 @@ class World {
             this.level = level1;
             this.character = new Character();
             this.gameLoop();
-            this.draw();
             this.setWorld();  
         }
     }
@@ -41,10 +40,13 @@ class World {
      * Continuously checks for collisions and periodically handles throwable object actions.
      */
     gameLoop() {
+        this.draw();
         this.checkCollisions();
-        setInterval(() => {
-            this.checkThrowObjects();
-        }, 200)
+        this.checkThrowObjects();
+        let self = this;
+        requestAnimationFrame( function () {
+            self.gameLoop(); 
+        }); 
     }
 
     /**
@@ -64,14 +66,10 @@ class World {
      * Checked the collision of objects with character.
      */
     checkCollisions() {
-        setInterval(() => {
-            this.collisionEnemy()
-        }, 300)
-        setInterval(() => {
-            this.collisionCoin();
-            this.collisionBottle();
-            this.collisionThrowableObjectWithEnemies();
-        }, 100)
+        this.collisionEnemy()
+        this.collisionCoin();
+        this.collisionBottle();
+        this.collisionThrowableObjectWithEnemies();
     }
 
     /**
@@ -179,12 +177,6 @@ class World {
             this.addToCanvas(this.statusBarHealth);
             this.addToCanvas(this.statusBarCoin);
             this.drawEndbossHealthBar();
-            
-            //draw() wird immer wieder aufgerufen
-            let self = this;
-            requestAnimationFrame( function () {
-                self.draw(); 
-            }); 
         }
     }
 

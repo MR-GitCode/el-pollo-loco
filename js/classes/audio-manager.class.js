@@ -104,9 +104,12 @@ class AudioManager {
      * @param {string} audioPath - Path of the audio file to stop.
      */
     stopAudio(audioPath) {
-        if(this.currentAudio) {
-            this.audioCache[audioPath].pause();
-            this.currentAudio.currentTime = 0;
+        const audio = this.audioCache[audioPath];
+        if (!audio) return;
+        audio.pause();
+        audio.currentTime = 0;
+        if (this.currentAudio === audio) {
+            this.currentAudio = null;
         }
     }
 

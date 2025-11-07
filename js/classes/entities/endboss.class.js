@@ -13,7 +13,7 @@ class EndBoss extends MovableObject {
     frameSpeed = {
         walk: 1,
         alert: 1,
-        hurt: 1,
+        hurt: 0.75,
         death: 0.75,
         attack: 1
     };
@@ -24,7 +24,7 @@ class EndBoss extends MovableObject {
         death: 0.5,
     }
     energy = 300;
-    attackStrength = 6;
+    attackStrength = 0.6;
     speed = 25;
     attackCharacter = false;
     endscreen = new Endscreen();
@@ -48,7 +48,7 @@ class EndBoss extends MovableObject {
         this.loadImages(ENDBOSS_ASSETS.IMAGES.HURT);
         this.loadImages(ENDBOSS_ASSETS.IMAGES.DEAD);
         this.audioManager.loadAudio(ENDBOSS_ASSETS.SOUNDS.WALKING);
-        this.audioManager.loadAudio(ENDBOSS_ASSETS.SOUNDS.HURT);
+        this.audioManager.loadAudios(ENDBOSS_ASSETS.SOUNDS.HURT);
         this.audioManager.loadAudio(ENDBOSS_ASSETS.SOUNDS.DEATH);
         this.audioManager.loadAudio(ENDBOSS_ASSETS.SOUNDS.ALERT);
     }
@@ -87,7 +87,7 @@ class EndBoss extends MovableObject {
      */
     performHurtAnimation() {
         this.playAnimation(ENDBOSS_ASSETS.IMAGES.HURT, this.frameSpeed.hurt);
-        this.speed += 0.5;
+        this.speed += 2;
         this.playHurtingSound();
         setTimeout(() => {
             this.attackCharacter = true;
@@ -163,16 +163,17 @@ class EndBoss extends MovableObject {
      * Plays the walking sound effect while the object is moving.
      */
     playWalkingSound() {
-        console.log('walk');
         this.audioManager.playAudio(ENDBOSS_ASSETS.SOUNDS.WALKING, this.audioVolume.walk);
         this.audioManager.stopAudio(ENDBOSS_ASSETS.SOUNDS.HURT[0]);
-        
     }
 
     /**
      *  Plays the hurt sound effect when the object takes damage.
      */
     playHurtingSound() {
-        this.audioManager.playAudio(ENDBOSS_ASSETS.SOUNDS.HURT, this.audioVolume.hurt)
+        let randomIndex = Math.floor(Math.random() * ENDBOSS_ASSETS.SOUNDS.HURT.length);
+        this.audioManager.playAudio(ENDBOSS_ASSETS.SOUNDS.HURT[randomIndex], this.audioVolume.hurt)
+        // this.audioManager.playAudio(ENDBOSS_ASSETS.SOUNDS.HURT, this.audioVolume.hurt)
+        this.audioManager.stopAudio(ENDBOSS_ASSETS.SOUNDS.WALKING[0]);
     }
 }
