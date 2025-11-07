@@ -53,8 +53,13 @@ canvas{
 #buttons.buttons-endscreen {
     display: flex !important;
     position: absolute;
-    top: unset;
-    bottom: 20px;
+    /* top: unset !important; */
+    /* bottom: 20px; */
+}
+
+.buttons-endscreen-fullscreen {
+    display: flex !important;
+    position: absolute;
 }
 
 .button{
