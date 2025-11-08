@@ -1,3 +1,6 @@
+const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+const inputEvent = isTouch ? 'touchstart' : 'click';
+
 /**
  * Adds event listeners to start, control, home and screen size buttons.
  */
@@ -18,16 +21,14 @@ function addEventListenerToButtons() {
  * @param {HTMLElement} btStartGame - The Start Game button element.
  */
 function addStartGameListener(btStartGame) {
-    ['click', 'touchstart'].forEach(eventType => {
-        btStartGame.addEventListener(eventType, (e) => {
+    btStartGame.addEventListener(inputEvent, (e) => {
             e.preventDefault();
             const btGame = document.getElementById('buttons');
             btGame.classList.remove('buttons-endscreen');
             btGame.style.display = 'none';
             audioManager.stopAll();
             init();  
-        });
-    })
+    });
 }
 
 /**
@@ -36,12 +37,10 @@ function addStartGameListener(btStartGame) {
  */
 function addControlsListener(btControls) {
     const controlsMenu = document.getElementById('controls-window');
-    ['click', 'touchstart'].forEach(eventType => {
-        btControls.addEventListener(eventType, (e) =>  {
-            e.preventDefault();
-            controlsMenu.classList.remove('hidden');
-        })
-    })
+    btControls.addEventListener(inputEvent, (e) => {
+        e.preventDefault();
+        controlsMenu.classList.remove('hidden');
+    });
 }
 
 /**
@@ -52,15 +51,13 @@ function addControlsListener(btControls) {
  */
 function addHomeListener(btStartGame, btControls) {
     const btHome = document.getElementById('bt-home');
-    ['click', 'touchstart'].forEach(eventType => {
-        btHome.addEventListener(eventType, (e) =>  {
-            e.preventDefault();
-            audioManager.stopAll();
-            resetButtons(btStartGame, btControls, btHome);
-            startScreenImage.src = STARTSCREEN_ASSETS.IMAGES.SCREEN;
-            drawStartScreen();
-        });
-    })    
+    btHome.addEventListener(inputEvent, (e) => {
+        e.preventDefault();
+        audioManager.stopAll();
+        resetButtons(btStartGame, btControls, btHome);
+        startScreenImage.src = STARTSCREEN_ASSETS.IMAGES.SCREEN;
+        drawStartScreen();
+    });  
 }
 
 /**
@@ -84,12 +81,10 @@ function resetButtons(btStartGame, btControls, btHome) {
 function addCloseControlMenuListener() {
     const closeBtn = document.getElementById('bt-close-control-menu');
     const controlsMenu = document.getElementById('controls-window');
-    ['click', 'touchstart'].forEach(eventType => {
-        closeBtn.addEventListener(eventType, (e) =>  {
-            e.preventDefault();
-            controlsMenu.classList.add('hidden');
-        })
-    })    
+    closeBtn.addEventListener(inputEvent, (e) => {
+        e.preventDefault();
+        controlsMenu.classList.add('hidden');
+    });  
 }
 
 /**
@@ -108,11 +103,9 @@ function addScreenSizeListener() {
  */
 function addVolumeControlListener() {
     const volumeControl = document.getElementById('sound-volume');
-    ['click', 'touchstart'].forEach(eventType => {
-        volumeControl.addEventListener(eventType, (e) =>  {
-            e.preventDefault();
-            toggleSoundIcon();      
-        })
+    volumeControl.addEventListener(inputEvent, (e) => {
+        e.preventDefault();
+        toggleSoundIcon();      
     })
 }
 
@@ -154,7 +147,7 @@ function soundOnHandler(soundOn, soundOff) {
     if (!gameStarted) {
         playSoundMenu();
     } else {
-        playBackgroundMusic();
+        playBackgroundMusic()
     }
 }
 
@@ -167,16 +160,14 @@ function soundOnHandler(soundOn, soundOff) {
  * @param {HTMLElement} minScreen - The button element to minimize the screen.
  */
 function changeScreenWithClick(changeScreenSize, maxScreen, minScreen) {
-    ['click', 'touchstart'].forEach(eventType => {
-        changeScreenSize.addEventListener(eventType, (e) =>  {
-            e.preventDefault();
-            const screen = document.getElementById('screen')
-            if (!document.fullscreenElement) {
-                fullscreenOnHandler(screen, maxScreen, minScreen);
-            } else {
-                fullscreenOffHandler(maxScreen, minScreen);
-            }
-        });
+    changeScreenSize.addEventListener(inputEvent, (e) => {
+        e.preventDefault();
+        const screen = document.getElementById('screen')
+        if (!document.fullscreenElement) {
+            fullscreenOnHandler(screen, maxScreen, minScreen);
+        } else {
+            fullscreenOffHandler(maxScreen, minScreen);
+        }
     });
 }
 
@@ -259,14 +250,12 @@ function calcPosBtnTouchMaxScreen(canvasWidth) {
  * 
  * @param {HTMLElement} element - The element to be displayed in fullscreen mode.
  */
-function enterFullscreen(element) {
-  if(element.requestFullscreen) {
-    element.requestFullscreen();
-  } else if(element.msRequestFullscreen) { // for IE11 (remove June 15, 2022)
-    element.msRequestFullscreen();
-  } else if(element.webkitRequestFullscreen) {  // iOS Safari
-    element.webkitRequestFullscreen();
-  }
+async function enterFullscreen(element) {
+    if (element.requestFullscreen) {
+        return element.requestFullscreen();
+    } else if (element.webkitRequestFullscreen) {
+        return element.webkitRequestFullscreen();
+    }
 }
 
 /**

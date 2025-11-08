@@ -13,15 +13,15 @@ class BackgroundMusic extends AudioManager {
      * Loads the music of the world.
      */
     loadAssets() {
-        this.loadAudio(this.audioPaths);
+        this.loadAudio(INGAME_ASSETS.SOUNDS.THEME);
     }
 
     /**
      * Plays the backgroundmusic of the world.
      */
-    playMusic() {
+    playMusic(audioPaths) {
         const isShortAudio = false;
         const audioLoop = true;
-        this.playAudio(this.audioPaths, this.audioVolume.music, isShortAudio, audioLoop)
+        this.playAudio(audioPaths, this.audioVolume.music, isShortAudio, audioLoop)
     }
 }

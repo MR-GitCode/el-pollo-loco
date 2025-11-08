@@ -11,6 +11,7 @@ class MovableObject extends DrawableObject{
     };
     energy = 100;
     lastHit = 0;
+    beforeY = 0;
     isFalling = false;
 
     constructor () {
@@ -23,10 +24,11 @@ class MovableObject extends DrawableObject{
     */
     applyGravity() {
         this.gravityInterval = setInterval(() =>{
+            this.beforeY = this.y;
             if (this.isAboveGround() || this.speedY > 0) {
                 this.y -= this.speedY;
                 this.speedY -= this.acceleration;
-                this.isFalling = true
+                this.isFalling = this.checkFalling();
             }
             else {
                 setTimeout (() =>{
@@ -34,6 +36,14 @@ class MovableObject extends DrawableObject{
                 }, 300)
             }
         }, 1000 / 75)
+    }
+
+    /**
+     * Checks whether the object is currently moving downward.
+     * @returns 
+     */
+    checkFalling() {
+        return this.y > this.beforeY;
     }
 
     /**

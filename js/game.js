@@ -6,7 +6,7 @@ let audioManager = new AudioManager();
 let gameStarted = false;
 let audioVolume = {
     menuTheme: 0.2,
-    ingameTheme: 0.00,
+    ingameTheme: 0.02,
 }
 
 /**

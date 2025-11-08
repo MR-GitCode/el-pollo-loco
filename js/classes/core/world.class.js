@@ -10,6 +10,7 @@ class World {
     statusBarHealth = new StatusBar(STATUSBARS.IMAGES.CHARACTER_HEALTH, 10, 45, percentage);
     statusBarCoin = new StatusBar(STATUSBARS.IMAGES.CHARACTER_COIN, 10, 90, this.coinCount);
     statusBarHealthBoss = new StatusBar(STATUSBARS.IMAGES.BOSS_HEALTH, 470, 8, 100);
+    backgroundMusic = new BackgroundMusic();
     gameOver = false;
     bottleHitsEnemy = false;
 
@@ -21,8 +22,7 @@ class World {
         if (gameStarted & !this.gameOver) {
             initLevel();
             this.level = level1;
-            // this.level.music.soundEnabled = true;
-            // this.level.music.playMusic(); 
+            playBackgroundMusic();
             this.character = new Character();
             this.gameLoop();
             this.setWorld();
@@ -81,7 +81,7 @@ class World {
         this.level.enemies.forEach((enemy) => {
             if(this.character.isColliding(enemy) && enemy.energy > 0) {
                 if (this.character.isBottomCollision(enemy) && this.character.isFalling) {
-                    if (enemy.isBoss == true) return;                     
+                    if (enemy.isBoss == true) return;    
                     enemy.energy -= this.character.attackJumpStrength;
                     enemy.performDeathAnimation();
                     enemy.playJumpKillSound();                    

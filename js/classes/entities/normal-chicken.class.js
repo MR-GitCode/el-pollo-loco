@@ -14,7 +14,7 @@ class normalChicken extends MovableObject{
     };
     audioVolume = {
         walk: 1,
-        death: 0.4
+        death: 0.3,
     }
     energy = 100;
     enemyIntervals = [];
