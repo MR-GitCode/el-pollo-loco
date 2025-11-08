@@ -33,6 +33,7 @@ class Character extends MovableObject{
     attackJumpStrength = 100;
     wasInAir = false;
     isWalkingSoundPlaying = false;
+    deathAnimationStarted = false;
     lastHurtSoundTime = 0;
     isBreathing = false;
     isSnoring = false;
@@ -70,14 +71,14 @@ class Character extends MovableObject{
      */
     animate() {
         setInterval(() => {
-            if (this.isAboveGround()) this.performJumpingAnimation();
+            if (this.isDead()) this.performDeathAnimation();
+            else if (this.isHurt()) this.performHurtAnimation();
+            else if (this.isAboveGround()) this.performJumpingAnimation();
             else if (this.canJumpRight()) this.performJumpRight();
             else if (this.canJumpLeft()) this.performJumpLeft();
-            else if (this.canMoveRight()) this.performMoveRight();
-            else if (this.canMoveLeft()) this.performMoveLeft();
             else if (this.canJump()) this.performJump();
-            else if (this.isHurt()) this.performHurtAnimation();
-            else if (this.isDead()) this.performDeathAnimation();
+            else if (this.canMoveRight()) this.performMoveRight();
+            else if (this.canMoveLeft()) this.performMoveLeft();         
             else this.performIdle();
             this.world.camera_x = -this.x + 100;
         }, 1000 / 10);
@@ -163,10 +164,10 @@ class Character extends MovableObject{
      * Moves right and plays walking animation.
      */
     performMoveRight() {
-        this.stopIdleSounds();
-        this.moveRight();
-        this.playAnimation(CHARACTER_ASSETS.IMAGES.WALKING, this.frameSpeed.walk);
-        this.playWalkingSound();
+            this.stopIdleSounds();
+            this.moveRight();
+            this.playAnimation(CHARACTER_ASSETS.IMAGES.WALKING, this.frameSpeed.walk);
+            this.playWalkingSound(); 
     }
 
     /**
@@ -201,12 +202,16 @@ class Character extends MovableObject{
      * Plays death animation and triggers end screen.
      */
     performDeathAnimation() {
-        setTimeout (() => {
-           this.playAnimation(CHARACTER_ASSETS.IMAGES.DEAD, this.frameSpeed.death);
-        }, 1000)
-        setTimeout (() => {
-            this.endscreen.lostGame();
-        }, 1500)
+        if(!this.deathAnimationStarted) {
+            this.deathAnimationStarted = true;
+            setTimeout (() => {
+               this.playAnimation(CHARACTER_ASSETS.IMAGES.DEAD, this.frameSpeed.death);
+            }, 1000)
+            setTimeout (() => {
+                this.endscreen.lostGame();
+                this.deathAnimationStarted = false;
+            }, 1500)
+        }
     }
 
     /**

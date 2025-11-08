@@ -57,7 +57,7 @@ function addHomeListener(btStartGame, btControls) {
             e.preventDefault();
             audioManager.stopAll();
             resetButtons(btStartGame, btControls, btHome);
-            startScreenImage.src = IMAGE_STARTSCREEN;
+            startScreenImage.src = STARTSCREEN_ASSETS.IMAGES.SCREEN;
             drawStartScreen();
         });
     })    

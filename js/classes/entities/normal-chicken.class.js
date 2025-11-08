@@ -18,7 +18,7 @@ class normalChicken extends MovableObject{
     }
     energy = 100;
     enemyIntervals = [];
-    attackStrength = 0.2;
+    attackStrength = 5;
 
     constructor (){
         super().loadImage('img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');

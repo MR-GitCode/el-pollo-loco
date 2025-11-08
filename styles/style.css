@@ -53,8 +53,6 @@ canvas{
 #buttons.buttons-endscreen {
     display: flex !important;
     position: absolute;
-    /* top: unset !important; */
-    /* bottom: 20px; */
 }
 
 .button{
@@ -216,7 +214,7 @@ canvas{
 #legal-notice a{
     position: absolute;
     transform: translate(-50%, -50%);
-    bottom: 10%;
+    bottom: 5%;
     font-size: 32px;
     text-decoration: none;
     cursor: pointer;

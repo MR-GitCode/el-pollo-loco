@@ -85,7 +85,7 @@ class World {
                     enemy.energy -= this.character.attackJumpStrength;
                     enemy.performDeathAnimation();
                     enemy.playJumpKillSound();                    
-                } else {  
+                } else { 
                     this.character.hit(enemy.attackStrength);
                     this.statusBarHealth.setPercentage(this.character.energy)
                 }

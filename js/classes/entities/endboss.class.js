@@ -24,7 +24,7 @@ class EndBoss extends MovableObject {
         death: 0.5,
     }
     energy = 300;
-    attackStrength = 0.6;
+    attackStrength = 15;
     speed = 25;
     attackCharacter = false;
     endscreen = new Endscreen();
@@ -104,7 +104,6 @@ class EndBoss extends MovableObject {
         this.playDieSound();
         setTimeout(() => {
             this.audioManager.stopAll(); 
-            this.audioManager.stopAudio(ENDBOSS_ASSETS.SOUNDS.DEATH[0])
             this.endscreen.winGame();
         }, 1200);
     }

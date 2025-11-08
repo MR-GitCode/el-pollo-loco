@@ -103,12 +103,11 @@ class MovableObject extends DrawableObject{
      * @param {number} attack 
      */
     hit(attackStrength) {
-        this.energy -= attackStrength;
-        if(this.energy < 0) {
-            this.energy = 0;
-        } else {
-            this.lastHit = new Date().getTime();
-        }
+        const now = Date.now();
+        if (now - this.lastHit < 700) return; 
+        this.lastHit = now;
+        this.energy -= attackStrength;        
+        if (this.energy < 0) this.energy = 0;
     }
 
     /**
@@ -118,7 +117,7 @@ class MovableObject extends DrawableObject{
     isHurt() {
         let timepassed = new Date().getTime() - this.lastHit;
         timepassed = timepassed / 1000;
-        return timepassed < 1;
+        return timepassed < 0.4;
     }
 
     /**
@@ -136,7 +135,7 @@ class MovableObject extends DrawableObject{
      * @param {string[]} images - Array of image paths..
      * @param {number} [frameSpeed=1] - Speed multiplier for frame progression.
      */
-    playAnimation(images, frameSpeed = 1) {      
+    playAnimation(images, frameSpeed = 1) {
         this.animationFrameCounter = (this.animationFrameCounter || 0) + frameSpeed;
         if (this.animationFrameCounter >= 1) {
             this.currentImage++;
