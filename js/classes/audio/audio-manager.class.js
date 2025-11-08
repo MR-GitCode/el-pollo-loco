@@ -117,15 +117,29 @@ class AudioManager {
      * Stops all currently playing audio.
      */
     stopAll() {
-        Object.values(this.audioCache).forEach(audio => {
-            audio.pause();
-            audio.currentTime = 0;
-        });
+        this.stopLongAudios();
+        this.stopActiveAudios();
+        this.activeSounds = [];
+        this.currentAudio = null;
+    }
+
+    /**
+     * Stops and resets all currently active (short) audio clips.
+     */
+    stopActiveAudios() {
         this.activeSounds.forEach(audio => {
             audio.pause();
             audio.currentTime = 0;
         });
-        this.activeSounds = [];
-        this.currentAudio = null;
+    }
+
+    /**
+     *  Stops and resets all long (looping) audio tracks in the cache.
+     */
+    stopLongAudios() {
+        Object.values(this.audioCache).forEach(audio => {
+            audio.pause();
+            audio.currentTime = 0;
+        });
     }
 }

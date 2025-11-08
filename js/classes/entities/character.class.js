@@ -335,10 +335,11 @@ class Character extends MovableObject{
     playLandSound() {
         this.stopIdleSounds()
         this.audioManager.playAudio(CHARACTER_ASSETS.SOUNDS.LANDING, this.audioVolume.jump)
+        this.isWalkingSoundPlaying = false
         setTimeout(() => {
             this.wasInAir = false;
         }, 10)
-    }
+    }d 
 
     /**
      * Plays the jumping sound effect.
