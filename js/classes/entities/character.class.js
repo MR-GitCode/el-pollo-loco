@@ -39,6 +39,7 @@ class Character extends MovableObject{
     isSnoring = false;
     lastHurtSoundTime = 0;
     idleLongTimer;
+    isIdleSoundPLaying = false;
 
     constructor () {
         super().loadImage('img/2_character_pepe/2_walk/W-21.png');
@@ -218,6 +219,7 @@ class Character extends MovableObject{
      * Plays idle or long idle animation based on inactivity duration.
      */
     performIdle() {
+        this.isIdleSoundPLaying = true
         this.stopWalkingSound();
         if (!this.isIdleLong) {
             this.performNormalIdle();
@@ -254,7 +256,7 @@ class Character extends MovableObject{
      */
     playBreathSound() {
         if (!this.isBreathing) {
-            this.isBreathing = true;
+            this.isBreathing = true;            
             this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.SNORING[0]);
             this.audioManager.playAudio(CHARACTER_ASSETS.SOUNDS.BREATH, this.audioVolume.breath);
         }
@@ -279,21 +281,27 @@ class Character extends MovableObject{
      * Used when the character resumes activity.
      */
     stopIdleSounds() {
-        this.isIdleLong = false;
-        if (this.idleLongTimer) {
-            clearTimeout(this.idleLongTimer);
-            this.idleLongTimer = null;
+        if (this.isIdleSoundPLaying) {
+            this.isIdleSoundPLaying = false;
+            this.isIdleLong = false;
+            if (this.idleLongTimer) {
+                clearTimeout(this.idleLongTimer);
+                this.idleLongTimer = null;
+            }
+            this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.BREATH[0]);
+            this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.SNORING[0]);
+            this.isBreathing = false;
+            this.isSnoring = false;
         }
-        this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.BREATH[0]);
-        this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.SNORING[0]);
-        this.isBreathing = false;
-        this.isSnoring = false;
     }
 
+    /**
+     * Stops the Walking sound.
+     */
     stopWalkingSound() {
         if (this.isWalkingSoundPlaying) {
-            this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.WALKING[0]);
             this.isWalkingSoundPlaying = false;
+            this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.WALKING[0]);
         }
     }
 
@@ -317,8 +325,6 @@ class Character extends MovableObject{
             this.isWalkingSoundPlaying = true;
             const audioTyp = false;
             const audioLoop = true;
-            this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.BREATH[0]);
-            this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.SNORING[0]);
             this.audioManager.playAudio(CHARACTER_ASSETS.SOUNDS.WALKING, this.audioVolume.walk, audioTyp, audioLoop);
         }
     }

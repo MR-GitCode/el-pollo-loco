@@ -172,7 +172,6 @@ class EndBoss extends MovableObject {
     playHurtingSound() {
         let randomIndex = Math.floor(Math.random() * ENDBOSS_ASSETS.SOUNDS.HURT.length);
         this.audioManager.playAudio(ENDBOSS_ASSETS.SOUNDS.HURT[randomIndex], this.audioVolume.hurt)
-        // this.audioManager.playAudio(ENDBOSS_ASSETS.SOUNDS.HURT, this.audioVolume.hurt)
         this.audioManager.stopAudio(ENDBOSS_ASSETS.SOUNDS.WALKING[0]);
     }
 }

@@ -13,7 +13,6 @@ function addEventListenerToButtons() {
     addScreenSizeListener();
     addVolumeControlListener();
     addCloseControlMenuListener();
-    addFullscreenListener();
 }
 
 /**
@@ -111,25 +110,6 @@ function addVolumeControlListener() {
 }
 
 /**
- * Adds an event listener to handle changes in fullscreen mode.
- */
-function addFullscreenListener() {
-    document.addEventListener("fullscreenchange", () => {
-        const maxScreen = document.getElementById('maximize-screen');
-        const minScreen = document.getElementById('minimize-screen');
-        if (document.fullscreenElement) {
-            touchDisplayFullscreenHandler('fullscreenOn');
-            maxScreen.style.display = 'none';
-            minScreen.style.display = 'block';
-        } else {
-            touchDisplayFullscreenHandler('fullscreenOff');
-            maxScreen.style.display = 'block';
-            minScreen.style.display = 'none';
-        }
-    });
-}
-
-/**
  * Toggle the sound on/off.
  */
 function toggleSoundIcon() {
@@ -180,15 +160,42 @@ function soundOnHandler(soundOn, soundOff) {
  * @param {HTMLElement} minScreen - The button element to minimize the screen.
  */
 function changeScreenWithClick(changeScreenSize, maxScreen, minScreen) {
-    changeScreenSize.addEventListener(inputEvent, async (e) => {
-        if (e.cancelable) e.preventDefault();
-        const screen = document.getElementById('screen');
+    changeScreenSize.addEventListener(inputEvent, (e) => {
+        e.preventDefault();
+        const screen = document.getElementById('screen')
         if (!document.fullscreenElement) {
-            enterFullscreen(screen)
+            fullscreenOnHandler(screen, maxScreen, minScreen);
         } else {
-            exitFullscreen()
+            fullscreenOffHandler(maxScreen, minScreen);
         }
     });
+}
+
+/**
+ * Exits fullscreen mode and updates icon visibility.
+ * 
+ * @param {HTMLElement} maxScreen - The maximize icon to be shown.
+ * @param {HTMLElement} minScreen - The minimize icon to be hidden.
+ */
+function fullscreenOffHandler(maxScreen, minScreen) {
+    exitFullscreen();
+    touchDisplayFullscreenHandler('fullscreenOff');
+    maxScreen.style.display = 'block';
+    minScreen.style.display = 'none';
+}
+
+/**
+ * Enters fullscreen mode and updates icon visibility.
+ * 
+ * @param {HTMLElement} screen - The element to display in fullscreen.
+ * @param {HTMLElement} maxScreen - The maximize icon to be hidden.
+ * @param {HTMLElement} minScreen - The minimize icon to be shown.
+ */
+function fullscreenOnHandler(screen, maxScreen, minScreen) {
+    enterFullscreen(screen);
+    touchDisplayFullscreenHandler('fullscreenOn');
+    maxScreen.style.display = 'none';
+    minScreen.style.display = 'block';
 }
 
 /**
@@ -243,25 +250,23 @@ function calcPosBtnTouchMaxScreen(canvasWidth) {
  * 
  * @param {HTMLElement} element - The element to be displayed in fullscreen mode.
  */
-async function enterFullscreen(element) {
-    if (element.requestFullscreen) {
-        return element.requestFullscreen();
-    } else if (element.webkitRequestFullscreen) {  
-        return element.webkitRequestFullscreen();
-    } else if (element.msRequestFullscreen) {
-        return element.msRequestFullscreen();
-    }
+function enterFullscreen(element) {
+  if(element.requestFullscreen) {
+    element.requestFullscreen();
+  } else if (element.webkitRequestFullscreen) {  // iOS Safari
+    element.webkitRequestFullscreen();
+  }
 }
 
 /**
  * Exits fullscreen mode if active.
  * Supports multiple browser implementations.
  */
-async function exitFullscreen() {
+function exitFullscreen() {
   if(document.exitFullscreen) {
-    return document.exitFullscreen();
+    document.exitFullscreen();
   } else if(document.webkitExitFullscreen) {
-    return document.webkitExitFullscreen();
+    document.webkitExitFullscreen();
   }
 }
 
@@ -342,10 +347,10 @@ function calcPositionBtnMaxScreen(canvasHeight, screenSizeButton, menuButtons) {
     screenSizeButton.style.bottom = `${heightOutsideCanvas + factorScreenSizeBtn}px`;
     menuButtons.style.top = `${heightOutsideCanvas + factorMenuBtn}px`;
     if (parseFloat(menuButtons.style.top) <= 90){
-        menuButtons.style.top = '10%';
+        menuButtons.style.top = '10%'
     };
     if (parseFloat(screenSizeButton.style.bottom) <= 10){
-        screenSizeButton.style.bottom = '10px';
+        screenSizeButton.style.bottom = '10px'
     }    
 }
 

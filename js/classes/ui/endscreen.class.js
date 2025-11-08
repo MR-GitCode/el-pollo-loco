@@ -68,22 +68,10 @@ class Endscreen extends DrawableObject {
         const btHome = document.getElementById('bt-home');
         const btControl = document.getElementById('bt-controls');
         btGame.classList.add('buttons-endscreen');
-        // this.calcPositionBtnEndscreen
         btStartGame.innerHTML = 'Replay';     
         btHome.style.display = 'flex'
         btControl.style.display = 'none';
     }
-
-    // calcPositionBtnEndscreen() {
-    //     const canvas = document.getElementById('canvas');
-    //     const menuButtons = document.getElementById('buttons');
-    //     const canvasHeight = canvas.scrollHeight;
-    //     let heightOutsideCanvas = (screen.height - canvasHeight) / 2;
-    //     let factorMenuBtn = canvasHeight * 0.5;
-    //     menuButtons.style.bottom = `${heightOutsideCanvas + factorMenuBtn}px`;
-    //     console.log(menuButtons.style.bottom );
-        
-    // }
 
     /**
      * Draws the given end screen image and stops the game loop.

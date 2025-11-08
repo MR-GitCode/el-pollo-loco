@@ -261,6 +261,7 @@ canvas{
     canvas {
         width: 100%;
     }
+
 }
 
 @media only screen and (max-height: 540px){

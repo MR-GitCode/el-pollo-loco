@@ -33,7 +33,7 @@ function showStartScreen() {
 function checkDisplaySize() {
     let containerRotateScreen = document.getElementById('rotate-screen');
     const updateDisplaySize = () => {
-        let screenWidth =  window.innerWidth;
+        let screenWidth =  screen.width;
         if (screenWidth < 600) {
             containerRotateScreen.classList.remove('hidden');            
         } else {
