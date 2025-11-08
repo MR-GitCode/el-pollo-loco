@@ -1,4 +1,4 @@
-const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+const isTouch = window.matchMedia('(pointer: coarse)').matches;
 const inputEvent = isTouch ? 'touchstart' : 'click';
 
 /**

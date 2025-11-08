@@ -48,11 +48,11 @@ function checkDisplaySize() {
  * Detects if the current device supports touch input and toggles control buttons.
  */
 function checkDisplayTouch() {
-    let touchControl = document.getElementById('mobile-buttons');
+     const touchControl = document.getElementById('mobile-buttons');
     const updateTouchDisplay = () => {
-        let isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-        if (isTouchDevice) {
-            touchControl.classList.remove('hidden');          
+        const hasTouch = window.matchMedia('(pointer: coarse)').matches;
+        if (hasTouch) {
+            touchControl.classList.remove('hidden');
         } else {
             touchControl.classList.add('hidden');
         }
