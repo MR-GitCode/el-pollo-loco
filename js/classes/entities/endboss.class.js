@@ -23,9 +23,10 @@ class EndBoss extends MovableObject {
         hurt: 0.5,
         death: 0.5,
     }
-    energy = 300;
+    energy = 500;
     attackStrength = 15;
     speed = 25;
+    rageSpeed = 4;
     attackCharacter = false;
     endscreen = new Endscreen();
    
@@ -87,7 +88,7 @@ class EndBoss extends MovableObject {
      */
     performHurtAnimation() {
         this.playAnimation(ENDBOSS_ASSETS.IMAGES.HURT, this.frameSpeed.hurt);
-        this.speed += 2;
+        this.speed += this.rageSpeed;
         this.playHurtingSound();
         setTimeout(() => {
             this.attackCharacter = true;

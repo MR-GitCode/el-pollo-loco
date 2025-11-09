@@ -16,7 +16,7 @@ class Character extends MovableObject{
         idle: 0.25,
         idleLong: 0.5,
         walk: 1,
-        jump: 0.25,
+        jump: 0.4,
         hurt: 0.25,
         death: 1
     };
@@ -150,7 +150,7 @@ class Character extends MovableObject{
      */
     performJumpRight() {
         this.stopIdleSounds();
-        this.jumpRight()
+        this.jumpRight();
     }
 
     /**
@@ -158,7 +158,7 @@ class Character extends MovableObject{
      */
     performJumpLeft() {
         this.stopIdleSounds();
-        this.jumpLeft()       
+        this.jumpLeft();      
     }
 
     /**

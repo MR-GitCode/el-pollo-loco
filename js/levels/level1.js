@@ -60,11 +60,11 @@ function initLevel() {
             new SpawnBottle(),
             new SpawnBottle(),
             new SpawnBottle(),
+            new SpawnBottle(),
+            new SpawnBottle(),
         ],
         
         [
-            new SpawnCoin(),
-            new SpawnCoin(),
             new SpawnCoin(),
             new SpawnCoin(),
             new SpawnCoin(),

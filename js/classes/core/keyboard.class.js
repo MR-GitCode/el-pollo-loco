@@ -59,19 +59,19 @@ class Keyboard {
      */
     touchendEventListener() {
         this.btnLeft.addEventListener('touchend', (event) => {
-            event.preventDefault();
+            if (event.cancelable) event.preventDefault();
             this.LEFT = false;
         });
         this.btnRight.addEventListener('touchend', (event) => {
-            event.preventDefault();
+            if (event.cancelable) event.preventDefault();
             this.RIGHT = false;
         });
         this.btnJump.addEventListener('touchend', (event) => {
-            event.preventDefault();
+            if (event.cancelable) event.preventDefault();
             this.SPACE = false;
         });
         this.btnThrow.addEventListener('touchend', (event) => {
-            event.preventDefault();
+            if (event.cancelable) event.preventDefault();
             this.THROW = false;
         });
     }
@@ -81,19 +81,19 @@ class Keyboard {
      */
     touchstartEventListener() {
         this.btnLeft.addEventListener('touchstart', (event) => {
-            event.preventDefault();
+            if (event.cancelable) event.preventDefault();
             this.LEFT = true;
         });
         this.btnRight.addEventListener('touchstart', (event) => {
-            event.preventDefault();
+            if (event.cancelable) event.preventDefault();
             this.RIGHT = true;
         });
         this.btnJump.addEventListener('touchstart', (event) => {
-            event.preventDefault();
+            if (event.cancelable) event.preventDefault();
             this.SPACE = true;
         });
         this.btnThrow.addEventListener('touchstart', (event) => {
-            event.preventDefault();
+            if (event.cancelable) event.preventDefault();
             this.THROW = true;
         });
     }
