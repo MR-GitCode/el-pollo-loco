@@ -28,7 +28,8 @@ function addStartGameListener(btStartGame) {
             btGame.classList.remove('buttons-endscreen');
             btGame.style.display = 'none';
             audioManager.stopAll();
-            init();  
+            init(); 
+            checkSoundLocalStorage() 
     });
 }
 
@@ -55,6 +56,7 @@ function addHomeListener(btStartGame, btControls) {
     btHome.addEventListener(inputEvent, (e) => {
         e.preventDefault();
         audioManager.stopAll();
+        playSoundMenu();
         resetButtons(btStartGame, btControls, btHome);
         startScreenImage.src = STARTSCREEN_ASSETS.IMAGES.SCREEN;
         drawStartScreen();
@@ -104,9 +106,19 @@ function addScreenSizeListener() {
  */
 function addVolumeControlListener() {
     const volumeControl = document.getElementById('sound-volume');
+    const soundOn = document.getElementById('sound-on');
+    const soundOff = document.getElementById('sound-off');
     volumeControl.addEventListener(inputEvent, (e) => {
+        const soundLocalStorage = localStorage.getItem('soundEnabled');
+        const soundIconLocalStorage = localStorage.getItem('soundIcon');
         e.preventDefault();
-        toggleSoundIcon();      
+        if (soundLocalStorage === null || soundIconLocalStorage != soundLocalStorage) {
+            audioManager.soundEnabled = true
+            soundOnHandler(soundOn, soundOff);
+            playSoundMenu();
+        } else {
+           toggleSoundIcon(); 
+        }       
     })
 }
 

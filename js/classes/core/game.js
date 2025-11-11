@@ -17,6 +17,8 @@ function showStartScreen() {
     body = document.getElementsByTagName('body')
     audioManager.loadAudio(STARTSCREEN_ASSETS.SOUNDS.THEME);
     audioManager.loadAudio(INGAME_ASSETS.SOUNDS.THEME);
+    localStorage.setItem('soundIcon', "false");
+    // checkSoundLocalStorage();
     startScreenImage.src = STARTSCREEN_ASSETS.IMAGES.SCREEN;
     startScreenImage.onload = function() {
         drawStartScreen();

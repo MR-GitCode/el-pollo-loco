@@ -22,7 +22,7 @@ class World {
         if (gameStarted & !this.gameOver) {
             initLevel();
             this.level = level1;
-            playBackgroundMusic();
+            if (this.audioManager.soundEnabled) playBackgroundMusic();  
             this.character = new Character();
             this.gameLoop();
             this.setWorld();

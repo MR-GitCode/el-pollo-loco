@@ -13,6 +13,18 @@ function toggleSoundIcon() {
     }
 }
 
+function checkSoundLocalStorage() {
+    const soundOn = document.getElementById('sound-on');
+    const soundOff = document.getElementById('sound-off');
+    const soundLocalStorage = localStorage.getItem('soundEnabled');
+    audioManager.soundEnabled = (soundLocalStorage === "true");
+    if (audioManager.soundEnabled && gameStarted) {
+        soundOnHandler(soundOn, soundOff);
+    } else {
+        soundOffHandler(soundOn, soundOff);
+    } 
+}
+
 /**
  * Handels logic when soun is turned off
  * @param {HTMLElement} soundOn - The sound-on icon element.
@@ -23,6 +35,7 @@ function soundOffHandler(soundOn, soundOff) {
     soundOff.style.display = 'block';
     audioManager.stopAll();
     localStorage.setItem('soundEnabled', audioManager.soundEnabled);
+    localStorage.setItem('soundIcon', audioManager.soundEnabled);
 }
 
 /**
@@ -34,6 +47,7 @@ function soundOnHandler(soundOn, soundOff) {
     soundOn.style.display = 'block';
     soundOff.style.display = 'none';
     localStorage.setItem('soundEnabled', audioManager.soundEnabled);
+    localStorage.setItem('soundIcon', audioManager.soundEnabled);
     if (!gameStarted) {
         playSoundMenu();
     } else {
