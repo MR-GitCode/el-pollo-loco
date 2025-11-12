@@ -4,7 +4,7 @@ class Character extends MovableObject{
     height = 1200 * 0.25;
     width = 610 * 0.25;
     world;
-    speed = 30;
+    speed = 5;
     isIdleLong = false;
     offset = {
         top: 120,
@@ -13,11 +13,11 @@ class Character extends MovableObject{
         bottom: 0
     };
     frameSpeed = {
-        idle: 0.25,
-        idleLong: 0.5,
-        walk: 1,
-        jump: 0.4,
-        hurt: 0.25,
+        idle: 0.1,
+        idleLong: 0.1,
+        walk: 0.2,
+        jump: 0.05,
+        hurt: 0.05,
         death: 1
     };
     audioVolume = {
@@ -82,7 +82,7 @@ class Character extends MovableObject{
             else if (this.canMoveLeft()) this.performMoveLeft();         
             else this.performIdle();
             this.world.camera_x = -this.x + 100;
-        }, 1000 / 10);
+        }, 1000 / 60);
     }
 
     /**

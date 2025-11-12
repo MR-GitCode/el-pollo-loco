@@ -115,9 +115,8 @@ function addVolumeControlListener() {
         if (soundLocalStorage === null || soundIconLocalStorage != soundLocalStorage) {
             audioManager.soundEnabled = true
             soundOnHandler(soundOn, soundOff);
-            playSoundMenu();
         } else {
-           toggleSoundIcon(); 
+            toggleSoundIcon(); 
         }       
     })
 }

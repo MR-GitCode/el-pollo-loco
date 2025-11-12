@@ -127,7 +127,7 @@ class MovableObject extends DrawableObject{
     isHurt() {
         let timepassed = new Date().getTime() - this.lastHit;
         timepassed = timepassed / 1000;
-        return timepassed < 0.4;
+        return timepassed < 0.5;
     }
 
     /**
@@ -180,45 +180,47 @@ class MovableObject extends DrawableObject{
     }
 
     /**
-    * Performs a jump while moving right.
-    */
+     * Initiates a jump to the right if the character is on the ground.
+     */
     jumpRight() {
         if (!this.isAboveGround()) { 
-            this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.WALKING[0]);
-            this.speedY = 12;         
-            this.x += 10;            
-            this.horizontalSpeed = 5;
-            const moveRightWhileJumping = setInterval(() => {
-                this.x += this.horizontalSpeed;
-                this.stopMovingAfterJump (moveRightWhileJumping);
-            }, 40);
+            this.startJump();
+            this.continueJump(1);
         }
     }
 
     /**
-    * Performs a jump while moving left.
-    */
+     * Initiates a jump to the left if the character is on the ground.
+     */
     jumpLeft() {
-        if (!this.isAboveGround()) {
-            this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.WALKING[0]);   
-            this.speedY = 12;         
-            this.x -= 10;            
-            this.horizontalSpeed = 5;
-            const moveLeftWhileJumping = setInterval(() => {
-                this.x -= this.horizontalSpeed;
-                this.stopMovingAfterJump (moveLeftWhileJumping);
-            }, 40);
+        if (!this.isAboveGround()) { 
+            this.startJump();
+            this.continueJump(-1);
         }
     }
 
     /**
-    * Stops horizontal movement after landing.
-    * @param {number} moveWhileJumping - Interval reference.
-    */
-    stopMovingAfterJump (moveWhileJumping) {
-        if (!this.isAboveGround()) {
-            clearInterval(moveWhileJumping);
-            this.horizontalSpeed = 0;
-        }  
+     *  Sets up initial jump properties.
+     */
+    startJump() {
+        this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.WALKING[0]);
+        this.speedY = 12;
+        this.horizontalSpeed = 3;
+    }
+
+    /**
+     * Continues horizontal movement while jumping until landing.
+     * @param {number} direction - The direction multiplier (1 for right, -1 for left). 
+     */
+    continueJump(direction) {
+        const moveWhileJumping = () => {
+            this.x += this.horizontalSpeed * direction;
+            if (!this.isAboveGround()) {
+                this.horizontalSpeed = 0; // Landed -> Stop moving
+                return;
+            }
+            requestAnimationFrame(moveWhileJumping);
+        };
+        requestAnimationFrame(moveWhileJumping);
     }
 }

@@ -18,13 +18,13 @@ class normalChicken extends MovableObject{
     }
     energy = 100;
     enemyIntervals = [];
-    attackStrength = 5;
+    attackStrength = 10;
 
     constructor (){
         super().loadImage('img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');
         this.audioManager = audioManager;
         this.x = 400 + Math.random() * 1900;
-        this.speed = 0.2 + Math.random() * 0.4;
+        this.speed = 0.5 + Math.random() * 0.5;
         this.loadAssets();
         this.animate(); 
     }

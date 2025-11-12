@@ -13,6 +13,9 @@ function toggleSoundIcon() {
     }
 }
 
+/**
+ * Checks and restores the user's sound preference from localStorage.
+ */
 function checkSoundLocalStorage() {
     const soundOn = document.getElementById('sound-on');
     const soundOff = document.getElementById('sound-off');
