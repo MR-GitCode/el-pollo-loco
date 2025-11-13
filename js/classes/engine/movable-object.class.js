@@ -10,6 +10,7 @@ class MovableObject extends DrawableObject{
         bottom: 0
     };
     energy = 100;
+    hurtDuration = 1;
     lastHit = 0;
     beforeY = 0;
     isFalling = false;
@@ -23,19 +24,18 @@ class MovableObject extends DrawableObject{
     * Applies gravity to the object over time.
     */
     applyGravity() {
-        this.gravityInterval = setInterval(() =>{
+        const loop = () => {
             this.beforeY = this.y;
             if (this.isAboveGround() || this.speedY > 0) {
                 this.y -= this.speedY;
                 this.speedY -= this.acceleration;
                 this.isFalling = this.checkFalling();
+            } else {
+                this.isFalling = false;
             }
-            else {
-                setTimeout (() =>{
-                    this.isFalling = false;
-                }, 300)
-            }
-        }, 1000 / 75)
+            requestAnimationFrame(loop);
+        };
+        requestAnimationFrame(loop);
     }
 
     /**
@@ -120,14 +120,11 @@ class MovableObject extends DrawableObject{
         if (this.energy < 0) this.energy = 0;
     }
 
-    /**
-    * Checks if the object was recently hurt.
-    * @returns {boolean} True if hurt in the last second.
-    */
+    
     isHurt() {
-        let timepassed = new Date().getTime() - this.lastHit;
+        let timepassed = Date.now() - this.lastHit;
         timepassed = timepassed / 1000;
-        return timepassed < 0.5;
+        return timepassed < this.hurtDuration;
     }
 
     /**
@@ -213,10 +210,15 @@ class MovableObject extends DrawableObject{
      * @param {number} direction - The direction multiplier (1 for right, -1 for left). 
      */
     continueJump(direction) {
-        const moveWhileJumping = () => {
-            this.x += this.horizontalSpeed * direction;
+           let lastTime = null;
+        const moveWhileJumping = (time) => {
+            if (!lastTime) lastTime = time;
+            const delta = (time - lastTime) / 16.67; // normalize to 60 fps
+            lastTime = time;
+
+            this.x += this.horizontalSpeed * direction * delta;
             if (!this.isAboveGround()) {
-                this.horizontalSpeed = 0; // Landed -> Stop moving
+                this.horizontalSpeed = 0;
                 return;
             }
             requestAnimationFrame(moveWhileJumping);

@@ -3,6 +3,8 @@ class Endscreen extends DrawableObject {
         gameOver: 0.5,
         winGame: 0.3
     };
+    gameEnd = false;
+    endscreen = false;
     
     constructor () {
         super();
@@ -26,12 +28,19 @@ class Endscreen extends DrawableObject {
      * Displays a random "game over" image and shows end screen buttons.
      */
     lostGame() {
-        let randomIndex = Math.floor(Math.random() * ENDSCREEN_ASSETS.IMAGES.GAMEOVER.length);        
+            this.gameEnd = true;
+            let randomIndex = Math.floor(Math.random() * ENDSCREEN_ASSETS.IMAGES.GAMEOVER.length);        
+            this.showButtons();
+            this.playLostGameSound();
+        if(!this.endscreenStarted) {
+            this.endscreenStarted = true;
         let img = ENDSCREEN_ASSETS.IMAGES.GAMEOVER[randomIndex];
-        this.drawImage(img);
-        this.showButtons();
-        this.playLostGameSound();
+            this.drawImage(img);
+        setTimeout(() => {
+                this.endscreenStarted = false;  
+        }, 2000);    
     }
+}
 
     /**
      * Plays the game over sound.
@@ -45,12 +54,19 @@ class Endscreen extends DrawableObject {
      * Displays a random "win" image and shows end screen buttons.
      */
     winGame() {
-        let randomIndex = Math.floor(Math.random() * ENDSCREEN_ASSETS.IMAGES.WINNING.length);        
-        let img = ENDSCREEN_ASSETS.IMAGES.WINNING[randomIndex];
-        this.drawImage(img);
-        this.showButtons();
-        this.playWinGameSound();
+            this.gameEnd = true;
+            let randomIndex = Math.floor(Math.random() * ENDSCREEN_ASSETS.IMAGES.WINNING.length);        
+            this.showButtons();
+            this.playWinGameSound();
+        if(!this.endscreenStarted) {
+            this.endscreenStarted = true;
+            let img = ENDSCREEN_ASSETS.IMAGES.WINNING[randomIndex];
+            this.drawImage(img);     
+        setTimeout(() => {
+                this.endscreenStarted = false;  
+        }, 2000); 
     }
+}
 
     /**
      * Plays the winning sound.

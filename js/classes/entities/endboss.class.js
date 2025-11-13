@@ -1,5 +1,5 @@
 class EndBoss extends MovableObject {  
-    static bossEnergy = 300
+    static bossEnergy = 500
     x = 2400
     y = 90;
     width = 1045 * 0.3;
@@ -11,11 +11,11 @@ class EndBoss extends MovableObject {
         bottom: 80
     };
     frameSpeed = {
-        walk: 1,
-        alert: 1,
-        hurt: 0.75,
-        death: 0.75,
-        attack: 1
+        walk: 0.1,
+        alert: 0.1,
+        hurt: 0.1,
+        death: 0.075,
+        attack: 0.075,
     };
     audioVolume = {
         walk: 0.3,
@@ -23,12 +23,13 @@ class EndBoss extends MovableObject {
         hurt: 0.5,
         death: 0.5,
     }
-    energy = 500;
-    attackStrength = 15;
-    speed = 25;
-    rageSpeed = 3;
+    energy = 500; //also change static boss energy
+    attackStrength = 20;
+    speed = 2;
+    rageSpeed = 0.02;
+    hurtDuration = 1;
     attackCharacter = false;
-    endscreen = new Endscreen();
+    deathAnimationStarted = false;
    
     constructor () {
         super().loadImage(ENDBOSS_ASSETS.IMAGES.ALERT[0]);
@@ -58,13 +59,15 @@ class EndBoss extends MovableObject {
      * Controls boss animation states and transitions.
      */
     animate() {
-        setInterval(() =>{
-            if (this.isHurt()) return this.performHurtAnimation(); //alle andere Animationen überspringen 
+        const loopAnimation = () =>{
             if (this.isDead()) this.performDeathAnimation();
+            else if (this.isHurt(this.hurtDuration)) this.performHurtAnimation();
             else if (this.canAttack()) this.performAttackAnimation();
             else if (this.canAlert()) this.performAlertAnimation();
             else if (this.attackCharacter) this.performWalkAnimation();
-        }, 200);
+            requestAnimationFrame(loopAnimation);
+        }
+        requestAnimationFrame(loopAnimation);
     }
 
     /**
@@ -86,13 +89,13 @@ class EndBoss extends MovableObject {
     /**
      * Plays hurt animation and temporarily increases speed.
      */
-    performHurtAnimation() {
+    performHurtAnimation() {     
         this.playAnimation(ENDBOSS_ASSETS.IMAGES.HURT, this.frameSpeed.hurt);
         this.speed += this.rageSpeed;
         this.playHurtingSound();
         setTimeout(() => {
             this.attackCharacter = true;
-        }, 700);;
+        }, 700);
         return;
     }
 
@@ -102,11 +105,15 @@ class EndBoss extends MovableObject {
     performDeathAnimation() {
         this.audioManager.stopAudio(ENDBOSS_ASSETS.SOUNDS.WALKING);
         this.playAnimation(ENDBOSS_ASSETS.IMAGES.DEAD, this.frameSpeed.death);
-        this.playDieSound();
-        setTimeout(() => {
-            this.audioManager.stopAll(); 
-            this.endscreen.winGame();
-        }, 1200);
+        if(!this.deathAnimationStarted) {
+            this.deathAnimationStarted = true;
+            this.playDieSound();    
+            setTimeout(() => {
+                this.audioManager.stopAll();
+                this.deathAnimationStarted = false;
+                this.world.endscreen.winGame(); 
+            }, 1500); 
+        }
     }
 
     /**
@@ -148,7 +155,7 @@ class EndBoss extends MovableObject {
      * Plays the death sound effect at a predefined volume.
      */
     playDieSound() {
-        const audioTyp = 'isSpamSound';
+        const audioTyp = 'isSpamSound'
         this.audioManager.playAudio(ENDBOSS_ASSETS.SOUNDS.DEATH, this.audioVolume.death, audioTyp);
     }
 

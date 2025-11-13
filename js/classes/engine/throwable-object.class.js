@@ -1,5 +1,11 @@
 class ThrowableObject extends MovableObject {
-  
+    frameSpeed = {
+        rotate: 0.3,
+        splash: 0.5
+    };
+    frameSplash = 0;
+    counterSplash = 0;
+
     constructor(x, y) {
         super().loadImage('img/6_salsa_bottle/salsa_bottle.png'); 
         this.x = x;
@@ -27,52 +33,114 @@ class ThrowableObject extends MovableObject {
     /**
      * Initiates the throwing motion of the object.
      */
-    throw() {        
+    throw() {
         this.speedY = 10;
         this.applyGravity();
-        const thorwInterval = setInterval( () => {          
-            if (this.y > 300 || this.world.bottleHitsEnemy) {
-                this.splash();
-                clearInterval(this.gravityInterval)
-                clearInterval(thorwInterval)
-            } else {
-                this.rotate();
-                if (this.otherDirection) {
-                    this.x -= 20;
-                } else {
-                    this.x += 20;
-                }
-            }
-        }, 80)
         this.world.bottleHitsEnemy = false;
+        this.splashPlayed = false;
+        const moveBottle = () => {
+            if (this.canSplash()) {
+                return this.performSplash();
+            }
+            this.rotate();
+            this.moveDirection();
+            this.throwRAF = requestAnimationFrame(moveBottle);
+        };
+        this.throwRAF = requestAnimationFrame(moveBottle);
+    }
+
+    /**
+     * Checks whether the bottle should trigger a splash animation.
+     * 
+     * @returns {boolean} True if the bottle has hit the ground or an enemy.
+     */
+    canSplash() {
+        return this.y > 300 || this.world.bottleHitsEnemy;
+    }
+
+    /**
+     * Executes the splash sequence when the bottle hits the ground or an enemy.
+     * @returns 
+     */
+    performSplash() {
+        this.stopSplashPosition();
+        this.splash();
+        cancelAnimationFrame(this.throwRAF);
+        return;
     }
 
     /**
      * Play the rotation animation and sound while the flight.
      */
     rotate() {
-       this.playAnimation(BOTTLE_ASSETS.IMAGES.ROTATION);
+       this.playAnimation(BOTTLE_ASSETS.IMAGES.ROTATION, this.frameSpeed.rotate);
        this.playRotationSound();
     }
 
     /**
-     * Plays the splash animation of the object.
-     * @returns 
+     * Moves the bottle horizontally depending on its facing direction.
+     */
+    moveDirection() {
+        if (this.otherDirection) {
+            this.x -= 2;
+        } else {
+            this.x += 2;
+        }
+    }
+
+    /**
+     * Stops all motion when the splash occurs.
+     */
+    stopSplashPosition() {
+        this.speedY = 0;
+        this.horizontalSpeed = 0;
+        cancelAnimationFrame(this.gravityInterval);
+    }
+
+    /**
+     * Plays the splash animation and sound after the bottle impacts.
      */
     splash() {
-        if (this.splashPlayed) return; // verhindert mehrfaches Abspielen
+        if (this.splashPlayed) return;
         this.splashPlayed = true;
-        let i = 0;
         this.playSplashSound();
-        const splashInterval = setInterval(() => {
-            let path = BOTTLE_ASSETS.IMAGES.SPLASH[i];
-            this.img = this.imageCache[path];
-            i++;
-            if (i >= BOTTLE_ASSETS.IMAGES.SPLASH.length) {
-                clearInterval(splashInterval);
+        const animateSplash = () => {
+            this.updateSplashFrame();
+            if (this.isSplashFinshed()) {
                 this.removeObject();
+                return;
             }
-        }, 100);
+            this.applySplashFrame();
+            requestAnimationFrame(animateSplash);
+        };
+        requestAnimationFrame(animateSplash);
+    }
+
+    /**
+     * Updates the current splash frame index based on animation speed.
+     */
+    updateSplashFrame() {
+        this.counterSplash += this.frameSpeed.splash;
+        if (this.counterSplash >= 1) {
+            this.frameSplash++;
+            this.counterSplash = 0;
+        }
+    }
+
+    /**
+     * Checks if the splash animation has finished all its frames.
+     * @returns 
+     */
+    isSplashFinshed() {
+        return this.frameSplash >= BOTTLE_ASSETS.IMAGES.SPLASH.length;
+    }
+
+    /**
+     * Applies the current splash animation frame based on frame index.
+     */
+    appleySplashFrame() {
+        const path = BOTTLE_ASSETS.IMAGES.SPLASH[this.frameSplash];
+        this.img = this.imageCache[path];
     }
 
     /**

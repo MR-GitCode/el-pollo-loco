@@ -58,7 +58,7 @@ const ENDBOSS_ASSETS = {
         ],
 
         DEATH: [
-            'audio/enemies/endboss/death/bar-bq-chicken-drumpsticks-129354.mp3'
+            'audio/enemies/endboss/death/bar-bq-chicken-drumpsticks-short.mp3'
         ],
     }
 }

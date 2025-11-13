@@ -29,7 +29,6 @@ class Character extends MovableObject{
     }
     coinAmount = 0;
     bottleAmount = 0;
-    endscreen = new Endscreen();
     attackJumpStrength = 100;
     wasInAir = false;
     isWalkingSoundPlaying = false;
@@ -38,6 +37,7 @@ class Character extends MovableObject{
     isBreathing = false;
     isSnoring = false;
     lastHurtSoundTime = 0;
+    hurtDuration = 0.5
     idleLongTimer;
     isIdleSoundPLaying = false;
 
@@ -70,10 +70,11 @@ class Character extends MovableObject{
     /**
      * Handles character animation and camera movement.
      */
-    animate() {
-        setInterval(() => {
+   animate() {
+        const loopAnimation = () => {
+            if (this.world.endscreen.gameEnd) return;
             if (this.isDead()) this.performDeathAnimation();
-            else if (this.isHurt()) this.performHurtAnimation();
+            else if (this.isHurt(this.hurtDuration)) this.performHurtAnimation();
             else if (this.isAboveGround()) this.performJumpingAnimation();
             else if (this.canJumpRight()) this.performJumpRight();
             else if (this.canJumpLeft()) this.performJumpLeft();
@@ -82,8 +83,11 @@ class Character extends MovableObject{
             else if (this.canMoveLeft()) this.performMoveLeft();         
             else this.performIdle();
             this.world.camera_x = -this.x + 100;
-        }, 1000 / 60);
+            requestAnimationFrame(loopAnimation);
+        }
+        requestAnimationFrame(loopAnimation);
     }
+
 
     /**
      * Checks vertical state to trigger jump and landing sounds.
@@ -150,6 +154,9 @@ class Character extends MovableObject{
      */
     performJumpRight() {
         this.stopIdleSounds();
+        if (this.otherDirection == true) {
+            this.otherDirection = false
+        } 
         this.jumpRight();
     }
 
@@ -158,6 +165,9 @@ class Character extends MovableObject{
      */
     performJumpLeft() {
         this.stopIdleSounds();
+        if (this.otherDirection == false) {
+            this.otherDirection = true
+        }
         this.jumpLeft();      
     }
 
@@ -209,7 +219,7 @@ class Character extends MovableObject{
                this.playAnimation(CHARACTER_ASSETS.IMAGES.DEAD, this.frameSpeed.death);
             }, 1000)
             setTimeout (() => {
-                this.endscreen.lostGame();
+                this.world.endscreen.lostGame();
                 this.deathAnimationStarted = false;
             }, 1500)
         }

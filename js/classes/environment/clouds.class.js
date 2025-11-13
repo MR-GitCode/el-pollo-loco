@@ -8,7 +8,7 @@ class Clouds extends MovableObject{
         this.randomCloudImage();
         this.x = Math.random() * 3000;
         this.y = Math.random() * 100;
-        this.speed = 0.1 + Math.random() * 0.3;
+        this.speed = 0.1 + Math.random() * 0.4;
         this.animate();
     }
 
@@ -24,10 +24,12 @@ class Clouds extends MovableObject{
      *
      */
     animate() {
-        setInterval(() => {
+        const loopAnimation = () => {
             this.moveLeft(this.speed);
             this.respawnClouds();
-        }, 1000 / 60);
+            requestAnimationFrame(loopAnimation);
+        }
+        requestAnimationFrame(loopAnimation);
     }
 
     /**

@@ -11,6 +11,7 @@ class World {
     statusBarCoin = new StatusBar(STATUSBARS.IMAGES.CHARACTER_COIN, 10, 90, this.coinCount);
     statusBarHealthBoss = new StatusBar(STATUSBARS.IMAGES.BOSS_HEALTH, 470, 8, 100);
     backgroundMusic = new BackgroundMusic();
+    endscreen = new Endscreen();
     gameOver = false;
     bottleHitsEnemy = false;
 
