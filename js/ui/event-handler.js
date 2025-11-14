@@ -29,7 +29,8 @@ function addStartGameListener(btStartGame) {
             btGame.style.display = 'none';
             audioManager.stopAll();
             init(); 
-            checkSoundLocalStorage() 
+            checkSoundLocalStorage()
+            
     });
 }
 

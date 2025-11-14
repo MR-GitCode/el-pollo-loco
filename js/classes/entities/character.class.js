@@ -16,7 +16,7 @@ class Character extends MovableObject{
         idle: 0.1,
         idleLong: 0.1,
         walk: 0.2,
-        jump: 0.05,
+        jump: 0.08,
         hurt: 0.05,
         death: 1
     };
@@ -47,7 +47,6 @@ class Character extends MovableObject{
         this.loadAssets();
         this.checkIfJumping();
         this.applyGravity();
-        this.animate();
     }
 
     /**
@@ -71,35 +70,30 @@ class Character extends MovableObject{
      * Handles character animation and camera movement.
      */
    animate() {
-        const loopAnimation = () => {
-            if (this.world.endscreen.gameEnd) return;
-            if (this.isDead()) this.performDeathAnimation();
-            else if (this.isHurt(this.hurtDuration)) this.performHurtAnimation();
-            else if (this.isAboveGround()) this.performJumpingAnimation();
-            else if (this.canJumpRight()) this.performJumpRight();
-            else if (this.canJumpLeft()) this.performJumpLeft();
-            else if (this.canJump()) this.performJump();
-            else if (this.canMoveRight()) this.performMoveRight();
-            else if (this.canMoveLeft()) this.performMoveLeft();         
-            else this.performIdle();
-            this.world.camera_x = -this.x + 100;
-            requestAnimationFrame(loopAnimation);
-        }
-        requestAnimationFrame(loopAnimation);
+        if (this.world.endscreen.gameEnd) return;
+        this.applyGravity();
+        this.checkIfJumping();        
+        if (this.isDead()) this.performDeathAnimation();
+        else if (this.isHurt(this.hurtDuration)) this.performHurtAnimation();
+        else if (this.canJumpRight()) this.performJumpRight();
+        else if (this.canJumpLeft()) this.performJumpLeft();
+        else if (this.canJump()) this.performJumpUp();
+        else if (this.isAboveGround()) this.performJumping();
+        else if (this.canMoveRight()) this.performMoveRight();
+        else if (this.canMoveLeft()) this.performMoveLeft();         
+        else this.performIdle();
+        this.world.camera_x = -this.x + 100;
     }
-
 
     /**
      * Checks vertical state to trigger jump and landing sounds.
      */
     checkIfJumping() {
-        setInterval(() => {
-            if(this.isAboveGround()) {
-                this.playJumpSound() 
-            } else if (this.wasInAir) {
-                this.playLandSound()
-            }
-        }, 1000 / 70);
+        if (this.isAboveGround()) {
+            this.playJumpSound();
+        } else if (this.wasInAir) {
+            this.playLandSound();
+        }
     }
 
     /**
@@ -131,7 +125,7 @@ class Character extends MovableObject{
      * @returns {boolean} True if LEFT + SPACE pressed.
      */
     canJumpLeft() {
-        return (this.world.keyboard.LEFT && (this.world.keyboard.SPACE || this.world.keyboard.UP)) && this.x > 0;
+        return !this.isAboveGround() && this.world.keyboard.LEFT && (this.world.keyboard.SPACE || this.world.keyboard.UP);
     }
 
     /**
@@ -139,9 +133,26 @@ class Character extends MovableObject{
      * @returns {boolean} True if RIGHT + SPACE pressed.
      */
     canJumpRight() {
-        return (this.world.keyboard.RIGHT && (this.world.keyboard.SPACE || this.world.keyboard.UP)) && this.x < this.world.level.level_end_x;
+        return !this.isAboveGround() && this.world.keyboard.RIGHT && (this.world.keyboard.SPACE || this.world.keyboard.UP) && this.x < this.world.level.level_end_x;
     }
     
+    /**
+     * Executes the jumping behavior of the character.
+     */
+    performJumping() {
+        this.performJumpingAnimation();
+        this.applyHorizontalJumpMovement();
+    }
+
+    /**
+     * Applies horizontal movement during a jump, if a horizontal speed is set.
+     * @returns 
+     */
+    applyHorizontalJumpMovement() {
+        if (!this.horizontalSpeed) return; // 0 oder undefined
+        this.x += this.horizontalSpeed;
+    }
+
     /**
      * Play the jump animation.
      */
@@ -154,10 +165,8 @@ class Character extends MovableObject{
      */
     performJumpRight() {
         this.stopIdleSounds();
-        if (this.otherDirection == true) {
-            this.otherDirection = false
-        } 
         this.jumpRight();
+        this.x += 3; 
     }
 
     /**
@@ -165,20 +174,18 @@ class Character extends MovableObject{
      */
     performJumpLeft() {
         this.stopIdleSounds();
-        if (this.otherDirection == false) {
-            this.otherDirection = true
-        }
-        this.jumpLeft();      
+        this.jumpLeft();
+        this.x -= 3;
     }
 
     /**
      * Moves right and plays walking animation.
      */
     performMoveRight() {
-            this.stopIdleSounds();
-            this.moveRight();
-            this.playAnimation(CHARACTER_ASSETS.IMAGES.WALKING, this.frameSpeed.walk);
-            this.playWalkingSound(); 
+        this.stopIdleSounds();
+        this.moveRight();
+        this.playAnimation(CHARACTER_ASSETS.IMAGES.WALKING, this.frameSpeed.walk);
+        this.playWalkingSound(); 
     }
 
     /**
@@ -194,8 +201,9 @@ class Character extends MovableObject{
     /**
      * Performs a vertical jump.
      */
-    performJump() {
+    performJumpUp() {
         this.stopIdleSounds();
+        this.horizontalSpeed = 0;
         this.jump();
     }
 
@@ -247,7 +255,6 @@ class Character extends MovableObject{
         if (!this.idleLongTimer) {
             this.idleLongTimer = setTimeout(() => {
                 this.isIdleLong = true;
-                // this.idleLongTimer = null;
             }, 10000);
         }
     }
@@ -349,7 +356,7 @@ class Character extends MovableObject{
         setTimeout(() => {
             this.wasInAir = false;
         }, 10)
-    }d 
+    }
 
     /**
      * Plays the jumping sound effect.

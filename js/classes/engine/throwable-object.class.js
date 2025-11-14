@@ -5,6 +5,7 @@ class ThrowableObject extends MovableObject {
     };
     frameSplash = 0;
     counterSplash = 0;
+    throwSpeed = 4
 
     constructor(x, y) {
         super().loadImage('img/6_salsa_bottle/salsa_bottle.png'); 
@@ -82,9 +83,9 @@ class ThrowableObject extends MovableObject {
      */
     moveDirection() {
         if (this.otherDirection) {
-            this.x -= 2;
+            this.x -= this.throwSpeed;
         } else {
-            this.x += 2;
+            this.x += this.throwSpeed;
         }
     }
 
@@ -138,7 +139,7 @@ class ThrowableObject extends MovableObject {
     /**
      * Applies the current splash animation frame based on frame index.
      */
-    appleySplashFrame() {
+    applySplashFrame() {
         const path = BOTTLE_ASSETS.IMAGES.SPLASH[this.frameSplash];
         this.img = this.imageCache[path];
     }

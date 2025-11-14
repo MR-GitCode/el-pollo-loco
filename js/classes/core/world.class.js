@@ -14,6 +14,7 @@ class World {
     endscreen = new Endscreen();
     gameOver = false;
     bottleHitsEnemy = false;
+    cooldown = false;
 
     constructor (canvas, keyboard, gameStarted = false) {
         this.ctx = canvas.getContext('2d');
@@ -25,8 +26,8 @@ class World {
             this.level = level1;
             if (this.audioManager.soundEnabled) playBackgroundMusic();  
             this.character = new Character();
-            this.gameLoop();
             this.setWorld();
+            this.gameLoop();
         }
     }
 
@@ -36,6 +37,7 @@ class World {
     setWorld() {
         this.character.world = this;
         this.level.enemies.forEach(enemy => enemy.world = this);
+        this.level.clouds.forEach(cloud => cloud.world = this);
     }
 
     /**
@@ -43,13 +45,23 @@ class World {
      * Continuously checks for collisions and periodically handles throwable object actions.
      */
     gameLoop() {
-        this.draw();
-        this.checkCollisions();
-        this.checkThrowObjects();
+        if (gameStarted && !this.gameOver) {
+            this.update();
+            this.draw();
+        }
         let self = this;
         requestAnimationFrame( function () {
             self.gameLoop(); 
         }); 
+    }
+
+    update() {
+        this.character.animate();
+        this.level.enemies.forEach(enemy => enemy.animate());
+        this.level.clouds.forEach(cloud => cloud.animate());
+        this.throwableObjects.forEach(object => object.animate());
+        this.checkThrowObjects();
+        this.checkCollisions();
     }
 
     /**
@@ -57,11 +69,15 @@ class World {
      * and bottles are available. Updates status bar.
      */
     checkThrowObjects() {
-        if(this.keyboard.THROW && (this.bottleCount > 0) && this.throwableObjects.length < 1) {
+        if(this.keyboard.THROW && (this.bottleCount > 0) && this.throwableObjects.length < 1 && !this.cooldown) {
             let bottle = new ThrowableObject(this.character.x, this.character.y, this.bottleHitsEnemy);
             this.throwableObjects.push(bottle);
-            this.bottleCount --
-            this.changeStatusBar(this.bottleCount , this.level.maxBottles , "statusBarBottle")
+            this.bottleCount --;
+            this.changeStatusBar(this.bottleCount , this.level.maxBottles , "statusBarBottle");
+            this.cooldown = true;
+            setTimeout( () => {
+              this.cooldown = false;  
+            }, 1500)
         }
     }
 
@@ -164,10 +180,10 @@ class World {
     /**
      * Continuously renders the game scene including backgrounds, objects, characters, and UI.
      */
-    draw() {
-        if (gameStarted && !this.gameOver) {           
+    draw() {       
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-            this.ctx.translate(this.camera_x, 0);
+            const cam = this.getRoundedCameraX();
+            this.ctx.translate(cam, 0);
             this.addObjectsToCanvas(this.level.backgrounds);
             this.addObjectsToCanvas(this.level.clouds);
             this.addObjectsToCanvas(this.level.bottles);
@@ -175,13 +191,21 @@ class World {
             this.addObjectsToCanvas(this.level.enemies);
             this.addObjectsToCanvas(this.throwableObjects);
             this.addToCanvas(this.character);
-            this.ctx.translate(-this.camera_x, 0);
+            this.ctx.translate(-cam, 0);
             this.addToCanvas(this.statusBarBottle);
             this.addToCanvas(this.statusBarHealth);
             this.addToCanvas(this.statusBarCoin);
             this.drawEndbossHealthBar();
-        }
     }
+
+    /**
+     * Returns the current camera X position rounded down.
+     * @returns 
+     */
+    getRoundedCameraX(){
+        const cam = Math.floor(this.camera_x);
+        return cam;
+    };
 
     /**
      * Draws the boss health bar when the boss is close enough to the character.
@@ -221,8 +245,8 @@ class World {
             this.mirrorImage(model)
         }
         model.draw(this.ctx);
-        // model.drawFrame(this.ctx);
-        // model.drawOffsetFrame(this.ctx)
+        // model.drawFrame(this.ctx); //developer Tool
+        // model.drawOffsetFrame(this.ctx) //developer Tool
         if (model.otherDirection) {
             this.mirrorImageBack(model)
         }

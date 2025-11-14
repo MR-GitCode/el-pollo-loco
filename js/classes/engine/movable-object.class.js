@@ -2,7 +2,7 @@ class MovableObject extends DrawableObject{
     speed;
     otherDirection = false;
     speedY = 0;
-    acceleration = 0.25;
+    acceleration = 0.35;
     offset = {
         top: 0,
         left: 0,
@@ -14,6 +14,7 @@ class MovableObject extends DrawableObject{
     lastHit = 0;
     beforeY = 0;
     isFalling = false;
+    horizontalSpeed = 0;
 
     constructor () {
         super();
@@ -24,18 +25,14 @@ class MovableObject extends DrawableObject{
     * Applies gravity to the object over time.
     */
     applyGravity() {
-        const loop = () => {
-            this.beforeY = this.y;
-            if (this.isAboveGround() || this.speedY > 0) {
-                this.y -= this.speedY;
-                this.speedY -= this.acceleration;
-                this.isFalling = this.checkFalling();
-            } else {
-                this.isFalling = false;
-            }
-            requestAnimationFrame(loop);
-        };
-        requestAnimationFrame(loop);
+        this.beforeY = this.y;
+        if (this.isAboveGround() || this.speedY > 0) {
+            this.y -= this.speedY;
+            this.speedY -= this.acceleration;
+            this.isFalling = this.checkFalling();
+        } else {
+            this.isFalling = false;
+        }
     }
 
     /**
@@ -181,8 +178,8 @@ class MovableObject extends DrawableObject{
      */
     jumpRight() {
         if (!this.isAboveGround()) { 
-            this.startJump();
-            this.continueJump(1);
+            this.startJump(1);
+            this.otherDirection = false;
         }
     }
 
@@ -191,38 +188,17 @@ class MovableObject extends DrawableObject{
      */
     jumpLeft() {
         if (!this.isAboveGround()) { 
-            this.startJump();
-            this.continueJump(-1);
+            this.startJump(-1);
+            this.otherDirection = true;
         }
     }
 
     /**
      *  Sets up initial jump properties.
      */
-    startJump() {
+    startJump(direction) {
         this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.WALKING[0]);
         this.speedY = 12;
-        this.horizontalSpeed = 3;
-    }
-
-    /**
-     * Continues horizontal movement while jumping until landing.
-     * @param {number} direction - The direction multiplier (1 for right, -1 for left). 
-     */
-    continueJump(direction) {
-           let lastTime = null;
-        const moveWhileJumping = (time) => {
-            if (!lastTime) lastTime = time;
-            const delta = (time - lastTime) / 16.67; // normalize to 60 fps
-            lastTime = time;
-
-            this.x += this.horizontalSpeed * direction * delta;
-            if (!this.isAboveGround()) {
-                this.horizontalSpeed = 0;
-                return;
-            }
-            requestAnimationFrame(moveWhileJumping);
-        };
-        requestAnimationFrame(moveWhileJumping);
+        this.horizontalSpeed = 3 * direction;
     }
 }

@@ -14,7 +14,7 @@ class EndBoss extends MovableObject {
         walk: 0.1,
         alert: 0.1,
         hurt: 0.1,
-        death: 0.075,
+        death: 0.1,
         attack: 0.075,
     };
     audioVolume = {
@@ -34,10 +34,8 @@ class EndBoss extends MovableObject {
     constructor () {
         super().loadImage(ENDBOSS_ASSETS.IMAGES.ALERT[0]);
         this.audioManager = audioManager;
-        this.world = world;
         this.loadAssets();
         this.isBoss = true;
-        this.animate();
     }
 
     /**
@@ -59,15 +57,12 @@ class EndBoss extends MovableObject {
      * Controls boss animation states and transitions.
      */
     animate() {
-        const loopAnimation = () =>{
-            if (this.isDead()) this.performDeathAnimation();
-            else if (this.isHurt(this.hurtDuration)) this.performHurtAnimation();
-            else if (this.canAttack()) this.performAttackAnimation();
-            else if (this.canAlert()) this.performAlertAnimation();
-            else if (this.attackCharacter) this.performWalkAnimation();
-            requestAnimationFrame(loopAnimation);
-        }
-        requestAnimationFrame(loopAnimation);
+        if (this.world.endscreen.gameEnd) return;
+        if (this.isDead()) this.performDeathAnimation();
+        else if (this.isHurt(this.hurtDuration)) this.performHurtAnimation();
+        else if (this.canAttack()) this.performAttackAnimation();
+        else if (this.canAlert()) this.performAlertAnimation();
+        else if (this.attackCharacter) this.performWalkAnimation();
     }
 
     /**
@@ -103,15 +98,16 @@ class EndBoss extends MovableObject {
      * Plays death animation and triggers win screen after a delay.
      */
     performDeathAnimation() {
-        this.audioManager.stopAudio(ENDBOSS_ASSETS.SOUNDS.WALKING);
-        this.playAnimation(ENDBOSS_ASSETS.IMAGES.DEAD, this.frameSpeed.death);
+            this.playDieSound();
+            this.playAnimation(ENDBOSS_ASSETS.IMAGES.DEAD, this.frameSpeed.death); 
         if(!this.deathAnimationStarted) {
             this.deathAnimationStarted = true;
-            this.playDieSound();    
+            this.audioManager.stopAudio(ENDBOSS_ASSETS.SOUNDS.WALKING);
             setTimeout(() => {
                 this.audioManager.stopAll();
                 this.deathAnimationStarted = false;
-                this.world.endscreen.winGame(); 
+                this.world.endscreen.gameEnd = true;
+                this.world.endscreen.winGame();                
             }, 1500); 
         }
     }
@@ -155,8 +151,7 @@ class EndBoss extends MovableObject {
      * Plays the death sound effect at a predefined volume.
      */
     playDieSound() {
-        const audioTyp = 'isSpamSound'
-        this.audioManager.playAudio(ENDBOSS_ASSETS.SOUNDS.DEATH, this.audioVolume.death, audioTyp);
+        this.audioManager.playAudio(ENDBOSS_ASSETS.SOUNDS.DEATH, this.audioVolume.death);
     }
 
     /**

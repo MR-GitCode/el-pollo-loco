@@ -29,15 +29,17 @@ class Endscreen extends DrawableObject {
      */
     lostGame() {
             this.gameEnd = true;
+
+        if(!this.endscreenStarted) {
+            this.endscreenStarted = true;
             let randomIndex = Math.floor(Math.random() * ENDSCREEN_ASSETS.IMAGES.GAMEOVER.length);        
             this.showButtons();
             this.playLostGameSound();
-        if(!this.endscreenStarted) {
-            this.endscreenStarted = true;
-        let img = ENDSCREEN_ASSETS.IMAGES.GAMEOVER[randomIndex];
+            let img = ENDSCREEN_ASSETS.IMAGES.GAMEOVER[randomIndex];
             this.drawImage(img);
         setTimeout(() => {
-                this.endscreenStarted = false;  
+                this.endscreenStarted = false;
+                this.audioManager.stopAll();  
         }, 2000);    
     }
 }
@@ -55,15 +57,16 @@ class Endscreen extends DrawableObject {
      */
     winGame() {
             this.gameEnd = true;
+        if(!this.endscreenStarted) {
+            this.endscreenStarted = true;
             let randomIndex = Math.floor(Math.random() * ENDSCREEN_ASSETS.IMAGES.WINNING.length);        
             this.showButtons();
             this.playWinGameSound();
-        if(!this.endscreenStarted) {
-            this.endscreenStarted = true;
             let img = ENDSCREEN_ASSETS.IMAGES.WINNING[randomIndex];
             this.drawImage(img);     
         setTimeout(() => {
-                this.endscreenStarted = false;  
+                this.endscreenStarted = false;
+                this.audioManager.stopAll();  
         }, 2000); 
     }
 }
@@ -71,7 +74,8 @@ class Endscreen extends DrawableObject {
     /**
      * Plays the winning sound.
      */
-    playWinGameSound() {   
+    playWinGameSound() {  
+        this.audioManager.stopAll(); 
         this.audioManager.playAudio(ENDSCREEN_ASSETS.SOUNDS.WINNING, this.audioVolume.winGame);
     }
 

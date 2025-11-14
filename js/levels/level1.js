@@ -14,12 +14,12 @@ function initLevel() {
             new BackgroundMusic(INGAME_ASSETS.SOUNDS.THEME),
 
         [
-            // new normalChicken(),
-            // new normalChicken(),
-            // new normalChicken(),
-            // new normalChicken(),
-            // new normalChicken(),
-            // new normalChicken(),
+            new normalChicken(),
+            new normalChicken(),
+            new normalChicken(),
+            new normalChicken(),
+            new normalChicken(),
+            new normalChicken(),
             new EndBoss(),
         ],
 

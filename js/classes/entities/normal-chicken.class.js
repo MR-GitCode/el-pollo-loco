@@ -9,7 +9,7 @@ class normalChicken extends MovableObject{
         bottom: 10
     };
     frameSpeed = {
-        walk: 1,
+        walk: 0.1,
         death: 1
     };
     audioVolume = {
@@ -17,7 +17,6 @@ class normalChicken extends MovableObject{
         death: 0.3,
     }
     energy = 100;
-    enemyIntervals = [];
     attackStrength = 10;
 
     constructor (){
@@ -25,8 +24,7 @@ class normalChicken extends MovableObject{
         this.audioManager = audioManager;
         this.x = 400 + Math.random() * 1900;
         this.speed = 0.5 + Math.random() * 0.5;
-        this.loadAssets();
-        this.animate(); 
+        this.loadAssets(); 
     }
 
     /**
@@ -39,20 +37,32 @@ class normalChicken extends MovableObject{
     }
 
     /**
-     * Handles normal chicken animation and camera movement.
+     * Starts all animation processes for the normal chicken.
      */
     animate() {
-        setInterval(() =>{
-            if (this.energy == 0) {
-                this.performDeathAnimation()
-            } else this.playAnimation(NORMAL_CHICKEN_ASSETS.IMAGES.WALKING, this.frameSpeed.walk);
-        }, 250);
-        
-        const moveInterval = setInterval(() => {
+        this.startWalkAnimation();
+        this.startMovement();
+    }
+
+    /**
+     * Handles the walking animation loop for the chicken.
+     */
+    startWalkAnimation() {
+        if (this.energy === 0) {
+            this.performDeathAnimation();
+            return;
+        }
+        this.playAnimation(NORMAL_CHICKEN_ASSETS.IMAGES.WALKING, this.frameSpeed.walk);
+    }  
+    
+    /**
+     * Starts the horizontal movement loop for the chicken.
+     */
+    startMovement() {
+        if (this.energy > 0) {
             this.moveLeft();
             this.otherDirection = false;
-        }, 1000 / 60);
-        this.enemyIntervals.push(moveInterval)
+        }
     }
 
     /**
@@ -60,7 +70,8 @@ class normalChicken extends MovableObject{
      */
     performDeathAnimation() {
         this.playAnimation(NORMAL_CHICKEN_ASSETS.IMAGES.DEAD, this.frameSpeed.death);
-        clearInterval(this.enemyIntervals);
+        cancelAnimationFrame(this.walkChickenRAF);
+        cancelAnimationFrame(this.moveChickenRAF);
     }
 
     /**

@@ -117,8 +117,8 @@ class AudioManager {
      * Stops all currently playing audio.
      */
     stopAll() {
-        this.stopLongAudios();
         this.stopActiveAudios();
+        this.stopLongAudios();
         this.activeSounds = [];
         this.currentAudio = null;
     }
