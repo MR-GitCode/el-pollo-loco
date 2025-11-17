@@ -88,7 +88,7 @@
     } 
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1000px) {   
     #controls-menu {
         max-height: calc(100vh - 20px);
     }

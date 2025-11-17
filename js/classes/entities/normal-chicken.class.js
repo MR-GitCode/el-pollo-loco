@@ -3,10 +3,10 @@ class normalChicken extends MovableObject{
     height = 243 * 0.4;
     width = 248 * 0.4;
     offset = {
-        top: 5,
-        left: 0,
-        right: 0,
-        bottom: 10
+        top: 8,
+        left: 8,
+        right: 10,
+        bottom: 15
     };
     frameSpeed = {
         walk: 0.1,
@@ -22,9 +22,10 @@ class normalChicken extends MovableObject{
     constructor (){
         super().loadImage('img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');
         this.audioManager = audioManager;
+        this.loadAssets();
         this.x = 400 + Math.random() * 1900;
         this.speed = 0.5 + Math.random() * 0.5;
-        this.loadAssets(); 
+        
     }
 
     /**

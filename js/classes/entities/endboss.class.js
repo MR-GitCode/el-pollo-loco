@@ -5,9 +5,9 @@ class EndBoss extends MovableObject {
     width = 1045 * 0.3;
     height = 1217 * 0.3;
     offset = {
-        top: 70,
+        top: 80,
         left: 15,
-        right: 25,
+        right: 30,
         bottom: 80
     };
     frameSpeed = {

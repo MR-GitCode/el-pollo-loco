@@ -41,7 +41,7 @@ class DrawableObject {
      * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
      */
     drawFrame(ctx) {
-        if(this instanceof Character || this instanceof normalChicken || this instanceof EndBoss || this instanceof SpawnCoin || this instanceof SpawnBottle) {
+        if(this instanceof Character || this instanceof normalChicken || this instanceof EndBoss || this instanceof SpawnCoin || this instanceof SpawnBottle || this instanceof ThrowableObject) {
             ctx.beginPath();
             ctx.lineWidth = '3';
             ctx.strokeStyle = 'blue';
@@ -55,7 +55,7 @@ class DrawableObject {
      * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
      */
     drawOffsetFrame(ctx) {
-        if(this instanceof Character || this instanceof normalChicken || this instanceof EndBoss || this instanceof SpawnCoin || this instanceof SpawnBottle) {
+        if(this instanceof Character || this instanceof normalChicken || this instanceof EndBoss || this instanceof SpawnCoin || this instanceof SpawnBottle || this instanceof ThrowableObject) {
             ctx.beginPath();
             ctx.lineWidth = '3';
             ctx.strokeStyle = 'red';

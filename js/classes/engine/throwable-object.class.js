@@ -1,4 +1,10 @@
 class ThrowableObject extends MovableObject {
+    offset = {
+        top: 20,
+        left: 50,
+        right: 75,
+        bottom: 35
+    };
     frameSpeed = {
         rotate: 0.3,
         splash: 0.5
@@ -17,8 +23,9 @@ class ThrowableObject extends MovableObject {
         this.world = world;
         this.otherDirection = world.character.otherDirection;
         this.loadAssets();
-        this.throw();
+        this.throwStart();
         this.objectHasHit = false;
+        this.splashPlayed = false;
     }
 
     /**
@@ -32,22 +39,41 @@ class ThrowableObject extends MovableObject {
     }
 
     /**
-     * Initiates the throwing motion of the object.
+     * Initializes bottle throw parameters such as vertical speed
+     * and resets splash state.
      */
-    throw() {
+    throwStart() {
         this.speedY = 10;
-        this.applyGravity();
-        this.world.bottleHitsEnemy = false;
         this.splashPlayed = false;
-        const moveBottle = () => {
-            if (this.canSplash()) {
-                return this.performSplash();
-            }
-            this.rotate();
-            this.moveDirection();
-            this.throwRAF = requestAnimationFrame(moveBottle);
-        };
-        this.throwRAF = requestAnimationFrame(moveBottle);
+    }
+
+    /**
+     * Starts all animation processes for the bottle.
+     */
+    animate() {        
+        if (this.isSplashing) {
+            this.handleSplashAnimation();
+            return;
+        }
+        if (this.canSplash()) {
+            this.startSplash();
+            return;
+        }
+        this.applyGravity();
+        this.rotate();
+        this.moveDirection();
+    }
+
+    /**
+     * Handles the splash animation.
+     */
+    handleSplashAnimation() {
+        this.updateSplashFrame();
+        if (this.isSplashFinished()) this.removeObject();
+        else this.applySplashFrame();
+        setTimeout(() => {
+            this.world.bottleHitsEnemy = false;
+        }, 500);
     }
 
     /**
@@ -56,18 +82,19 @@ class ThrowableObject extends MovableObject {
      * @returns {boolean} True if the bottle has hit the ground or an enemy.
      */
     canSplash() {
-        return this.y > 300 || this.world.bottleHitsEnemy;
+        return this.y > 320 || this.world.bottleHitsEnemy;
     }
 
     /**
-     * Executes the splash sequence when the bottle hits the ground or an enemy.
+     * Starts the splash animation.
      * @returns 
      */
-    performSplash() {
-        this.stopSplashPosition();
-        this.splash();
-        cancelAnimationFrame(this.throwRAF);
-        return;
+    startSplash() {
+        if (this.isSplashing) return;
+        this.isSplashing = true;
+        this.playSplashSound();
+        this.speedY = 0;
+        this.throwSpeed = 0;
     }
 
     /**
@@ -90,34 +117,6 @@ class ThrowableObject extends MovableObject {
     }
 
     /**
-     * Stops all motion when the splash occurs.
-     */
-    stopSplashPosition() {
-        this.speedY = 0;
-        this.horizontalSpeed = 0;
-        cancelAnimationFrame(this.gravityInterval);
-    }
-
-    /**
-     * Plays the splash animation and sound after the bottle impacts.
-     */
-    splash() {
-        if (this.splashPlayed) return;
-        this.splashPlayed = true;
-        this.playSplashSound();
-        const animateSplash = () => {
-            this.updateSplashFrame();
-            if (this.isSplashFinshed()) {
-                this.removeObject();
-                return;
-            }
-            this.applySplashFrame();
-            requestAnimationFrame(animateSplash);
-        };
-        requestAnimationFrame(animateSplash);
-    }
-
-    /**
      * Updates the current splash frame index based on animation speed.
      */
     updateSplashFrame() {
@@ -132,7 +131,7 @@ class ThrowableObject extends MovableObject {
      * Checks if the splash animation has finished all its frames.
      * @returns 
      */
-    isSplashFinshed() {
+    isSplashFinished() {
         return this.frameSplash >= BOTTLE_ASSETS.IMAGES.SPLASH.length;
     }
 

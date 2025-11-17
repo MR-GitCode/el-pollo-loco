@@ -15,6 +15,7 @@ class World {
     gameOver = false;
     bottleHitsEnemy = false;
     cooldown = false;
+    devTools = false;
 
     constructor (canvas, keyboard, gameStarted = false) {
         this.ctx = canvas.getContext('2d');
@@ -55,6 +56,9 @@ class World {
         }); 
     }
 
+    /**
+     * Updates all dynamic game elements each frame.
+     */
     update() {
         this.character.animate();
         this.level.enemies.forEach(enemy => enemy.animate());
@@ -245,8 +249,10 @@ class World {
             this.mirrorImage(model)
         }
         model.draw(this.ctx);
-        // model.drawFrame(this.ctx); //developer Tool
-        // model.drawOffsetFrame(this.ctx) //developer Tool
+        if (this.devTools) {
+            model.drawFrame(this.ctx); //developer Tool
+            model.drawOffsetFrame(this.ctx) //developer Tool  
+        }
         if (model.otherDirection) {
             this.mirrorImageBack(model)
         }
