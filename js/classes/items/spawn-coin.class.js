@@ -3,7 +3,7 @@ class SpawnCoin extends SpawnableObjects {
       top: 50,
       left: 50,
       right: 100,
-      bottom: 100
+      bottom: 80
    };
    audioVolume = {
         collect: 0.4,
