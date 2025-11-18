@@ -1,8 +1,5 @@
 class World {
     fps = 70;              
-    then = Date.now();
-    interval = 1000 / this.fps;
-    delta = 0;
     canvas;
     crx;
     keyboard;
@@ -53,20 +50,24 @@ class World {
      * Continuously checks for collisions and periodically handles throwable object actions.
      */
     gameLoop() {
-        let now = Date.now();
-        this.delta = now - this.then
-        if(this.delta > this.interval) {
-                this.then = now - (this.delta % this.interval);
-            if (this.gameStarted && !this.gameOver) {
+        if (this.gameStarted && !this.gameOver) {
+            setInterval(()=> {
                 this.update();
-                this.draw();
-            }   
-        }
+            }, 1000/this.fps);
+            this.drawLoop();
+        }   
+    }
+
+    /**
+     * Continuously renders the game world to the canvas.
+     */
+    drawLoop() {
+        this.draw();
         let self = this;
         requestAnimationFrame( function () {
-            self.gameLoop(); 
+            self.drawLoop(); 
         }); 
-    }
+    } 
 
     /**
      * Updates all dynamic game elements each frame.
