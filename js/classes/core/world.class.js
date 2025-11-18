@@ -1,4 +1,8 @@
 class World {
+    fps = 70;              
+    then = Date.now();
+    interval = 1000 / this.fps;
+    delta = 0;
     canvas;
     crx;
     keyboard;
@@ -17,10 +21,12 @@ class World {
     cooldown = false;
     devTools = false;
 
-    constructor (canvas, keyboard, gameStarted = false) {
+    constructor (canvas, keyboard, gameStarted = false, movementLocked = true) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
+        this.gameStarted = gameStarted;
+        this.movementLocked = movementLocked;
         this.audioManager =  audioManager;
         if (gameStarted & !this.gameOver) {
             initLevel();
@@ -29,6 +35,7 @@ class World {
             this.character = new Character();
             this.setWorld();
             this.gameLoop();
+            this.unlockMovementAfterDelay();
         }
     }
 
@@ -42,13 +49,18 @@ class World {
     }
 
     /**
-     * Starts the main game logic loops.
+     * Starts the main game logic loops with limit of fps.
      * Continuously checks for collisions and periodically handles throwable object actions.
      */
     gameLoop() {
-        if (gameStarted && !this.gameOver) {
-            this.update();
-            this.draw();
+        let now = Date.now();
+        this.delta = now - this.then
+        if(this.delta > this.interval) {
+                this.then = now - (this.delta % this.interval);
+            if (this.gameStarted && !this.gameOver) {
+                this.update();
+                this.draw();
+            }   
         }
         let self = this;
         requestAnimationFrame( function () {
@@ -66,6 +78,15 @@ class World {
         this.throwableObjects.forEach(object => object.animate());
         this.checkThrowObjects();
         this.checkCollisions();
+    }
+
+    /**
+     * Unlocked the movement of the character after a delay.
+     */
+    unlockMovementAfterDelay() {
+        setTimeout(() => {
+            this.movementLocked = false;
+        }, 700);
     }
 
     /**
@@ -106,7 +127,7 @@ class World {
                     enemy.energy -= this.character.attackJumpStrength;
                     enemy.performDeathAnimation();
                     enemy.playJumpKillSound();                    
-                } else { 
+                } else if (!this.endscreen.gameEnd) { 
                     this.character.hit(enemy.attackStrength);
                     this.statusBarHealth.setPercentage(this.character.energy)
                 }

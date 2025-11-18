@@ -30,7 +30,6 @@ function addStartGameListener(btStartGame) {
             audioManager.stopAll();
             init(); 
             checkSoundLocalStorage()
-            
     });
 }
 

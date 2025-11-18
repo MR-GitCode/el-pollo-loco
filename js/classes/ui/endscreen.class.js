@@ -29,7 +29,6 @@ class Endscreen extends DrawableObject {
      */
     lostGame() {
             this.gameEnd = true;
-
         if(!this.endscreenStarted) {
             this.endscreenStarted = true;
             let randomIndex = Math.floor(Math.random() * ENDSCREEN_ASSETS.IMAGES.GAMEOVER.length);        

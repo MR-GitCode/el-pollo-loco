@@ -76,7 +76,8 @@ function drawStartScreen() {
  */
 function init() {
     gameStarted = true;
-    world = new World(canvas, keyboard, gameStarted);
+    movementLocked = true;
+    world = new World(canvas, keyboard, gameStarted, movementLocked);
 }
 
 /**

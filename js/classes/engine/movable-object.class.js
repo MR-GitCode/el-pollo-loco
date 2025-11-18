@@ -32,7 +32,9 @@ class MovableObject extends DrawableObject{
             this.isFalling = this.checkFalling();
         } else {
             this.isFalling = false;
-        }
+            this.y = 140;
+            this.speedY = 0;
+        } 
     }
 
     /**
@@ -51,7 +53,7 @@ class MovableObject extends DrawableObject{
         if(this instanceof ThrowableObject) {
             return this.y < 350;
         } else {
-            return this.y < 140
+            return this.y < 140;
         }
     }
 

@@ -26,7 +26,7 @@ class EndBoss extends MovableObject {
     energy = 500; //also change static boss energy
     attackStrength = 20;
     speed = 2;
-    rageSpeed = 0.02;
+    rageSpeed = 0.01;
     hurtDuration = 1;
     attackCharacter = false;
     deathAnimationStarted = false;
@@ -98,8 +98,8 @@ class EndBoss extends MovableObject {
      * Plays death animation and triggers win screen after a delay.
      */
     performDeathAnimation() {
-            this.playDieSound();
-            this.playAnimation(ENDBOSS_ASSETS.IMAGES.DEAD, this.frameSpeed.death); 
+        this.playDieSound();
+        this.playAnimation(ENDBOSS_ASSETS.IMAGES.DEAD, this.frameSpeed.death); 
         if(!this.deathAnimationStarted) {
             this.deathAnimationStarted = true;
             this.audioManager.stopAudio(ENDBOSS_ASSETS.SOUNDS.WALKING);

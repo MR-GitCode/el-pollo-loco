@@ -70,7 +70,7 @@ class Character extends MovableObject{
      * Handles character animation and camera movement.
      */
    animate() {
-        if (this.world.endscreen.gameEnd) return;
+        if (this.world.endscreen.gameEnd || this.world.movementLocked) return;
         this.applyGravity();
         this.checkIfJumping();        
         if (this.isDead()) this.performDeathAnimation();
@@ -204,7 +204,7 @@ class Character extends MovableObject{
     performJumpUp() {
         this.stopIdleSounds();
         this.horizontalSpeed = 0;
-        this.jump();
+        this.jump();  
     }
 
     /**
@@ -238,7 +238,6 @@ class Character extends MovableObject{
      */
     performIdle() {
         this.isIdleSoundPLaying = true
-        this.stopWalkingSound();
         if (!this.isIdleLong) {
             this.performNormalIdle();
         } else {
@@ -251,6 +250,7 @@ class Character extends MovableObject{
      */
     performNormalIdle() {
         this.playAnimation(CHARACTER_ASSETS.IMAGES.IDLE, this.frameSpeed.idle);
+        this.stopWalkingSound();
         this.playBreathSound();
         if (!this.idleLongTimer) {
             this.idleLongTimer = setTimeout(() => {
@@ -306,7 +306,7 @@ class Character extends MovableObject{
                 this.idleLongTimer = null;
             }
             this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.BREATH[0]);
-            this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.SNORING[0]);
+            this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.SNORING[0]);    
             this.isBreathing = false;
             this.isSnoring = false;
         }
@@ -318,7 +318,7 @@ class Character extends MovableObject{
     stopWalkingSound() {
         if (this.isWalkingSoundPlaying) {
             this.isWalkingSoundPlaying = false;
-            this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.WALKING[0]);
+            this.audioManager.stopAudio(CHARACTER_ASSETS.SOUNDS.WALKING[0]);         
         }
     }
 
