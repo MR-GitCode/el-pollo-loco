@@ -206,7 +206,8 @@ class World {
     /**
      * Continuously renders the game scene including backgrounds, objects, characters, and UI.
      */
-    draw() {       
+    draw() {    
+          if (this.endscreen.gameEnd) return;   
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
             const cam = this.getRoundedCameraX();
             this.ctx.translate(cam, 0);
