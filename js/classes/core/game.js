@@ -32,17 +32,17 @@ function showStartScreen() {
  * Checks the display size and toggles the visibility of a "rotate device" message.
  */
 function checkDisplaySize() {
-    let containerRotateScreen = document.getElementById('rotate-screen');
+    const containerRotateScreen = document.getElementById('rotate-screen');
+
     const updateDisplaySize = () => {
-        let screenWidth =  screen.width;
-        if (screenWidth < 600) {
-            containerRotateScreen.classList.remove('hidden');            
-        } else {
-            containerRotateScreen.classList.add('hidden');
-        }
+        const isTooSmall = window.innerWidth < 600;
+
+        containerRotateScreen.classList.toggle('hidden', !isTooSmall);
     };
+
     updateDisplaySize();
     window.addEventListener('resize', updateDisplaySize);
+    window.addEventListener('orientationchange', updateDisplaySize);
 }
 
 /**

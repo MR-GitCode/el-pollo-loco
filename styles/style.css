@@ -196,12 +196,12 @@ canvas{
 }
 
 #rotate-info {
-    width: 250;
+    width: 250px;
 }
 
 #rotate-info h2{
     font-family: sans-serif;
-    font-size: 400;
+    font-size: 40px;
 }
 
 .hidden {
